@@ -9,17 +9,22 @@ import LocationSelector from "./components/LocationSelector/LocationSelector";
 
 function App() {
 	const [isLocationSelected, setIsLocationSelected] = useState(false);
+	const [location, setLocation] = useState("none");
+	const [unitTemp, setUnitTemp] = useState("fahrenheit");
 
 	return (
 		<>
-			<Header />
-			{!isLocationSelected ? (
-				<div className="mainTitle">
-					<h1>TempTrackr</h1>
-					<h3>Just another weather app</h3>
-				</div>
-			) : null}
-			<LocationSelector />
+			<Header unit={unitTemp} setUnitTemp={setUnitTemp} />
+			{isLocationSelected ? null : (
+				<>
+					<div className="mainTitle">
+						<h1>TempTrackr</h1>
+						<h3>Just another weather app</h3>
+						<p>{`The temperature is in ${unitTemp}`}</p>
+					</div>
+					<LocationSelector />
+				</>
+			)}
 		</>
 	);
 }

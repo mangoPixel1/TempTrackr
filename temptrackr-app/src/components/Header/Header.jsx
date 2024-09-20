@@ -6,11 +6,23 @@ function Header(props) {
 		props.setUnitTemp(e.target.value);
 	}
 
+	function handleSearchChange(e) {
+		// get value from text box
+		// set isLocationSelected to true
+		// set location to value from text box
+	}
+
+	function handleDisplayModeToggle() {
+		props.setLightModeOn(prev => !prev);
+	}
+
 	return (
 		<header className={classes.headerStyle}>
 			<div className={classes.searchWrapper}>
-				<input type="text" placeholder="Search City or Zip Code" />
-				<button className="searchButton">Search</button>
+				<input type="text" placeholder="Search Zip Code" />
+				<button className="searchButton" onClick={handleSearchChange}>
+					Search
+				</button>
 			</div>
 
 			<div className={classes.unitSelectWrapper}>
@@ -19,6 +31,10 @@ function Header(props) {
 					<option value="fahrenheit">F</option>
 					<option value="celsius">C</option>
 				</select>
+			</div>
+
+			<div className={classes.displayModeToggle}>
+				<button onClick={handleDisplayModeToggle}>{props.lightModeOn ? "☀️" : "🌙"}</button>
 			</div>
 		</header>
 	);

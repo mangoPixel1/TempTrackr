@@ -1,7 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import classes from "./Header.module.css";
+import { ThemeContext } from "../../ThemeContext";
 
 function Header(props) {
+	// Context
+	const theme = useContext(ThemeContext);
+
 	function handleUnitChange(e) {
 		props.setUnitTemp(e.target.value);
 	}
@@ -13,7 +17,7 @@ function Header(props) {
 	}
 
 	function handleDisplayModeToggle() {
-		props.setLightModeOn(prev => !prev);
+		// handle theme change
 	}
 
 	return (
@@ -34,10 +38,11 @@ function Header(props) {
 			</div>
 
 			<div className={classes.displayModeToggle}>
-				<button onClick={handleDisplayModeToggle}>{props.lightModeOn ? "☀️" : "🌙"}</button>
+				<button onClick={handleDisplayModeToggle}>{theme === "light" ? "Light" : "Dark"}</button>
 			</div>
 		</header>
 	);
 }
 
 export default Header;
+//{props.lightModeOn ? "☀️" : "🌙"}

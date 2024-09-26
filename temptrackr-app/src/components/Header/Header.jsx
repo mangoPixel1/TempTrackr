@@ -1,10 +1,10 @@
 import React, { useContext, useEffect } from "react";
 import classes from "./Header.module.css";
-import { ThemeContext } from "../../ThemeContext";
+import { useTheme } from "../../context/ThemeContext";
 
 function Header(props) {
 	// Context
-	const theme = useContext(ThemeContext);
+	const { theme, toggleTheme } = useTheme();
 
 	function handleUnitChange(e) {
 		props.setUnitTemp(e.target.value);
@@ -14,10 +14,6 @@ function Header(props) {
 		// get value from text box
 		// set isLocationSelected to true
 		// set location to value from text box
-	}
-
-	function handleDisplayModeToggle() {
-		// handle theme change
 	}
 
 	return (
@@ -38,7 +34,7 @@ function Header(props) {
 			</div>
 
 			<div className={classes.displayModeToggle}>
-				<button onClick={handleDisplayModeToggle}>{theme === "light" ? "Light" : "Dark"}</button>
+				<button onClick={toggleTheme}>{theme === "light" ? "Light" : "Dark"}</button>
 			</div>
 		</header>
 	);

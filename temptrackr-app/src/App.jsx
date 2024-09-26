@@ -6,18 +6,17 @@ import Header from "./components/Header/Header";
 import LocationSelector from "./components/LocationSelector/LocationSelector";
 
 // Context
-import { ThemeContext } from "./ThemeContext";
+import { ThemeProvider } from "./context/ThemeContext";
 
 function App() {
 	// State variables
 	const [isLocationSelected, setIsLocationSelected] = useState(false);
 	const [location, setLocation] = useState(null);
 	const [unitTemp, setUnitTemp] = useState("fahrenheit");
-	const [theme, setTheme] = useState("light");
 
 	return (
 		<>
-			<ThemeContext.Provider value={theme}>
+			<ThemeProvider>
 				<Header unit={unitTemp} setUnitTemp={setUnitTemp} />
 				{location ? null : (
 					<>
@@ -29,7 +28,7 @@ function App() {
 						<LocationSelector />
 					</>
 				)}
-			</ThemeContext.Provider>
+			</ThemeProvider>
 		</>
 	);
 }

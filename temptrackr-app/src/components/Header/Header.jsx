@@ -1,13 +1,15 @@
 import React, { useContext, useEffect } from "react";
 import classes from "./Header.module.css";
 import { useTheme } from "../../context/ThemeContext";
+import { useUnit } from "../../context/UnitContext";
 
-function Header(props) {
+function Header() {
 	// Context
 	const { theme, toggleTheme } = useTheme();
+	const { unit, changeUnit } = useUnit();
 
 	function handleUnitChange(e) {
-		props.setUnitTemp(e.target.value);
+		changeUnit(e.target.value);
 	}
 
 	function handleSearchChange(e) {
@@ -27,18 +29,17 @@ function Header(props) {
 
 			<div className={classes.unitSelectWrapper}>
 				<label htmlFor="units">Unit </label>
-				<select id="units" value={props.unitTemp} onChange={handleUnitChange}>
+				<select id="units" value={unit} onChange={handleUnitChange}>
 					<option value="fahrenheit">F</option>
 					<option value="celsius">C</option>
 				</select>
 			</div>
 
 			<div className={classes.displayModeToggle}>
-				<button onClick={toggleTheme}>{theme === "light" ? "Light" : "Dark"}</button>
+				<button onClick={toggleTheme}>{theme === "light" ? "☀️" : "🌙"}</button>
 			</div>
 		</header>
 	);
 }
 
 export default Header;
-//{props.lightModeOn ? "☀️" : "🌙"}

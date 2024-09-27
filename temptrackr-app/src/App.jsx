@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import "./App.css";
 
 // Components
@@ -6,31 +6,38 @@ import Header from "./components/Header/Header";
 import LocationSelector from "./components/LocationSelector/LocationSelector";
 
 // Context
-import { ThemeProvider } from "./context/ThemeContext";
+import { ThemeProvider, useTheme } from "./context/ThemeContext";
+import { UnitProvider, useUnit } from "./context/UnitContext";
 
 function App() {
 	// State variables
-	const [isLocationSelected, setIsLocationSelected] = useState(false);
 	const [location, setLocation] = useState(null);
-	const [unitTemp, setUnitTemp] = useState("fahrenheit");
 
 	return (
 		<>
 			<ThemeProvider>
-				<Header unit={unitTemp} setUnitTemp={setUnitTemp} />
-				{location ? null : (
-					<>
-						<div className="mainTitle">
-							<h1>TempTrackr</h1>
-							<h3>Just another weather app</h3>
-							<p>{`The temperature is in ${unitTemp}`}</p>
-						</div>
-						<LocationSelector />
-					</>
-				)}
+				<UnitProvider>
+					<Header />
+					{location ? null : <MainComponent />}
+				</UnitProvider>
 			</ThemeProvider>
 		</>
 	);
 }
 
 export default App;
+
+function MainComponent() {
+	const { unit } = useUnit();
+
+	return (
+		<>
+			<div className="mainTitle">
+				<h1>TempTrackr</h1>
+				<h3>Just another weather app</h3>
+				<p>{`The temperature is in ${unit}`}</p>
+			</div>
+			<LocationSelector />
+		</>
+	);
+}

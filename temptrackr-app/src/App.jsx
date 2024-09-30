@@ -5,21 +5,21 @@ import "./App.css";
 import Header from "./components/Header/Header";
 import LocationSelector from "./components/LocationSelector/LocationSelector";
 
-// Context
+// Contexts
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
 import { UnitProvider, useUnit } from "./context/UnitContext";
+import { LocationProvider, useLocation } from "./context/LocationContext";
 
 function App() {
-	// State variables
-	const [location, setLocation] = useState(null);
-
 	return (
 		<>
 			<ThemeProvider>
-				<UnitProvider>
-					<Header />
-					{location ? null : <MainComponent />}
-				</UnitProvider>
+				<LocationProvider>
+					<UnitProvider>
+						<Header />
+						<MainComponent />
+					</UnitProvider>
+				</LocationProvider>
 			</ThemeProvider>
 		</>
 	);
@@ -29,6 +29,7 @@ export default App;
 
 function MainComponent() {
 	const { unit } = useUnit();
+	const { latitude, longitude } = useLocation();
 
 	return (
 		<>
@@ -37,7 +38,7 @@ function MainComponent() {
 				<h3>Just another weather app</h3>
 				<p>{`The temperature is in ${unit}`}</p>
 			</div>
-			<LocationSelector />
+			{latitude && longitude ? null : <LocationSelector />}
 		</>
 	);
 }

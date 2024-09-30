@@ -10,6 +10,7 @@ function UnitProvider({ children }) {
 	}
 
 	useEffect(() => {
+		// whenever the unit changes, update local storage
 		localStorage.setItem("unit", unit);
 	}, [unit]);
 

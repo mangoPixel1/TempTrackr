@@ -10,6 +10,7 @@ function ThemeProvider({ children }) {
 	}
 
 	useEffect(() => {
+		// whenever theme changes, update local storage
 		localStorage.setItem("theme", theme);
 	}, [theme]);
 

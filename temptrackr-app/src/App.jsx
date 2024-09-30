@@ -29,7 +29,11 @@ export default App;
 
 function MainComponent() {
 	const { unit } = useUnit();
-	const { latitude, longitude } = useLocation();
+	const { latitude, longitude, setCoordinates } = useLocation();
+
+	function handleLocationReset() {
+		setCoordinates(0, 0);
+	}
 
 	return (
 		<>
@@ -37,8 +41,15 @@ function MainComponent() {
 				<h1>TempTrackr</h1>
 				<h3>Just another weather app</h3>
 				<p>{`The temperature is in ${unit}`}</p>
+				<p>{`Latitude: ${latitude}, Longitude: ${longitude}`}</p>
 			</div>
-			{latitude && longitude ? null : <LocationSelector />}
+			{latitude && longitude ? (
+				<button id="resetLocationButton" onClick={handleLocationReset}>
+					Reset
+				</button>
+			) : (
+				<LocationSelector />
+			)}
 		</>
 	);
 }

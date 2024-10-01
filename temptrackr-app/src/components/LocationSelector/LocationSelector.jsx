@@ -10,8 +10,8 @@ function LocationSelector() {
 
 	function handleGetLocationClick() {}
 	function handleLocationSubmit() {
-		const latitudeValue = document.getElementById("latitude").value;
-		const longitudeValue = document.getElementById("longitude").value;
+		const latitudeValue = document.getElementById("latitude").value; // use onChange
+		const longitudeValue = document.getElementById("longitude").value; // use onChange
 
 		if (latitudeValue > 90 || latitudeValue < -90 || longitudeValue > 180 || longitudeValue < -180) {
 			setLocationHasError(true);

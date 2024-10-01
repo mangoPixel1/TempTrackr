@@ -11,3 +11,8 @@
 .mainTitle h3 {
 	font-weight: 300;
 }
+
+.resetLocationButton {
+	display: block;
+	margin: 0 auto;
+}

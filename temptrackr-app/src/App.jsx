@@ -41,11 +41,11 @@ function MainComponent() {
 				<h1>TempTrackr</h1>
 				<h3>Just another weather app</h3>
 				<p>{`The temperature is in ${unit}`}</p>
-				<p>{`Latitude: ${latitude}, Longitude: ${longitude}`}</p>
+				<p>{latitude && longitude ? `Latitude: ${latitude}, Longitude: ${longitude}` : null}</p>
 			</div>
 			{latitude && longitude ? (
-				<button id="resetLocationButton" onClick={handleLocationReset}>
-					Reset
+				<button className="resetLocationButton" onClick={handleLocationReset}>
+					Reset Location
 				</button>
 			) : (
 				<LocationSelector />

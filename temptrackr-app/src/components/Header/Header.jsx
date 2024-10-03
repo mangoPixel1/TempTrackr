@@ -12,7 +12,7 @@ function Header() {
 		changeUnit(e.target.value);
 	}
 
-	function handleSearchChange(e) {
+	function handleSearchLocation(e) {
 		// get value from text box
 		// set isLocationSelected to true
 		// set location to value from text box
@@ -22,7 +22,7 @@ function Header() {
 		<header className={classes.headerStyle}>
 			<div className={classes.searchWrapper}>
 				<input type="text" placeholder="Search Zip Code" />
-				<button className="searchButton" onClick={handleSearchChange}>
+				<button className="searchButton" onClick={handleSearchLocation}>
 					Search
 				</button>
 			</div>

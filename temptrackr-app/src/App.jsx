@@ -38,7 +38,6 @@ function MainComponent() {
 	return (
 		<>
 			<div className="mainTitle">
-				<PokemonInfo />
 				<h1>TempTrackr</h1>
 				<h3>Just another weather app</h3>
 				<p>{`The temperature is in ${unit}`}</p>

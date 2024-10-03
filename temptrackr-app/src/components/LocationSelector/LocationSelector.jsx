@@ -5,10 +5,19 @@ import { useLocation } from "../../context/LocationContext";
 
 function LocationSelector() {
 	const { latitude, longitude, setCoordinates } = useLocation();
-	const [isLocationSet, setIsLocationSet] = useState(false);
-	const [locationHasError, setLocationHasError] = useState(false);
+	const [locationErrorMsg, setLocationErrorMsg] = useState(""); // No error present when empty string
 
-	function handleGetLocationClick() {}
+	function handleGetLocationClick() {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(position => {
+				setCoordinates(position.coords.latitude, position.coords.longitude); // set latitude & latitude values in location context
+			});
+			setLocationErrorMsg(""); // set to empty string to indicate no error present
+		} else {
+			setLocationErrorMsg("Geolocation not supported by this browser");
+		}
+	}
+
 	function handleLocationSubmit() {
 		const latitudeValue = document.getElementById("latitude").value;
 		const longitudeValue = document.getElementById("longitude").value;
@@ -25,7 +34,31 @@ function LocationSelector() {
 
 	return (
 		<div className={classes.locationSelector}>
-			<h3>Enter Location</h3>
+			<p>Enter location above</p>
+			<p>or</p>
+			<button id="get-location-btn" onClick={handleGetLocationClick}>
+				Get Device Location
+			</button>
+			{locationErrorMsg && <p>{`${locationErrorMsg}`}</p>}
+		</div>
+	);
+}
+
+export default LocationSelector;
+
+/*
+	//const [isLocationSet, setIsLocationSet] = useState(false);
+	//const [locationHasError, setLocationHasError] = useState(false);
+
+<p>Enter location above</p>
+<p>or</p>
+<button id="get-location-btn" onClick={handleLocationButtonClick}>
+	Get Device Location
+</button>
+*/
+
+/*
+<h3>Enter Location</h3>
 			<label htmlFor="latitude">Latitude:</label>
 			<input type="number" id="latitude" name="latitude" min="-90" max="90" step="0.000001" required />
 			<br />
@@ -35,17 +68,4 @@ function LocationSelector() {
 			<button id="locationSubmitButton" onClick={handleLocationSubmit}>
 				Submit
 			</button>
-			{locationHasError && <p>Invalid coordinates</p>}
-		</div>
-	);
-}
-
-export default LocationSelector;
-
-/*
-<p>Enter location above</p>
-<p>or</p>
-<button id="get-location-btn" onClick={handleLocationButtonClick}>
-	Get Device Location
-</button>
 */

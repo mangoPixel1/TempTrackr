@@ -3,3 +3,7 @@
 	justify-content: space-evenly;
 	padding: 20px 0;
 }
+
+.searchButton {
+	display: inline-block;
+}

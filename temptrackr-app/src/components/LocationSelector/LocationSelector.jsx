@@ -5,7 +5,7 @@ import { useLocation } from "../../context/LocationContext";
 
 function LocationSelector() {
 	const { latitude, longitude, setCoordinates } = useLocation();
-	const [locationErrorMsg, setLocationErrorMsg] = useState(""); // No error present when empty string
+	const [locationErrorMsg, setLocationErrorMsg] = useState(""); // No error present when string is empty
 
 	function handleGetLocationClick() {
 		if (navigator.geolocation) {

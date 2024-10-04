@@ -9,8 +9,8 @@ function Header() {
 	const { unit, changeUnit } = useUnit();
 
 	// State variables
-	const [searchSuggestions, setSearchSuggestions] = useState([]);
-	const [dropdownVisible, setDropdownVisible] = useState(false);
+	const [searchSuggestions, setSearchSuggestions] = useState([]); // API location search results
+	const [selectedSearchSuggestion, setSelectedSearchSuggestion] = useState(null); // API location search result selected from dropdown
 
 	function handleUnitChange(e) {
 		changeUnit(e.target.value);
@@ -26,8 +26,8 @@ function Header() {
 				return response.json();
 			})
 			.then(data => {
-				setSearchSuggestions([...data.results]);
-				setDropdownVisible(true);
+				console.log(data.results);
+				setSearchSuggestions(data.results);
 			})
 			.catch(error => console.error(error));
 	}
@@ -39,10 +39,10 @@ function Header() {
 				<button className={classes.searchButton} onClick={handleLocationSearch}>
 					Search
 				</button>
-				{dropdownVisible && (
-					<ul>
-						{searchSuggestions.map(suggestion, key => {
-							<li key={suggestion.id}>{`${suggestion.name}, ${suggestion.admin2}, ${suggestion.admin1}, ${suggestion.country}`}</li>;
+				{searchSuggestions && (
+					<ul className={classes.searchSuggestionsList}>
+						{searchSuggestions.map(suggestion => {
+							return <li key={suggestion.id}>{`${suggestion.name}, ${suggestion.admin2}, ${suggestion.admin1}, ${suggestion.country}`}</li>;
 						})}
 					</ul>
 				)}

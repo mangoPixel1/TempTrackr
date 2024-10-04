@@ -7,3 +7,17 @@
 .searchButton {
 	display: inline-block;
 }
+
+.searchSuggestionsList {
+	margin-top: 5px;
+	list-style-type: none;
+	user-select: none;
+}
+
+.searchSuggestionsList li {
+	padding: 10px;
+}
+
+.searchSuggestionsList li:hover {
+	background-color: rgb(243, 243, 243);
+}

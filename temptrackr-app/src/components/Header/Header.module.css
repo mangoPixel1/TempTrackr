@@ -12,6 +12,8 @@
 	margin-top: 5px;
 	list-style-type: none;
 	user-select: none;
+	max-height: 150px;
+	overflow-y: scroll;
 }
 
 .searchSuggestionsList li {
@@ -20,4 +22,5 @@
 
 .searchSuggestionsList li:hover {
 	background-color: rgb(243, 243, 243);
+	cursor: pointer;
 }

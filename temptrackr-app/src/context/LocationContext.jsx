@@ -7,6 +7,7 @@ function LocationProvider({ children }) {
 		const storedCoordinates = JSON.parse(localStorage.getItem("coordinates"));
 		return storedCoordinates ? storedCoordinates.latitude : 0;
 	});
+
 	const [longitude, setLongitude] = useState(() => {
 		const storedCoordinates = JSON.parse(localStorage.getItem("coordinates"));
 		return storedCoordinates ? storedCoordinates.longitude : 0;

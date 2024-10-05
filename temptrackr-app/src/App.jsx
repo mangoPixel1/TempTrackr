@@ -54,7 +54,7 @@ function MainComponent() {
 	);
 }
 
-function PokemonInfo() {
+/*function PokemonInfo() {
 	const [pokemonData, setPokemonData] = useState(null);
 	const [errorMessage, setErrorMessage] = useState(null);
 	const [pokemonSearch, setPokemonSearch] = useState("");
@@ -92,3 +92,4 @@ function PokemonInfo() {
 		</div>
 	);
 }
+*/

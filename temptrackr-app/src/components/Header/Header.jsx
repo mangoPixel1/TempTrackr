@@ -14,6 +14,7 @@ function Header() {
 	const [searchValue, setSearchValue] = useState(""); // current input text value in search bar
 	const [searchSuggestions, setSearchSuggestions] = useState([]); // API location search results
 	const [selectedSearchResult, setSelectedSearchResult] = useState(null); // selected search result
+	//const [cityName, setCityName] = useState("");
 
 	function handleUnitChange(e) {
 		changeUnit(e.target.value);

@@ -4,6 +4,7 @@ const UnitContext = createContext();
 
 function UnitProvider({ children }) {
 	const [unit, setUnit] = useState(() => localStorage.getItem("unit") || "fahrenheit");
+	// imperial/metric units for wind speed, rain, etc.
 
 	function changeUnit(unit) {
 		setUnit(unit);

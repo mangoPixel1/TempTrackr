@@ -4,7 +4,7 @@ import classes from "./LocationSelector.module.css";
 import { useLocation } from "../../context/LocationContext";
 
 function LocationSelector() {
-	const { latitude, longitude, setCoordinates } = useLocation();
+	const { setCoordinates } = useLocation();
 	const [locationErrorMsg, setLocationErrorMsg] = useState(""); // No error present when string is empty
 
 	function handleGetLocationClick() {
@@ -15,20 +15,6 @@ function LocationSelector() {
 			setLocationErrorMsg(""); // set to empty string to indicate no error present
 		} else {
 			setLocationErrorMsg("Geolocation not supported by this browser");
-		}
-	}
-
-	function handleLocationSubmit() {
-		const latitudeValue = document.getElementById("latitude").value;
-		const longitudeValue = document.getElementById("longitude").value;
-
-		if (latitudeValue > 90 || latitudeValue < -90 || longitudeValue > 180 || longitudeValue < -180) {
-			setLocationHasError(true);
-			setIsLocationSet(false);
-		} else {
-			setCoordinates(latitudeValue, longitudeValue);
-			setLocationHasError(false);
-			setIsLocationSet(true);
 		}
 	}
 
@@ -68,4 +54,20 @@ export default LocationSelector;
 			<button id="locationSubmitButton" onClick={handleLocationSubmit}>
 				Submit
 			</button>
+*/
+
+/*
+	function handleLocationSubmit() {
+		const latitudeValue = document.getElementById("latitude").value;
+		const longitudeValue = document.getElementById("longitude").value;
+
+		if (latitudeValue > 90 || latitudeValue < -90 || longitudeValue > 180 || longitudeValue < -180) {
+			setLocationHasError(true);
+			setIsLocationSet(false);
+		} else {
+			setCoordinates(latitudeValue, longitudeValue);
+			setLocationHasError(false);
+			setIsLocationSet(true);
+		}
+	}
 */

@@ -4,6 +4,7 @@ import "./App.css";
 // Components
 import Header from "./components/Header/Header";
 import LocationSelector from "./components/LocationSelector/LocationSelector";
+import Weather from "./components/Weather/Weather";
 
 // Contexts
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
@@ -11,8 +12,6 @@ import { UnitProvider, useUnit } from "./context/UnitContext";
 import { LocationProvider, useLocation } from "./context/LocationContext";
 
 function App() {
-	//const [cityName, setCityName] = useState("");
-
 	return (
 		<>
 			<ThemeProvider>
@@ -40,11 +39,13 @@ function MainComponent() {
 	return (
 		<>
 			<div className="mainTitle">
-				<h1>TempTrackr</h1>
-				<h3>Just another weather app</h3>
-				<p>{`The temperature is in ${unit}`}</p>
-				{cityName && <p>{`${cityName}`}</p>}
-				<p>{latitude && longitude ? `Latitude: ${latitude}, Longitude: ${longitude}` : null}</p>
+				{!(latitude && longitude) && (
+					<>
+						<h1>TempTrackr</h1>
+						<h3>Just another weather app</h3>
+					</>
+				)}
+				{latitude && longitude && cityName ? <Weather /> : null}
 			</div>
 			{latitude && longitude ? (
 				<button className="resetLocationButton" onClick={handleLocationReset}>

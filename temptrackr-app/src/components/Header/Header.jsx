@@ -1,5 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import classes from "./Header.module.css";
+
+// Contexts
 import { useTheme } from "../../context/ThemeContext";
 import { useUnit } from "../../context/UnitContext";
 import { useLocation } from "../../context/LocationContext";
@@ -49,10 +51,6 @@ function Header() {
 		// Set location to new coordinates from selected result
 		setCoordinates(suggestion.latitude, suggestion.longitude);
 	}
-
-	useEffect(() => {
-		console.log(selectedSearchResult);
-	}, [selectedSearchResult]);
 
 	return (
 		<header className={classes.headerStyle}>

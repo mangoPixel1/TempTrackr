@@ -4,16 +4,27 @@
 	padding: 20px 0;
 }
 
+.searchWrapper {
+	position: relative;
+}
+
 .searchButton {
 	display: inline-block;
 }
 
 .searchSuggestionsList {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	width: 300px;
 	margin-top: 5px;
 	list-style-type: none;
 	user-select: none;
 	max-height: 150px;
-	overflow-y: scroll;
+	overflow-y: auto;
+	background-color: white;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	z-index: 1;
 }
 
 .searchSuggestionsList li {
@@ -23,4 +34,56 @@
 .searchSuggestionsList li:hover {
 	background-color: rgb(243, 243, 243);
 	cursor: pointer;
+}
+
+.unitSelectWrapper select {
+	/* Add any necessary base styles */
+	padding: 5px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+.displayModeToggle button {
+	/* Add any necessary base styles */
+	padding: 8px 16px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+/* Dark theme styles */
+.headerStyle.dark {
+	background-color: #292929;
+	color: #fcfcfc;
+}
+
+.headerStyle.dark .searchButton {
+	background-color: #444444;
+	color: #fcfcfc;
+}
+
+.headerStyle.dark .searchSuggestionsList {
+	background-color: #444444;
+}
+
+.headerStyle.dark .searchSuggestionsList li {
+	color: #fcfcfc;
+}
+
+.headerStyle.dark .searchSuggestionsList li:hover {
+	background-color: #555555;
+}
+
+.headerStyle.dark .unitSelectWrapper label {
+	color: #fcfcfc;
+}
+
+.headerStyle.dark .unitSelectWrapper select {
+	background-color: #444444;
+	color: #fcfcfc;
+}
+
+.headerStyle.dark .displayModeToggle button {
+	background-color: #444444;
+	color: #fcfcfc;
 }

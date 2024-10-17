@@ -37,22 +37,14 @@ function Weather() {
 				setWind(Math.floor(data.current.wind_speed_10m));
 			})
 			.catch(error => console.error(error));
-	}, []);
+	}, [latitude, longitude, cityName, unit]);
 
 	return (
 		<>
 			<div className="main">
 				<h2 className="cityName">{cityName}</h2>
 				<CurrentWeather currentTemp={currentTemp} min={currentMin} max={currentMax} precip={precipChance} humidity={humidity} wind={wind} />
-				<ul>
-					<li>Temperature</li>
-					<li>High/Low Temps</li>
-					<li>Sky conditions</li>
-					<li>Date + Time</li>
-					<li>Humidity</li>
-					<li>Wind</li>
-					<li>Feels like</li>
-				</ul>
+
 				<div>Hourly forecast</div>
 				<div>Daily forecast</div>
 			</div>

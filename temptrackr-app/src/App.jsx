@@ -41,31 +41,20 @@ function MainComponent() {
 		<div className="mainComponent">
 			<div className="mainTitle">
 				{latitude && longitude && cityName ? (
-					<Weather />
+					<>
+						<Weather />
+						<button className="resetLocationButton" onClick={handleLocationReset}>
+							Reset Location
+						</button>
+					</>
 				) : (
 					<>
 						<h1>TempTrackr</h1>
 						<h3>Just another weather app</h3>
+						<LocationSelector />
 					</>
 				)}
 			</div>
-			{latitude && longitude ? (
-				<button className="resetLocationButton" onClick={handleLocationReset}>
-					Reset Location
-				</button>
-			) : (
-				<LocationSelector />
-			)}
 		</div>
 	);
 }
-
-/*
-{!(latitude && longitude) && (
-					<>
-						<h1>TempTrackr</h1>
-						<h3>Just another weather app</h3>
-					</>
-				)}
-				{latitude && longitude && cityName ? <Weather /> : null}
-*/

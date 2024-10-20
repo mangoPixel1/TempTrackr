@@ -45,8 +45,8 @@ function Weather() {
 				<h2 className="cityName">{cityName}</h2>
 				<CurrentWeather currentTemp={currentTemp} min={currentMin} max={currentMax} precip={precipChance} humidity={humidity} wind={wind} />
 
-				<div>Hourly forecast</div>
-				<div>Daily forecast</div>
+				<div>{`<HourlyWeather>`}</div>
+				<div>{`<DailyWeather>`}</div>
 			</div>
 		</>
 	);

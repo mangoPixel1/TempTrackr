@@ -18,9 +18,9 @@ function CurrentWeather({ currentTemp, min, max, precip, humidity, wind }) {
 				{max}°/{min}°
 			</p>
 			<div className="weatherMetrics">
-				<p className="precipChance">{precip}%</p>
-				<p className="humidity">{humidity}%</p>
-				<p className="windSpeed">{wind} mph</p>
+				<p className="precipChance">🌧{precip}%</p>
+				<p className="humidity">💧{humidity}%</p>
+				<p className="windSpeed">💨{wind} mph</p>
 			</div>
 		</div>
 	);

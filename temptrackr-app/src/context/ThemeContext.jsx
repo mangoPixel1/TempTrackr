@@ -7,11 +7,14 @@ function ThemeProvider({ children }) {
 
 	function toggleTheme() {
 		setTheme(prevTheme => (prevTheme === "light" ? "dark" : "light"));
+		document.body.classList.toggle("darkBody");
 	}
 
 	useEffect(() => {
 		// whenever theme changes, update local storage
 		localStorage.setItem("theme", theme);
+
+		theme === "dark" ? document.body.classList.add("darkBody") : document.body.classList.remove("darkBody");
 	}, [theme]);
 
 	return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>;

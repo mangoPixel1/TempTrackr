@@ -1,3 +1,13 @@
+.darkBody {
+	background-color: #3b3b3b;
+	color: #fcfcfc;
+}
+
+.mainComponentDark {
+	background-color: #3b3b3b;
+	color: #fcfcfc;
+}
+
 .mainTitle {
 	text-align: center;
 	margin: 50px 0px;

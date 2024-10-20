@@ -29,6 +29,7 @@ function App() {
 export default App;
 
 function MainComponent() {
+	const { theme } = useTheme();
 	const { unit } = useUnit();
 	const { latitude, longitude, cityName, setCoordinates } = useLocation();
 
@@ -37,7 +38,7 @@ function MainComponent() {
 	}
 
 	return (
-		<>
+		<div className={theme === "light" ? "mainComponentLight" : "mainComponentDark"}>
 			<div className="mainTitle">
 				{!(latitude && longitude) && (
 					<>
@@ -54,6 +55,6 @@ function MainComponent() {
 			) : (
 				<LocationSelector />
 			)}
-		</>
+		</div>
 	);
 }

@@ -38,15 +38,16 @@ function MainComponent() {
 	}
 
 	return (
-		<div className={theme === "light" ? "mainComponentLight" : "mainComponentDark"}>
+		<div className="mainComponent">
 			<div className="mainTitle">
-				{!(latitude && longitude) && (
+				{latitude && longitude && cityName ? (
+					<Weather />
+				) : (
 					<>
 						<h1>TempTrackr</h1>
 						<h3>Just another weather app</h3>
 					</>
 				)}
-				{latitude && longitude && cityName ? <Weather /> : null}
 			</div>
 			{latitude && longitude ? (
 				<button className="resetLocationButton" onClick={handleLocationReset}>
@@ -58,3 +59,13 @@ function MainComponent() {
 		</div>
 	);
 }
+
+/*
+{!(latitude && longitude) && (
+					<>
+						<h1>TempTrackr</h1>
+						<h3>Just another weather app</h3>
+					</>
+				)}
+				{latitude && longitude && cityName ? <Weather /> : null}
+*/

@@ -34,7 +34,7 @@ function MainComponent() {
 	const { latitude, longitude, cityName, setCoordinates } = useLocation();
 
 	function handleLocationReset() {
-		setCoordinates(0, 0);
+		setCoordinates(0, 0); // maybe also reset the city name?
 	}
 
 	return (

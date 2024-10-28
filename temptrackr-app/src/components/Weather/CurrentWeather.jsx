@@ -1,5 +1,11 @@
 import React, { useEffect } from "react";
 
+// Icons
+import ThermometerIcon from "../Icons/ThermometerIcon";
+import RainCloudIcon from "../Icons/RainCloudIcon";
+import DropletIcon from "../Icons/DropletIcon";
+import WindIcon from "../Icons/WindIcon";
+
 // Contexts
 import { useTheme } from "../../context/ThemeContext";
 import { useUnit } from "../../context/UnitContext";
@@ -18,9 +24,18 @@ function CurrentWeather({ currentTemp, min, max, precip, humidity, wind }) {
 				{max}°/{min}°
 			</p>
 			<div className="weatherMetrics">
-				<p className="precipChance">🌧{precip}%</p>
-				<p className="humidity">💧{humidity}%</p>
-				<p className="windSpeed">💨{wind} mph</p>
+				<p className="precipChance">
+					<RainCloudIcon />
+					{precip}%
+				</p>
+				<p className="humidity">
+					<DropletIcon />
+					{humidity}%
+				</p>
+				<p className="windSpeed">
+					<WindIcon />
+					{wind} mph
+				</p>
 			</div>
 		</div>
 	);

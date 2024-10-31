@@ -22,9 +22,9 @@ function CurrentWeather({ currentTemp, min, max, precip, humidity, wind, weather
 		3: "Overcast",
 		45: "Fog",
 		48: "Fog",
-		51: "Drizzle",
+		51: "Light Drizzle",
 		53: "Drizzle",
-		55: "Drizzle",
+		55: "Heavy Drizzle",
 		61: "Rain: Light",
 		63: "Rain: Moderate",
 		65: "Rain: Heavy",
@@ -33,6 +33,7 @@ function CurrentWeather({ currentTemp, min, max, precip, humidity, wind, weather
 		71: "Snow Fall: Light",
 		73: "Snow Fall: Moderate",
 		75: "Snow Fall: Heavy",
+		77: "Snow Grains",
 		80: "Showers: Light",
 		81: "Showers: Moderate",
 		82: "Showers: Violent",
@@ -46,7 +47,7 @@ function CurrentWeather({ currentTemp, min, max, precip, humidity, wind, weather
 	return (
 		<div className="currentWeather">
 			<div className="currentTemperature">
-				<p>{weatherCodeMap.weatherCode}</p>
+				<p>{weatherCodeMap[weatherCode]}</p>
 				<h2 className="realTemp">
 					{currentTemp} °{unit === "fahrenheit" ? "F" : "C"}
 				</h2>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import classes from "./Weather.module.css";
 
 // Contexts
 import { useTheme } from "../../context/ThemeContext";
@@ -18,7 +19,7 @@ function Weather() {
 	const [precipChance, setPrecipChance] = useState(0);
 	const [humidity, setHumidity] = useState(0);
 	const [wind, setWind] = useState(0);
-	const [weatherCode, setWeatherCode] = useState(0);
+	const [weatherCode, setWeatherCode] = useState(-1);
 	const [apparentTemp, setApparentTemp] = useState(0);
 
 	useEffect(() => {
@@ -48,8 +49,8 @@ function Weather() {
 			<div className="main">
 				<h2 className="cityName">{cityName}</h2>
 				<CurrentWeather currentTemp={currentTemp} min={currentMin} max={currentMax} precip={precipChance} humidity={humidity} wind={wind} weatherCode={weatherCode} apparentTemp={apparentTemp} />
-				<div>{`<HourlyWeather>`}</div>
-				<div>{`<DailyWeather>`}</div>
+				<div>{/*<HourlyWeather>*/}</div>
+				<div>{/*<DailyWeather>*/}</div>
 			</div>
 		</>
 	);

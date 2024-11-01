@@ -1,0 +1,47 @@
+.currentWeatherContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+}
+
+.currentWeather {
+	display: flex;
+	justify-content: center;
+	gap: 30px;
+}
+
+.condition {
+	display: flex;
+	flex-direction: column;
+	justify-content: end;
+}
+
+.temperature {
+}
+
+.realTemperature {
+}
+
+.apparentTemperature {
+	font-size: 16px;
+}
+
+.maxMinTemperature {
+	font-size: 20px;
+}
+
+.weatherMetrics {
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+	font-size: 16px;
+}
+
+.weatherMetrics > div {
+	display: flex;
+	align-items: center;
+}
+
+.weatherMetrics p {
+	margin-left: 5px;
+}

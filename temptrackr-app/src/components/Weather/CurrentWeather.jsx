@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
+import classes from "./Weather.module.css";
 
 // Icons
 import ThermometerIcon from "../Icons/ThermometerIcon";
 import RainCloudIcon from "../Icons/RainCloudIcon";
 import DropletIcon from "../Icons/DropletIcon";
 import WindIcon from "../Icons/WindIcon";
+import OverCastIcon from "../Icons/Weather Codes/OvercastIcon";
 
 // Contexts
 import { useTheme } from "../../context/ThemeContext";
@@ -12,8 +14,9 @@ import { useUnit } from "../../context/UnitContext";
 import { useLocation } from "../../context/LocationContext";
 
 function CurrentWeather({ currentTemp, min, max, precip, humidity, wind, weatherCode, apparentTemp }) {
-	const { latitude, longitude, cityName, setCoordinates } = useLocation();
+	const { theme } = useTheme();
 	const { unit } = useUnit();
+	const { latitude, longitude, cityName, setCoordinates } = useLocation();
 
 	const weatherCodeMap = {
 		0: "Clear",
@@ -45,30 +48,36 @@ function CurrentWeather({ currentTemp, min, max, precip, humidity, wind, weather
 	};
 
 	return (
-		<div className="currentWeather">
-			<div className="currentTemperature">
-				<p>{weatherCodeMap[weatherCode]}</p>
-				<h2 className="realTemp">
-					{currentTemp} °{unit === "fahrenheit" ? "F" : "C"}
-				</h2>
-				<p className="apparentTemp">Feels like {apparentTemp} °</p>
+		<div className={classes.currentWeatherContainer}>
+			<div className={classes.currentWeather}>
+				<div className={classes.condition}>
+					{/* SVG */}
+					<p>{weatherCodeMap[weatherCode]}</p>
+				</div>
+				<div className={classes.temperature}>
+					<h2 className={classes.realTemperature}>
+						{currentTemp} °{unit === "fahrenheit" ? "F" : "C"}
+					</h2>
+					<p className={classes.maxMinTemperature}>
+						{max}°/{min}°
+					</p>
+					<p className={classes.apparentTemperature}>Feels like {apparentTemp} °</p>
+				</div>
 			</div>
-			<p className="minMaxTemp">
-				{max}°/{min}°
-			</p>
-			<div className="weatherMetrics">
-				<p className="precipChance">
-					<RainCloudIcon />
-					Precipitation: {precip}%
-				</p>
-				<p className="humidity">
-					<DropletIcon />
-					Humidity: {humidity}%
-				</p>
-				<p className="windSpeed">
-					<WindIcon />
-					Wind: {wind} mph
-				</p>
+
+			<div className={classes.weatherMetrics}>
+				<div className="precipChance">
+					<RainCloudIcon fillColor={theme === "light" ? "black" : "white"} />
+					<p>Precipitation: {precip}%</p>
+				</div>
+				<div className="humidity">
+					<DropletIcon fillColor={theme === "light" ? "black" : "white"} />
+					<p>Humidity: {humidity}%</p>
+				</div>
+				<div className="windSpeed">
+					<WindIcon fillColor={theme === "light" ? "black" : "white"} />
+					<p>Wind: {wind} mph</p>
+				</div>
 			</div>
 		</div>
 	);

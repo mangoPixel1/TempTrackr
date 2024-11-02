@@ -13,10 +13,24 @@
 .condition {
 	display: flex;
 	flex-direction: column;
-	justify-content: end;
+	justify-content: start;
+	align-items: center;
+}
+
+.condition img {
+	width: 100px;
+	height: 100px;
+}
+
+.condition p {
+	font-size: 18px;
 }
 
 .temperature {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items: center;
 }
 
 .realTemperature {

@@ -84,33 +84,3 @@ function Header() {
 }
 
 export default Header;
-
-/*
-<header className={classes.headerStyle}>
-			<div className={classes.searchWrapper}>
-				<input type="text" placeholder="Search City Name" id="location-search-input" value={searchValue} onChange={handleSearchInputChange} />
-				<button className={classes.searchButton} onClick={handleLocationSearch}>
-					Search
-				</button>
-				{searchSuggestions && (
-					<ul className={classes.searchSuggestionsList}>
-						{searchSuggestions.map(suggestion => {
-							return <li key={suggestion.id} onClick={() => handleResultSelection(suggestion)}>{`${suggestion.name}, ${suggestion.admin2}, ${suggestion.admin1}, ${suggestion.country}`}</li>;
-						})}
-					</ul>
-				)}
-			</div>
-
-			<div className={classes.unitSelectWrapper}>
-				<label htmlFor="units">Unit </label>
-				<select id="units" value={unit} onChange={handleUnitChange}>
-					<option value="fahrenheit">F</option>
-					<option value="celsius">C</option>
-				</select>
-			</div>
-
-			<div className={classes.displayModeToggle}>
-				<button onClick={toggleTheme}>{theme === "light" ? "☀️" : "🌙"}</button>
-			</div>
-		</header>
-*/

@@ -6,7 +6,9 @@ import ThermometerIcon from "../Icons/ThermometerIcon";
 import RainCloudIcon from "../Icons/RainCloudIcon";
 import DropletIcon from "../Icons/DropletIcon";
 import WindIcon from "../Icons/WindIcon";
-import OverCastIcon from "../Icons/Weather Codes/OvercastIcon";
+
+// Images
+import sunnyIcon from "../../assets/images/sunny.png";
 
 // Contexts
 import { useTheme } from "../../context/ThemeContext";
@@ -51,7 +53,8 @@ function CurrentWeather({ currentTemp, min, max, precip, humidity, wind, weather
 		<div className={classes.currentWeatherContainer}>
 			<div className={classes.currentWeather}>
 				<div className={classes.condition}>
-					{/* SVG */}
+					{/* Image */}
+					<img src={sunnyIcon} alt={weatherCodeMap[weatherCode]} />
 					<p>{weatherCodeMap[weatherCode]}</p>
 				</div>
 				<div className={classes.temperature}>

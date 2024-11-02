@@ -29,8 +29,9 @@
 .temperature {
 	display: flex;
 	flex-direction: column;
-	justify-content: space-evenly;
+	justify-content: end;
 	align-items: center;
+	gap: 10px;
 }
 
 .realTemperature {

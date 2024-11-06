@@ -2,13 +2,10 @@ import React, { useEffect } from "react";
 import classes from "./Weather.module.css";
 
 // Icons
-import ThermometerIcon from "../Icons/ThermometerIcon";
-import RainCloudIcon from "../Icons/RainCloudIcon";
-import DropletIcon from "../Icons/DropletIcon";
-import WindIcon from "../Icons/WindIcon";
+import ClearIcon from "../Icons/Weather Codes/ClearIcon";
+import PartlyCloudyDayIcon from "../Icons/Weather Codes/PartlyCloudyDay";
 
 // Images
-import sunnyIcon from "../../assets/images/sunny.png";
 
 // Contexts
 import { useTheme } from "../../context/ThemeContext";
@@ -21,10 +18,10 @@ function CurrentWeather({ currentTemp, min, max, precip, humidity, wind, weather
 	const { latitude, longitude, cityName, setCoordinates } = useLocation();
 
 	const weatherCodeMap = {
-		0: "Clear",
-		1: "Mainly Clear",
-		2: "Partly Cloudy",
-		3: "Overcast",
+		0: "Clear", // ClearIcon
+		1: "Mainly Clear", // ClearIcon
+		2: "Partly Cloudy", // PartlyCloudDayIcon
+		3: "Overcast", // OvercastIcon
 		45: "Fog",
 		48: "Fog",
 		51: "Light Drizzle",
@@ -54,7 +51,7 @@ function CurrentWeather({ currentTemp, min, max, precip, humidity, wind, weather
 			<div className={classes.currentWeather}>
 				<div className={classes.condition}>
 					{/* Image */}
-					<img src={sunnyIcon} alt={weatherCodeMap[weatherCode]} />
+					<PartlyCloudyDayIcon />
 					<p>{weatherCodeMap[weatherCode]}</p>
 				</div>
 				<div className={classes.temperature}>
@@ -70,15 +67,15 @@ function CurrentWeather({ currentTemp, min, max, precip, humidity, wind, weather
 
 			<div className={classes.weatherMetrics}>
 				<div className="precipChance">
-					<RainCloudIcon fillColor={theme === "light" ? "black" : "white"} />
+					{/*<PrecipiationIcon fillColor={theme === "light" ? "black" : "white"} />*/}
 					<p>Precipitation: {precip}%</p>
 				</div>
 				<div className="humidity">
-					<DropletIcon fillColor={theme === "light" ? "black" : "white"} />
+					{/*<DropletIcon fillColor={theme === "light" ? "black" : "white"} />*/}
 					<p>Humidity: {humidity}%</p>
 				</div>
 				<div className="windSpeed">
-					<WindIcon fillColor={theme === "light" ? "black" : "white"} />
+					{/*<WindIcon fillColor={theme === "light" ? "black" : "white"} />*/}
 					<p>Wind: {wind} mph</p>
 				</div>
 			</div>

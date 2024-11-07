@@ -4,6 +4,12 @@ import classes from "./Weather.module.css";
 // Icons
 import ClearIcon from "../Icons/Weather Codes/ClearIcon";
 import PartlyCloudyDayIcon from "../Icons/Weather Codes/PartlyCloudyDay";
+import Overcast from "../Icons/Weather Codes/Overcast";
+import Fog from "../Icons/Weather Codes/Fog";
+import Drizzle from "../Icons/Weather Codes/Drizzle";
+import Rain from "../Icons/Weather Codes/Rain";
+import FreezingRain from "../Icons/Weather Codes/FreezingRain";
+import Snow from "../Icons/Weather Codes/Snow";
 
 // Images
 
@@ -20,30 +26,30 @@ function CurrentWeather({ currentTemp, min, max, precip, humidity, wind, weather
 	const weatherCodeMap = {
 		0: "Clear", // ClearIcon
 		1: "Mainly Clear", // ClearIcon
-		2: "Partly Cloudy", // PartlyCloudDayIcon
-		3: "Overcast", // OvercastIcon
-		45: "Fog",
-		48: "Fog",
-		51: "Light Drizzle",
-		53: "Drizzle",
-		55: "Heavy Drizzle",
-		61: "Rain: Light",
-		63: "Rain: Moderate",
-		65: "Rain: Heavy",
-		66: "Freezing Rain: Light",
-		67: "Freezing Rain: Heavy",
-		71: "Snow Fall: Light",
-		73: "Snow Fall: Moderate",
-		75: "Snow Fall: Heavy",
-		77: "Snow Grains",
-		80: "Showers: Light",
-		81: "Showers: Moderate",
-		82: "Showers: Violent",
-		85: "Snow Showers: Light",
-		86: "Snow Showers: Heavy",
-		95: "Thunderstorm",
-		96: "Thunderstorm",
-		99: "Thunderstorm"
+		2: "Partly Cloudy", // PartlyCloudDay
+		3: "Overcast", // Overcast
+		45: "Fog", // Fog
+		48: "Fog", // Fog
+		51: "Light Drizzle", // Drizzle
+		53: "Drizzle", // Drizzle
+		55: "Heavy Drizzle", // Drizzle
+		61: "Light Rain", // Rain
+		63: "Rain", // Rain
+		65: "Heavy Rain", // Rain
+		66: "Freezing Rain: Light", // FreezingRain ****FIX THIS*****
+		67: "Freezing Rain: Heavy", // FreezingRain ****FIX THIS*****
+		71: "Snow Fall: Light", // Snow
+		73: "Snow Fall: Moderate", // Snow ****FIX THIS*****
+		75: "Snow Fall: Heavy", // Snow
+		77: "Snow Grains", // Hail
+		80: "Showers: Light", // Rain
+		81: "Showers: Moderate", // Rain
+		82: "Showers: Violent", // Rain
+		85: "Snow Showers: Light", // Snow
+		86: "Snow Showers: Heavy", // Snow
+		95: "Thunderstorm", // Thunderstorm
+		96: "Thunderstorm", // Thunderstorm
+		99: "Thunderstorm" // Thunderstorm
 	};
 
 	return (
@@ -51,7 +57,7 @@ function CurrentWeather({ currentTemp, min, max, precip, humidity, wind, weather
 			<div className={classes.currentWeather}>
 				<div className={classes.condition}>
 					{/* Image */}
-					<PartlyCloudyDayIcon />
+					<Snow />
 					<p>{weatherCodeMap[weatherCode]}</p>
 				</div>
 				<div className={classes.temperature}>

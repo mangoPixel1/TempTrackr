@@ -2,14 +2,16 @@ import React, { useEffect } from "react";
 import classes from "./Weather.module.css";
 
 // Icons
-import ClearIcon from "../Icons/Weather Codes/ClearIcon";
-import PartlyCloudyDayIcon from "../Icons/Weather Codes/PartlyCloudyDay";
+import Clear from "../Icons/Weather Codes/Clear";
+import PartlyCloudyDay from "../Icons/Weather Codes/PartlyCloudyDay";
 import Overcast from "../Icons/Weather Codes/Overcast";
 import Fog from "../Icons/Weather Codes/Fog";
 import Drizzle from "../Icons/Weather Codes/Drizzle";
 import Rain from "../Icons/Weather Codes/Rain";
 import FreezingRain from "../Icons/Weather Codes/FreezingRain";
 import Snow from "../Icons/Weather Codes/Snow";
+import Hail from "../Icons/Weather Codes/Hail";
+import Thunderstorm from "../Icons/Weather Codes/Thunderstorm";
 
 // Images
 
@@ -36,8 +38,8 @@ function CurrentWeather({ currentTemp, min, max, precip, humidity, wind, weather
 		61: "Light Rain", // Rain
 		63: "Rain", // Rain
 		65: "Heavy Rain", // Rain
-		66: "Freezing Rain: Light", // FreezingRain ****FIX THIS*****
-		67: "Freezing Rain: Heavy", // FreezingRain ****FIX THIS*****
+		66: "Freezing Rain: Light", // FreezingRain
+		67: "Freezing Rain: Heavy", // FreezingRain
 		71: "Snow Fall: Light", // Snow
 		73: "Snow Fall: Moderate", // Snow ****FIX THIS*****
 		75: "Snow Fall: Heavy", // Snow
@@ -57,7 +59,6 @@ function CurrentWeather({ currentTemp, min, max, precip, humidity, wind, weather
 			<div className={classes.currentWeather}>
 				<div className={classes.condition}>
 					{/* Image */}
-					<Snow />
 					<p>{weatherCodeMap[weatherCode]}</p>
 				</div>
 				<div className={classes.temperature}>
@@ -90,3 +91,16 @@ function CurrentWeather({ currentTemp, min, max, precip, humidity, wind, weather
 }
 
 export default CurrentWeather;
+
+/*
+<Clear />
+<PartlyCloudyDay />
+<Overcast />
+<Fog />
+<Drizzle />
+<Rain />
+<FreezingRain />
+<Snow />
+<Hail />
+<Thunderstorm />
+*/

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import classes from "./Weather.module.css";
 
 // Icons
@@ -20,10 +20,41 @@ import { useTheme } from "../../context/ThemeContext";
 import { useUnit } from "../../context/UnitContext";
 import { useLocation } from "../../context/LocationContext";
 
-function CurrentWeather({ currentTemp, min, max, precip, humidity, wind, weatherCode, apparentTemp }) {
+function CurrentWeather() {
 	const { theme } = useTheme();
 	const { unit } = useUnit();
 	const { latitude, longitude, cityName, setCoordinates } = useLocation();
+
+	const [currentTemp, setCurrentTemp] = useState(0);
+	const [currentMin, setCurrentMin] = useState(0);
+	const [currentMax, setCurrentMax] = useState(0);
+	const [precipChance, setPrecipChance] = useState(0);
+	const [humidity, setHumidity] = useState(0);
+	const [wind, setWind] = useState(0);
+	const [weatherCode, setWeatherCode] = useState(-1);
+	const [apparentTemp, setApparentTemp] = useState(0);
+
+	useEffect(() => {
+		fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,is_day,precipitation,weather_code,wind_speed_10m,wind_direction_10m&daily=temperature_2m_max,temperature_2m_min&temperature_unit=${unit}&wind_speed_unit=mph&precipitation_unit=inch&timezone=auto&forecast_days=3`)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error("Error fetching current weather data");
+				}
+				return response.json();
+			})
+			.then(data => {
+				console.log(data);
+				setCurrentTemp(Math.floor(data.current.temperature_2m));
+				setCurrentMin(Math.floor(data.daily.temperature_2m_min[0]));
+				setCurrentMax(Math.floor(data.daily.temperature_2m_max[0]));
+				setPrecipChance(Math.floor(data.current.precipitation));
+				setHumidity(Math.floor(data.current.relative_humidity_2m));
+				setWind(Math.floor(data.current.wind_speed_10m));
+				setWeatherCode(data.current.weather_code);
+				setApparentTemp(Math.floor(data.current.apparent_temperature));
+			})
+			.catch(error => console.error(error));
+	}, [latitude, longitude, cityName, unit]);
 
 	const weatherCodeMap = {
 		0: "Clear", // Clear
@@ -117,7 +148,7 @@ function CurrentWeather({ currentTemp, min, max, precip, humidity, wind, weather
 						{currentTemp} °{unit === "fahrenheit" ? "F" : "C"}
 					</h2>
 					<p className={classes.maxMinTemperature}>
-						{max}°/{min}°
+						{currentMax}°/{currentMin}°
 					</p>
 					<p className={classes.apparentTemperature}>Feels like {apparentTemp} °</p>
 				</div>
@@ -126,7 +157,7 @@ function CurrentWeather({ currentTemp, min, max, precip, humidity, wind, weather
 			<div className={classes.weatherMetrics}>
 				<div className="precipChance">
 					{/*<PrecipiationIcon fillColor={theme === "light" ? "black" : "white"} />*/}
-					<p>Precipitation: {precip}%</p>
+					<p>Precipitation: {precipChance}%</p>
 				</div>
 				<div className="humidity">
 					{/*<DropletIcon fillColor={theme === "light" ? "black" : "white"} />*/}
@@ -142,16 +173,3 @@ function CurrentWeather({ currentTemp, min, max, precip, humidity, wind, weather
 }
 
 export default CurrentWeather;
-
-/*
-<Clear />
-<PartlyCloudyDay />
-<Overcast />
-<Fog />
-<Drizzle />
-<Rain />
-<FreezingRain />
-<Snow />
-<Hail />
-<Thunderstorm />
-*/

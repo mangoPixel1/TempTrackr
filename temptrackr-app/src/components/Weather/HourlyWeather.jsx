@@ -70,11 +70,11 @@ function HourlyWeather() {
 	return (
 		<div className={classes.hourlyWeatherContainer}>
 			<h1>Hourly weather</h1>
-			<ul>
+			<ul className={classes.hourlyForecast}>
 				{hourlyData &&
 					hourlyData.time &&
 					hourlyData.time.map((time, index) => {
-						return <li>{`${hourlyData.time[index]}: ${hourlyData.temperature_2m[index]} - ${weatherCodeMap[hourlyData.weather_code[index]]}`}</li>;
+						return <li key={index}>{`${hourlyData.time[index]}: ${hourlyData.temperature_2m[index]} - ${weatherCodeMap[hourlyData.weather_code[index]]}`}</li>;
 					})}
 			</ul>
 		</div>

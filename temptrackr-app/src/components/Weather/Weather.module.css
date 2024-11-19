@@ -60,3 +60,14 @@
 .weatherMetrics p {
 	margin-left: 5px;
 }
+
+.hourlyForecast {
+	font-size: 14px;
+	overflow: auto;
+	white-space: nowrap;
+}
+
+.hourlyForecast li {
+	display: inline-block;
+	padding: 10px;
+}

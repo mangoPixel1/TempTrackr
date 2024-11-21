@@ -110,7 +110,7 @@ function HourlyWeather() {
 	}
 
 	useEffect(() => {
-		fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&forecast_days=3`)
+		fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&past_days=1&forecast_days=3`)
 			.then(response => {
 				if (!response.ok) {
 					throw new Error("Error fetching hourly weather data");
@@ -126,40 +126,46 @@ function HourlyWeather() {
 
 	useEffect(() => {
 		// Calculate the time 24 hours from now
-		const twentyFourHoursLater = new Date(currentTime.getTime() + 24 * 60 * 60 * 1000);
+		const latestDate = new Date(currentTime.getTime() + 24 * 60 * 60 * 1000);
 
+		// Filter time array to be in the range of current time to 24 hours later
 		const filteredTimeArr =
 			hourlyData.time &&
 			hourlyData.time.filter(timeString => {
 				const time = new Date(timeString);
-
-				return time >= currentTime && time <= twentyFourHoursLater;
+				return time >= currentTime && time <= latestDate;
 			});
+
+		console.log(hourlyData.time);
+		console.log(filteredTimeArr);
 
 		// figure out how to filter temp and weather codes
 
 		setFilteredTime(filteredTimeArr);
-
-		//const filteredTwentyFourHours = hourlyData.time.filter();
 	}, [hourlyData]);
 
-	function formatTime() {}
+	function formatTime(timeString) {
+		const time = new Date(timeString);
+		return time.getHours();
+	}
 
 	/* TODO:
 		DONE: get current date and time
-		parse time array
-		filter data to show only current time -> 24 hours later
-		format time
+		DOING: filter data to show only current time -> 24 hours later
+		DOING: format time
 		fix weather icons not displaying
 	*/
 
 	return (
 		<div className={classes.hourlyWeatherContainer}>
-			<h1>Hourly weather</h1>
 			<ul className={classes.hourlyForecast}>
 				{filteredTime &&
 					filteredTime.map((time, index) => {
-						return <li key={index}>{time}</li>;
+						return (
+							<li key={index}>
+								<div>{`${formatTime(time)} PM`}</div>
+							</li>
+						);
 					})}
 			</ul>
 		</div>

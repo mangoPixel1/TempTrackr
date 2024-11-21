@@ -61,7 +61,15 @@
 	margin-left: 5px;
 }
 
+.hourlyWeatherContainer {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
 .hourlyForecast {
+	width: 60%;
 	font-size: 14px;
 	overflow: auto;
 	white-space: nowrap;

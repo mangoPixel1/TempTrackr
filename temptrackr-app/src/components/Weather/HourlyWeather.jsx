@@ -136,7 +136,6 @@ function HourlyWeather() {
 				return time >= currentTime && time <= latestDate;
 			});
 
-		console.log(hourlyData.time);
 		console.log(filteredTimeArr);
 
 		// figure out how to filter temp and weather codes
@@ -145,14 +144,19 @@ function HourlyWeather() {
 	}, [hourlyData]);
 
 	function formatTime(timeString) {
-		const time = new Date(timeString);
-		return time.getHours();
+		const time = new Date(timeString); // Create a Date object from the string
+		const meridiem = time.getHours() < 12 ? "AM" : "PM"; // Get AM or PM
+
+		let hour = time.getHours() % 12 === 0 ? 12 : time.getHours() % 12; // Replace 0 with 12
+
+		return `${hour} ${meridiem}`;
 	}
 
 	/* TODO:
 		DONE: get current date and time
-		DOING: filter data to show only current time -> 24 hours later
-		DOING: format time
+		DONE: filter data to show only current time -> 24 hours later
+		DONE: format time
+		DOING: filter temp and weather code arrays to same indices as time array
 		fix weather icons not displaying
 	*/
 
@@ -163,7 +167,7 @@ function HourlyWeather() {
 					filteredTime.map((time, index) => {
 						return (
 							<li key={index}>
-								<div>{`${formatTime(time)} PM`}</div>
+								<div>{`${formatTime(time)}`}</div>
 							</li>
 						);
 					})}

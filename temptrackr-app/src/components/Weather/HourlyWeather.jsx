@@ -24,10 +24,9 @@ function HourlyWeather() {
 
 	const [hourlyData, setHourlyData] = useState({});
 
-	const [currentTime, setCurrentTime] = useState(new Date());
-	const [filteredTime, setFilteredTime] = useState([]);
-	const [filteredTemp, setFilteredTemp] = useState([]);
-	const [filteredWeatherCode, setFilteredWeatherCode] = useState([]);
+	const [times, setTimes] = useState([]);
+	const [temperatures, setTemperatures] = useState([]);
+	const [weatherCodes, setWeatherCodes] = useState([]);
 
 	const weatherCodeMap = {
 		0: "Clear",
@@ -110,7 +109,7 @@ function HourlyWeather() {
 	}
 
 	useEffect(() => {
-		fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&past_days=1&forecast_days=3`)
+		fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,weather_code&temperature_unit=${unit}&wind_speed_unit=mph&precipitation_unit=inch&past_days=1&timezone=auto&forecast_days=3`)
 			.then(response => {
 				if (!response.ok) {
 					throw new Error("Error fetching hourly weather data");
@@ -118,7 +117,7 @@ function HourlyWeather() {
 				return response.json();
 			})
 			.then(data => {
-				//console.log(data);
+				console.log(data);
 				setHourlyData(data.hourly);
 			})
 			.catch(error => console.error(error));
@@ -126,21 +125,27 @@ function HourlyWeather() {
 
 	useEffect(() => {
 		// Calculate the time 24 hours from now
+		const currentTime = new Date();
 		const latestDate = new Date(currentTime.getTime() + 24 * 60 * 60 * 1000);
 
-		// Filter time array to be in the range of current time to 24 hours later
-		const filteredTimeArr =
-			hourlyData.time &&
-			hourlyData.time.filter(timeString => {
-				const time = new Date(timeString);
-				return time >= currentTime && time <= latestDate;
-			});
+		// Filter times, temperatures, weatherCodes arrays to be in the range of current time to 24 hours later
+		if (hourlyData.time && hourlyData.temperature_2m && hourlyData.weather_code) {
+			let newTimeArr = [];
+			let newTempArr = [];
+			let newWeatherArr = [];
 
-		console.log(filteredTimeArr);
-
-		// figure out how to filter temp and weather codes
-
-		setFilteredTime(filteredTimeArr);
+			for (let i = 0; i < hourlyData.time.length; i++) {
+				const time = new Date(hourlyData.time[i]);
+				if (time >= currentTime && time <= latestDate) {
+					newTimeArr.push(hourlyData.time[i]);
+					newTempArr.push(hourlyData.temperature_2m[i]);
+					newWeatherArr.push(hourlyData.weather_code[i]);
+				}
+			}
+			setTimes(newTimeArr);
+			setTemperatures(newTempArr);
+			setWeatherCodes(newWeatherArr);
+		}
 	}, [hourlyData]);
 
 	function formatTime(timeString) {
@@ -163,11 +168,13 @@ function HourlyWeather() {
 	return (
 		<div className={classes.hourlyWeatherContainer}>
 			<ul className={classes.hourlyForecast}>
-				{filteredTime &&
-					filteredTime.map((time, index) => {
+				{times &&
+					times.map((time, index) => {
 						return (
 							<li key={index}>
 								<div>{`${formatTime(time)}`}</div>
+								<div>{`${getConditionIcon(weatherCodes[index])}`}</div>
+								<div>{`${Math.round(temperatures[index])}°`}</div>
 							</li>
 						);
 					})}

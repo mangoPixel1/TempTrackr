@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import classes from "./Weather.module.css";
 
 // Icons
-import Clear from "../Icons/Weather Codes/Clear";
+/*import Clear from "../Icons/Weather Codes/Clear";
 import PartlyCloudyDay from "../Icons/Weather Codes/PartlyCloudyDay";
 import Overcast from "../Icons/Weather Codes/Overcast";
 import Fog from "../Icons/Weather Codes/Fog";
@@ -12,6 +12,15 @@ import FreezingRain from "../Icons/Weather Codes/FreezingRain";
 import Snow from "../Icons/Weather Codes/Snow";
 import Hail from "../Icons/Weather Codes/Hail";
 import Thunderstorm from "../Icons/Weather Codes/Thunderstorm";
+import ClearStatic from "../Icons/Weather Codes/Static/ClearStatic";
+*/
+
+import ClearDay from "../Icons/Hourly/clear-day.svg?react";
+import CloudyDay from "../Icons/Hourly/cloudy.svg?react";
+import Drizzle from "../Icons/Hourly/drizzle.svg?react";
+
+/*import RectangleIcon from "../Icons/Hourly/rectangle.svg?react";
+import CircleIcon from "../Icons/Hourly/circle.svg?react";*/
 
 // Contexts
 import { useTheme } from "../../context/ThemeContext";
@@ -57,7 +66,7 @@ function HourlyWeather() {
 		99: "Thunderstorm"
 	};
 
-	function getConditionIcon(weatherCode) {
+	/*function getConditionIcon(weatherCode) {
 		switch (weatherCode) {
 			case 0:
 			case 1:
@@ -107,7 +116,7 @@ function HourlyWeather() {
 				break;
 		}
 	}
-
+*/
 	useEffect(() => {
 		fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,weather_code&temperature_unit=${unit}&wind_speed_unit=mph&precipitation_unit=inch&past_days=1&timezone=auto&forecast_days=3`)
 			.then(response => {
@@ -129,6 +138,7 @@ function HourlyWeather() {
 		const latestDate = new Date(currentTime.getTime() + 24 * 60 * 60 * 1000);
 
 		// Filter times, temperatures, weatherCodes arrays to be in the range of current time to 24 hours later
+		// Maybe refactor using Array.some()
 		if (hourlyData.time && hourlyData.temperature_2m && hourlyData.weather_code) {
 			let newTimeArr = [];
 			let newTempArr = [];
@@ -157,23 +167,16 @@ function HourlyWeather() {
 		return `${hour} ${meridiem}`;
 	}
 
-	/* TODO:
-		DONE: get current date and time
-		DONE: filter data to show only current time -> 24 hours later
-		DONE: format time
-		DOING: filter temp and weather code arrays to same indices as time array
-		fix weather icons not displaying
-	*/
-
 	return (
 		<div className={classes.hourlyWeatherContainer}>
+			<CloudyDay />
+			<ClearDay />
 			<ul className={classes.hourlyForecast}>
 				{times &&
 					times.map((time, index) => {
 						return (
 							<li key={index}>
 								<div>{`${formatTime(time)}`}</div>
-								<div>{`${getConditionIcon(weatherCodes[index])}`}</div>
 								<div>{`${Math.round(temperatures[index])}°`}</div>
 							</li>
 						);
@@ -187,23 +190,6 @@ export default HourlyWeather;
 
 /*
 
-return (
-		<div className={classes.hourlyWeatherContainer}>
-			<h1>Hourly weather</h1>
-			<ul className={classes.hourlyForecast}>
-				{hourlyData &&
-					hourlyData.time &&
-					hourlyData.time.map((time, index) => {
-						return (
-							<li key={index}>
-								<div>{`${hourlyData.time[index]}`}</div>
-								<div>{`${getConditionIcon(hourlyData.weather_code[index])}`}</div>
-								<div>{`${hourlyData.temperature_2m[index]}`}</div>
-							</li>
-						);
-					})}
-			</ul>
-		</div>
-	);
+<div>{`${getConditionIcon(weatherCodes[index])}`}</div>
 
 */

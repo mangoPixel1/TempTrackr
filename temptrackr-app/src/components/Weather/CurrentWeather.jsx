@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import classes from "./Weather.module.css";
 
+// Contexts
+import { useTheme } from "../../context/ThemeContext";
+import { useUnit } from "../../context/UnitContext";
+import { useLocation } from "../../context/LocationContext";
+
 // Icons
+/*
 import Clear from "../Icons/Weather Codes/Clear";
 import PartlyCloudyDay from "../Icons/Weather Codes/PartlyCloudyDay";
 import Overcast from "../Icons/Weather Codes/Overcast";
@@ -12,13 +18,7 @@ import FreezingRain from "../Icons/Weather Codes/FreezingRain";
 import Snow from "../Icons/Weather Codes/Snow";
 import Hail from "../Icons/Weather Codes/Hail";
 import Thunderstorm from "../Icons/Weather Codes/Thunderstorm";
-
-// Images
-
-// Contexts
-import { useTheme } from "../../context/ThemeContext";
-import { useUnit } from "../../context/UnitContext";
-import { useLocation } from "../../context/LocationContext";
+*/
 
 function CurrentWeather() {
 	const { theme } = useTheme();
@@ -85,6 +85,7 @@ function CurrentWeather() {
 		99: "Thunderstorm" // Thunderstorm
 	};
 
+	/*
 	function getConditionIcon(weatherCode) {
 		switch (weatherCode) {
 			case 0:
@@ -135,12 +136,12 @@ function CurrentWeather() {
 				break;
 		}
 	}
-
+*/
 	return (
 		<div className={classes.currentWeatherContainer}>
 			<div className={classes.currentWeather}>
 				<div className={classes.condition}>
-					{getConditionIcon(weatherCode)}
+					{/*getConditionIcon(weatherCode)*/}
 					{weatherCodeMap[weatherCode]}
 				</div>
 				<div className={classes.temperature}>

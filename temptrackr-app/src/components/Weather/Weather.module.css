@@ -80,6 +80,11 @@
 	padding: 10px;
 }
 
+.currentIcon {
+	width: 100px;
+	height: 100px;
+}
+
 .hourlyIcon {
 	width: 50px;
 	height: 50px;

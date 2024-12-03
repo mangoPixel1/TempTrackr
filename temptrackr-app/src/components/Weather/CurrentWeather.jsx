@@ -7,18 +7,22 @@ import { useUnit } from "../../context/UnitContext";
 import { useLocation } from "../../context/LocationContext";
 
 // Icons
-/*
-import Clear from "../Icons/Weather Codes/Clear";
-import PartlyCloudyDay from "../Icons/Weather Codes/PartlyCloudyDay";
-import Overcast from "../Icons/Weather Codes/Overcast";
-import Fog from "../Icons/Weather Codes/Fog";
-import Drizzle from "../Icons/Weather Codes/Drizzle";
-import Rain from "../Icons/Weather Codes/Rain";
-import FreezingRain from "../Icons/Weather Codes/FreezingRain";
-import Snow from "../Icons/Weather Codes/Snow";
-import Hail from "../Icons/Weather Codes/Hail";
-import Thunderstorm from "../Icons/Weather Codes/Thunderstorm";
-*/
+import ClearDay from "../Icons/Current/clear-day.svg?react";
+import ClearNight from "../Icons/Current/clear-night.svg?react";
+import Cloudy from "../Icons/Current/cloudy.svg?react";
+import Drizzle from "../Icons/Current/drizzle.svg?react";
+import FogDay from "../Icons/Current/fog-day.svg?react";
+import FogNight from "../Icons/Current/fog-night.svg?react";
+import Hail from "../Icons/Current/hail.svg?react";
+import OvercastDay from "../Icons/Current/overcast-day.svg?react";
+import OvercastNight from "../Icons/Current/overcast-night.svg?react";
+import PartlyCloudyDay from "../Icons/Current/partly-cloudy-day.svg?react";
+import PartlyCloudyNight from "../Icons/Current/partly-cloudy-night.svg?react";
+import Rain from "../Icons/Current/rain.svg?react";
+import Sleet from "../Icons/Current/sleet.svg?react";
+import Snow from "../Icons/Current/snow.svg?react";
+import ThunderstormsDay from "../Icons/Current/thunderstorms-day.svg?react";
+import ThunderstormsNight from "../Icons/Current/thunderstorms-night.svg?react";
 
 function CurrentWeather() {
 	const { theme } = useTheme();
@@ -85,27 +89,27 @@ function CurrentWeather() {
 		99: "Thunderstorm" // Thunderstorm
 	};
 
-	/*
 	function getConditionIcon(weatherCode) {
 		switch (weatherCode) {
 			case 0:
 			case 1:
-				return <Clear />;
+				// write condition for checking for day or night
+				return <ClearDay className={classes.currentIcon} />;
 				break;
 			case 2:
-				return <PartlyCloudyDay />;
+				return <PartlyCloudyDay className={classes.currentIcon} />;
 				break;
 			case 3:
-				return <Overcast />;
+				return <OvercastDay className={classes.currentIcon} />;
 				break;
 			case 45:
 			case 48:
-				return <Fog />;
+				return <FogDay className={classes.currentIcon} />;
 				break;
 			case 51:
 			case 53:
 			case 55:
-				return <Drizzle />;
+				return <Drizzle className={classes.currentIcon} />;
 				break;
 			case 61:
 			case 63:
@@ -113,35 +117,35 @@ function CurrentWeather() {
 			case 80:
 			case 81:
 			case 82:
-				return <Rain />;
+				return <Rain className={classes.currentIcon} />;
 				break;
 			case 66:
 			case 67:
-				return <FreezingRain />;
+				return <FreezingRain className={classes.currentIcon} />;
 				break;
 			case 71:
 			case 73:
 			case 75:
 			case 85:
 			case 86:
-				return <Snow />;
+				return <Snow className={classes.currentIcon} />;
 				break;
 			case 77:
-				return <Hail />;
+				return <Hail className={classes.currentIcon} />;
 				break;
 			case 95:
 			case 96:
 			case 99:
-				return <Snow />;
+				return <ThunderstormsDay className={classes.currentIcon} />;
 				break;
 		}
 	}
-*/
+
 	return (
 		<div className={classes.currentWeatherContainer}>
 			<div className={classes.currentWeather}>
 				<div className={classes.condition}>
-					{/*getConditionIcon(weatherCode)*/}
+					{getConditionIcon(weatherCode)}
 					{weatherCodeMap[weatherCode]}
 				</div>
 				<div className={classes.temperature}>

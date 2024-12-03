@@ -2,28 +2,22 @@ import React, { useState, useEffect } from "react";
 import classes from "./Weather.module.css";
 
 // Icons
-/*import Clear from "../Icons/Weather Codes/Clear";
-import PartlyCloudyDay from "../Icons/Weather Codes/PartlyCloudyDay";
-import Overcast from "../Icons/Weather Codes/Overcast";
-import Fog from "../Icons/Weather Codes/Fog";
-import Drizzle from "../Icons/Weather Codes/Drizzle";
-import Rain from "../Icons/Weather Codes/Rain";
-import FreezingRain from "../Icons/Weather Codes/FreezingRain";
-import Snow from "../Icons/Weather Codes/Snow";
-import Hail from "../Icons/Weather Codes/Hail";
-import Thunderstorm from "../Icons/Weather Codes/Thunderstorm";
-import ClearStatic from "../Icons/Weather Codes/Static/ClearStatic";
-*/
-
-import ClearDay from "../Icons/Hourly/clear-day.svg?react";
-import ClearNight from "../Icons/Hourly/clear-night.svg?react";
-import CloudyDay from "../Icons/Hourly/cloudy-day.svg?react";
-import Drizzle from "../Icons/Hourly/drizzle.svg?react";
-import FogDay from "../Icons/Hourly/fog-day.svg?react";
-import FogNight from "../Icons/Hourly/fog-night.svg?react";
-import Hail from "../Icons/Hourly/hail.svg?react";
-import OvercastDay from "../Icons/Hourly/overcast-day.svg?react";
-import OvercastNight from "../Icons/Hourly/overcast-night.svg?react";
+import ClearDayStatic from "../Icons/Hourly/clear-day-static.svg?react";
+import ClearNightStatic from "../Icons/Hourly/clear-night-static.svg?react";
+import CloudyDayStatic from "../Icons/Hourly/cloudy-day-static.svg?react";
+import DrizzleStatic from "../Icons/Hourly/drizzle-static.svg?react";
+import FogDayStatic from "../Icons/Hourly/fog-day-static.svg?react";
+import FogNightStatic from "../Icons/Hourly/fog-night-static.svg?react";
+import HailStatic from "../Icons/Hourly/hail-static.svg?react";
+import OvercastDayStatic from "../Icons/Hourly/overcast-day-static.svg?react";
+import OvercastNightStatic from "../Icons/Hourly/overcast-night-static.svg?react";
+import PartlyCloudyDayStatic from "../Icons/Hourly/partly-cloudy-day-static.svg?react";
+import PartlyCloudyNightStatic from "../Icons/Hourly/partly-cloudy-night-static.svg?react";
+import RainStatic from "../Icons/Hourly/rain-static.svg?react";
+import SleetStatic from "../Icons/Hourly/sleet-static.svg?react";
+import SnowStatic from "../Icons/Hourly/snow-static.svg?react";
+import ThunderstormsDayStatic from "../Icons/Hourly/thunderstorms-day-static.svg?react";
+import ThunderstormsNightStatic from "../Icons/Hourly/thunderstorms-night-static.svg?react";
 
 // Contexts
 import { useTheme } from "../../context/ThemeContext";
@@ -39,6 +33,8 @@ function HourlyWeather() {
 	const [times, setTimes] = useState([]);
 	const [temperatures, setTemperatures] = useState([]);
 	const [weatherCodes, setWeatherCodes] = useState([]);
+	const [sunriseTime, setSunriseTime] = useState("");
+	const [sunsetTime, setSunsetTime] = useState("");
 
 	const weatherCodeMap = {
 		0: "Clear",
@@ -121,7 +117,7 @@ function HourlyWeather() {
 	}
 */
 	useEffect(() => {
-		fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,weather_code&temperature_unit=${unit}&wind_speed_unit=mph&precipitation_unit=inch&past_days=1&timezone=auto&forecast_days=3`)
+		fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,weather_code&temperature_unit=${unit}&wind_speed_unit=mph&precipitation_unit=inch&past_days=1&timezone=auto&forecast_days=3&daily=sunrise,sunset&daily=sunrise,sunset`)
 			.then(response => {
 				if (!response.ok) {
 					throw new Error("Error fetching hourly weather data");
@@ -172,7 +168,7 @@ function HourlyWeather() {
 
 	return (
 		<div className={classes.hourlyWeatherContainer}>
-			<ClearDay />
+			{/*<ClearDay />
 			<ClearNight />
 			<CloudyDay />
 			<Drizzle />
@@ -180,14 +176,14 @@ function HourlyWeather() {
 			<FogNight />
 			<Hail />
 			<OvercastDay />
-			<OvercastNight />
+			<OvercastNight />*/}
 			<ul className={classes.hourlyForecast}>
 				{times &&
 					times.map((time, index) => {
 						return (
 							<li key={index}>
 								<div>{`${formatTime(time)}`}</div>
-								<ClearDay className={classes.hourlyIcon} />
+								<ClearNightStatic className={classes.hourlyIcon} />
 								<div>{`${Math.round(temperatures[index])}°`}</div>
 							</li>
 						);

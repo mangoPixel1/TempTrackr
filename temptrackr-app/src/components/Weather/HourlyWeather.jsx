@@ -16,11 +16,11 @@ import ClearStatic from "../Icons/Weather Codes/Static/ClearStatic";
 */
 
 import ClearDay from "../Icons/Hourly/clear-day.svg?react";
-import CloudyDay from "../Icons/Hourly/cloudy.svg?react";
+import Cloudy from "../Icons/Hourly/cloudy.svg?react";
 import Drizzle from "../Icons/Hourly/drizzle.svg?react";
 
-/*import RectangleIcon from "../Icons/Hourly/rectangle.svg?react";
-import CircleIcon from "../Icons/Hourly/circle.svg?react";*/
+import RectangleIcon from "../Icons/Hourly/rectangle.svg?react";
+import CircleIcon from "../Icons/Hourly/circle.svg?react";
 
 // Contexts
 import { useTheme } from "../../context/ThemeContext";
@@ -169,14 +169,13 @@ function HourlyWeather() {
 
 	return (
 		<div className={classes.hourlyWeatherContainer}>
-			<CloudyDay />
-			<ClearDay />
 			<ul className={classes.hourlyForecast}>
 				{times &&
 					times.map((time, index) => {
 						return (
 							<li key={index}>
 								<div>{`${formatTime(time)}`}</div>
+								<ClearDay className={classes.hourlyIcon} />
 								<div>{`${Math.round(temperatures[index])}°`}</div>
 							</li>
 						);

@@ -28,13 +28,14 @@ function HourlyWeather() {
 	const { unit } = useUnit();
 	const { latitude, longitude, cityName, setCoordinates } = useLocation();
 
+	const [dailyData, setDailyData] = useState([]);
 	const [hourlyData, setHourlyData] = useState({});
 
 	const [times, setTimes] = useState([]);
 	const [temperatures, setTemperatures] = useState([]);
 	const [weatherCodes, setWeatherCodes] = useState([]);
-	const [sunriseTime, setSunriseTime] = useState("");
-	const [sunsetTime, setSunsetTime] = useState("");
+	const [sunriseTimes, setSunriseTimes] = useState([]); // index 0: today's sunset | index 1: tomorrow's sunset
+	const [sunsetTimes, setSunsetTimes] = useState([]); // index 0: today's sunrise | index 1: tomorrow's sunrise
 
 	const weatherCodeMap = {
 		0: "Clear",
@@ -65,26 +66,28 @@ function HourlyWeather() {
 		99: "Thunderstorm"
 	};
 
-	/*function getConditionIcon(weatherCode) {
+	function getConditionIcon(weatherCode) {
+		//getSunriseSunsetTimes();
 		switch (weatherCode) {
 			case 0:
 			case 1:
-				return <Clear />;
+				// write condition for checking for day or night
+				return <ClearDayStatic className={classes.hourlyIcon} />;
 				break;
 			case 2:
-				return <PartlyCloudyDay />;
+				return <PartlyCloudyDayStatic className={classes.hourlyIcon} />;
 				break;
 			case 3:
-				return <Overcast />;
+				return <OvercastDayStatic className={classes.hourlyIcon} />;
 				break;
 			case 45:
 			case 48:
-				return <Fog />;
+				return <FogDayStatic className={classes.hourlyIcon} />;
 				break;
 			case 51:
 			case 53:
 			case 55:
-				return <Drizzle />;
+				return <DrizzleStatic className={classes.hourlyIcon} />;
 				break;
 			case 61:
 			case 63:
@@ -92,32 +95,32 @@ function HourlyWeather() {
 			case 80:
 			case 81:
 			case 82:
-				return <Rain />;
+				return <RainStatic className={classes.hourlyIcon} />;
 				break;
 			case 66:
 			case 67:
-				return <FreezingRain />;
+				return <FreezingRainStatic className={classes.hourlyIcon} />;
 				break;
 			case 71:
 			case 73:
 			case 75:
 			case 85:
 			case 86:
-				return <Snow />;
+				return <SnowStatic className={classes.hourlyIcon} />;
 				break;
 			case 77:
-				return <Hail />;
+				return <HailStatic className={classes.hourlyIcon} />;
 				break;
 			case 95:
 			case 96:
 			case 99:
-				return <Snow />;
+				return <ThunderstormsDayStatic className={classes.hourlyIcon} />;
 				break;
 		}
 	}
-*/
+
 	useEffect(() => {
-		fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,weather_code&temperature_unit=${unit}&wind_speed_unit=mph&precipitation_unit=inch&past_days=1&timezone=auto&forecast_days=3&daily=sunrise,sunset&daily=sunrise,sunset`)
+		fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,weather_code&temperature_unit=${unit}&wind_speed_unit=mph&precipitation_unit=inch&past_days=1&timezone=auto&forecast_days=3&daily=sunrise,sunset`)
 			.then(response => {
 				if (!response.ok) {
 					throw new Error("Error fetching hourly weather data");
@@ -125,10 +128,13 @@ function HourlyWeather() {
 				return response.json();
 			})
 			.then(data => {
-				console.log(data);
+				//console.log(data);
 				setHourlyData(data.hourly);
+				setDailyData(data.daily);
 			})
 			.catch(error => console.error(error));
+
+		//getSunriseSunsetTimes();
 	}, [latitude, longitude, cityName, unit]);
 
 	useEffect(() => {
@@ -137,7 +143,6 @@ function HourlyWeather() {
 		const latestDate = new Date(currentTime.getTime() + 24 * 60 * 60 * 1000);
 
 		// Filter times, temperatures, weatherCodes arrays to be in the range of current time to 24 hours later
-		// Maybe refactor using Array.some()
 		if (hourlyData.time && hourlyData.temperature_2m && hourlyData.weather_code) {
 			let newTimeArr = [];
 			let newTempArr = [];
@@ -157,6 +162,10 @@ function HourlyWeather() {
 		}
 	}, [hourlyData]);
 
+	useEffect(() => {
+		getSunriseSunsetTimes();
+	}, [dailyData]);
+
 	function formatTime(timeString) {
 		const time = new Date(timeString); // Create a Date object from the string
 		const meridiem = time.getHours() < 12 ? "AM" : "PM"; // Get AM or PM
@@ -166,24 +175,38 @@ function HourlyWeather() {
 		return `${hour} ${meridiem}`;
 	}
 
+	function getSunriseSunsetTimes() {
+		const currentDate = new Date(); // get the current date and time
+		const currentDay = currentDate.getDay(); // gets current day of the week 0-6
+
+		if (dailyData.sunrise && dailyData.sunset) {
+			for (let i = 0; i < dailyData.sunrise.length; i++) {
+				const dayIter = new Date(dailyData.sunrise[i]);
+				console.log(`dayI = ${dayIter.getDay()}`);
+				if (dayIter.getDay() === currentDay) {
+					// set today & tomorrow's sunrise & sunset ISO codes
+					const newSunriseTimes = [dailyData.sunrise[i], dailyData.sunrise[i + 1]];
+					const newSunsetTimes = [dailyData.sunset[i], dailyData.sunset[i + 1]];
+
+					setSunriseTimes(newSunriseTimes);
+					setSunsetTimes(newSunsetTimes);
+
+					//console.log(`today's sunset: ${dailyData.sunset[i]}`);
+					//console.log(`tomorrow's sunset: ${dailyData.sunset[i + 1]}`);
+				}
+			}
+		}
+	}
+
 	return (
 		<div className={classes.hourlyWeatherContainer}>
-			{/*<ClearDay />
-			<ClearNight />
-			<CloudyDay />
-			<Drizzle />
-			<FogDay />
-			<FogNight />
-			<Hail />
-			<OvercastDay />
-			<OvercastNight />*/}
 			<ul className={classes.hourlyForecast}>
 				{times &&
 					times.map((time, index) => {
 						return (
 							<li key={index}>
 								<div>{`${formatTime(time)}`}</div>
-								<ClearNightStatic className={classes.hourlyIcon} />
+								{getConditionIcon(weatherCodes[index])}
 								<div>{`${Math.round(temperatures[index])}°`}</div>
 							</li>
 						);
@@ -194,9 +217,3 @@ function HourlyWeather() {
 }
 
 export default HourlyWeather;
-
-/*
-
-<div>{`${getConditionIcon(weatherCodes[index])}`}</div>
-
-*/

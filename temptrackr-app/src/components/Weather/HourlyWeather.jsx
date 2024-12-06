@@ -34,8 +34,8 @@ function HourlyWeather() {
 	const [times, setTimes] = useState([]);
 	const [temperatures, setTemperatures] = useState([]);
 	const [weatherCodes, setWeatherCodes] = useState([]);
-	const [sunriseTimes, setSunriseTimes] = useState([]); // index 0: today's sunset | index 1: tomorrow's sunset
-	const [sunsetTimes, setSunsetTimes] = useState([]); // index 0: today's sunrise | index 1: tomorrow's sunrise
+	const [sunriseTime, setSunriseTime] = useState("");
+	const [sunsetTime, setSunsetTime] = useState("");
 
 	const weatherCodeMap = {
 		0: "Clear",
@@ -66,23 +66,27 @@ function HourlyWeather() {
 		99: "Thunderstorm"
 	};
 
-	function getConditionIcon(weatherCode) {
-		//getSunriseSunsetTimes();
+	function getConditionIcon(weatherCode, time) {
+		const currentTime = new Date(time);
+		const nextSunriseTime = new Date(sunriseTime);
+		const nextSunsetTime = new Date(sunsetTime);
+
+		const isDay = currentTime > nextSunriseTime;
 		switch (weatherCode) {
 			case 0:
 			case 1:
 				// write condition for checking for day or night
-				return <ClearDayStatic className={classes.hourlyIcon} />;
+				return isDay ? <ClearDayStatic className={classes.hourlyIcon} /> : <ClearNightStatic className={classes.hourlyIcon} />;
 				break;
 			case 2:
-				return <PartlyCloudyDayStatic className={classes.hourlyIcon} />;
+				return isDay ? <PartlyCloudyDayStatic className={classes.hourlyIcon} /> : <PartlyCloudyNightStatic className={classes.hourlyIcon} />;
 				break;
 			case 3:
-				return <OvercastDayStatic className={classes.hourlyIcon} />;
+				return isDay ? <OvercastDayStatic className={classes.hourlyIcon} /> : <OvercastNightStatic className={classes.hourlyIcon} />;
 				break;
 			case 45:
 			case 48:
-				return <FogDayStatic className={classes.hourlyIcon} />;
+				return isDay ? <FogDayStatic className={classes.hourlyIcon} /> : <FogNightStatic className={classes.hourlyIcon} />;
 				break;
 			case 51:
 			case 53:
@@ -114,7 +118,7 @@ function HourlyWeather() {
 			case 95:
 			case 96:
 			case 99:
-				return <ThunderstormsDayStatic className={classes.hourlyIcon} />;
+				return isDay ? <ThunderstormsDayStatic className={classes.hourlyIcon} /> : <ThunderstormsNightStatic className={classes.hourlyIcon} />;
 				break;
 		}
 	}
@@ -128,19 +132,40 @@ function HourlyWeather() {
 				return response.json();
 			})
 			.then(data => {
-				//console.log(data);
+				console.log(data);
 				setHourlyData(data.hourly);
 				setDailyData(data.daily);
 			})
 			.catch(error => console.error(error));
-
-		//getSunriseSunsetTimes();
 	}, [latitude, longitude, cityName, unit]);
 
 	useEffect(() => {
+		const currentDate = new Date(); // get the current date and time
+		const currentDay = currentDate.getDay(); // gets current day of the week 0-6
+
+		// Get next sunset/sunrise times
+		if (dailyData.sunrise && dailyData.sunset) {
+			for (let i = 0; i < dailyData.sunrise.length; i++) {
+				const dayIter = new Date(dailyData.sunrise[i]);
+				if (dayIter.getDay() === currentDay) {
+					const nextSunrise = currentDate < dailyData.sunrise[i] ? dailyData.sunrise[i] : dailyData.sunrise[i + 1];
+					const nextSunset = currentDate < dailyData.sunset[i] ? dailyData.sunset[i] : dailyData.sunset[i + 1];
+
+					console.log(`Next sunrise: ${nextSunrise}`);
+					console.log(`Next sunset: ${nextSunset}`);
+
+					setSunriseTime(nextSunrise);
+					setSunsetTime(nextSunset);
+				}
+			}
+
+			// Find index to place the sunset and sunrise
+			const currentHour = currentDate.getHours();
+			const currentMinute = currentDate.getMinutes();
+		}
+
 		// Calculate the time 24 hours from now
-		const currentTime = new Date();
-		const latestDate = new Date(currentTime.getTime() + 24 * 60 * 60 * 1000);
+		const latestDate = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
 
 		// Filter times, temperatures, weatherCodes arrays to be in the range of current time to 24 hours later
 		if (hourlyData.time && hourlyData.temperature_2m && hourlyData.weather_code) {
@@ -148,23 +173,25 @@ function HourlyWeather() {
 			let newTempArr = [];
 			let newWeatherArr = [];
 
+			// Sync the indices of the three arrays to be within the specified range
 			for (let i = 0; i < hourlyData.time.length; i++) {
 				const time = new Date(hourlyData.time[i]);
-				if (time >= currentTime && time <= latestDate) {
+				if (time >= currentDate && time <= latestDate) {
 					newTimeArr.push(hourlyData.time[i]);
 					newTempArr.push(hourlyData.temperature_2m[i]);
 					newWeatherArr.push(hourlyData.weather_code[i]);
+
+					/*if (sunsetTimes && sunriseTimes) {
+					}*/
 				}
 			}
+
+			// Update the state data with the new arrays
 			setTimes(newTimeArr);
 			setTemperatures(newTempArr);
 			setWeatherCodes(newWeatherArr);
 		}
-	}, [hourlyData]);
-
-	useEffect(() => {
-		getSunriseSunsetTimes();
-	}, [dailyData]);
+	}, [hourlyData, dailyData]);
 
 	function formatTime(timeString) {
 		const time = new Date(timeString); // Create a Date object from the string
@@ -184,7 +211,7 @@ function HourlyWeather() {
 				const dayIter = new Date(dailyData.sunrise[i]);
 				console.log(`dayI = ${dayIter.getDay()}`);
 				if (dayIter.getDay() === currentDay) {
-					// set today & tomorrow's sunrise & sunset ISO codes
+					// set today & tomorrow's sunrise & sunset date strings
 					const newSunriseTimes = [dailyData.sunrise[i], dailyData.sunrise[i + 1]];
 					const newSunsetTimes = [dailyData.sunset[i], dailyData.sunset[i + 1]];
 
@@ -206,7 +233,7 @@ function HourlyWeather() {
 						return (
 							<li key={index}>
 								<div>{`${formatTime(time)}`}</div>
-								{getConditionIcon(weatherCodes[index])}
+								{getConditionIcon(weatherCodes[index], time)}
 								<div>{`${Math.round(temperatures[index])}°`}</div>
 							</li>
 						);
@@ -215,5 +242,5 @@ function HourlyWeather() {
 		</div>
 	);
 }
-
+// pass in date to getConditionIcon, in the function check if date is before/after sunrise/sunset time
 export default HourlyWeather;

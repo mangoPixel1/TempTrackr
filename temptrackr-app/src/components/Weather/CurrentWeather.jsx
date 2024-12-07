@@ -37,9 +37,10 @@ function CurrentWeather() {
 	const [wind, setWind] = useState(0);
 	const [weatherCode, setWeatherCode] = useState(-1);
 	const [apparentTemp, setApparentTemp] = useState(0);
+	const [isDay, setIsDay] = useState(false);
 
 	useEffect(() => {
-		fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,is_day,precipitation,weather_code,wind_speed_10m,wind_direction_10m&daily=temperature_2m_max,temperature_2m_min&temperature_unit=${unit}&wind_speed_unit=mph&precipitation_unit=inch&timezone=auto&forecast_days=3`)
+		fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,is_day,precipitation,weather_code,wind_speed_10m,wind_direction_10m&daily=temperature_2m_max,temperature_2m_min&temperature_unit=${unit}&wind_speed_unit=mph&precipitation_unit=inch&timezone=auto&forecast_days=3&daily=sunrise,sunset`)
 			.then(response => {
 				if (!response.ok) {
 					throw new Error("Error fetching current weather data");
@@ -47,7 +48,8 @@ function CurrentWeather() {
 				return response.json();
 			})
 			.then(data => {
-				//console.log(data);
+				console.log(data);
+				setIsDay(data.current.is_day);
 				setCurrentTemp(Math.floor(data.current.temperature_2m));
 				setCurrentMin(Math.floor(data.daily.temperature_2m_min[0]));
 				setCurrentMax(Math.floor(data.daily.temperature_2m_max[0]));
@@ -89,22 +91,21 @@ function CurrentWeather() {
 		99: "Thunderstorm" // Thunderstorm
 	};
 
-	function getConditionIcon(weatherCode) {
+	function getConditionIcon(weatherCode, time) {
 		switch (weatherCode) {
 			case 0:
 			case 1:
-				// write condition for checking for day or night
-				return <ClearDay className={classes.currentIcon} />;
+				return isDay ? <ClearDay className={classes.currentIcon} /> : <ClearNight className={classes.currentIcon} />;
 				break;
 			case 2:
-				return <PartlyCloudyDay className={classes.currentIcon} />;
+				return isDay ? <PartlyCloudyDay className={classes.currentIcon} /> : <PartlyCloudyNight className={classes.currentIcon} />;
 				break;
 			case 3:
-				return <OvercastDay className={classes.currentIcon} />;
+				return isDay ? <OvercastDay className={classes.currentIcon} /> : <OvercastNight className={classes.currentIcon} />;
 				break;
 			case 45:
 			case 48:
-				return <FogDay className={classes.currentIcon} />;
+				return isDay ? <FogDay className={classes.currentIcon} /> : <FogNight className={classes.currentIcon} />;
 				break;
 			case 51:
 			case 53:
@@ -136,7 +137,7 @@ function CurrentWeather() {
 			case 95:
 			case 96:
 			case 99:
-				return <ThunderstormsDay className={classes.currentIcon} />;
+				return isDay ? <ThunderstormsDay className={classes.currentIcon} /> : <ThunderstormsNight className={classes.currentIcon} />;
 				break;
 		}
 	}

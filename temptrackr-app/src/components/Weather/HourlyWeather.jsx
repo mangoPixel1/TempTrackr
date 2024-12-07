@@ -71,7 +71,7 @@ function HourlyWeather() {
 		const nextSunriseTime = new Date(sunriseTime);
 		const nextSunsetTime = new Date(sunsetTime);
 
-		const isDay = currentTime > nextSunriseTime;
+		const isDay = currentTime > nextSunriseTime && currentTime < nextSunsetTime;
 		switch (weatherCode) {
 			case 0:
 			case 1:
@@ -132,7 +132,7 @@ function HourlyWeather() {
 				return response.json();
 			})
 			.then(data => {
-				console.log(data);
+				//console.log(data);
 				setHourlyData(data.hourly);
 				setDailyData(data.daily);
 			})
@@ -185,6 +185,8 @@ function HourlyWeather() {
 					}*/
 				}
 			}
+
+			//console.log(newTimeArr);
 
 			// Update the state data with the new arrays
 			setTimes(newTimeArr);

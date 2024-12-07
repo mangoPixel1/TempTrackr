@@ -193,15 +193,26 @@ function HourlyWeather() {
 			setTemperatures(newTempArr);
 			setWeatherCodes(newWeatherArr);
 		}
+
+		displayHourlyWeather();
 	}, [hourlyData, dailyData]);
 
-	function formatTime(timeString) {
+	function formatTimeHour(timeString) {
 		const time = new Date(timeString); // Create a Date object from the string
 		const meridiem = time.getHours() < 12 ? "AM" : "PM"; // Get AM or PM
 
 		let hour = time.getHours() % 12 === 0 ? 12 : time.getHours() % 12; // Replace 0 with 12
 
 		return `${hour} ${meridiem}`;
+	}
+
+	function formatTimeHourMinutes(timeString) {
+		const time = new Date(timeString); // Create a Date object from the string
+		const meridiem = time.getHours() < 12 ? "AM" : "PM"; // Get AM or PM
+
+		let hour = time.getHours() % 12 === 0 ? 12 : time.getHours() % 12; // Replace 0 with 12
+
+		return `${hour}:${time.getMinutes()} ${meridiem}`;
 	}
 
 	function getSunriseSunsetTimes() {
@@ -227,22 +238,60 @@ function HourlyWeather() {
 		}
 	}
 
+	function displayHourlyWeather() {
+		let formattedTimes =
+			times &&
+			times.map(time => {
+				return formatTimeHour(time);
+			});
+
+		let sunriseIndex; // Index at hour of sunrise
+		let sunsetIndex; // Index at hour of sunset
+
+		const sunriseObj = new Date(sunriseTime);
+		const sunsetObj = new Date(sunsetTime);
+
+		// Find index to insert sunrise and sunset times into formattedTimes
+		for (let i = 0; i < times.length; i++) {
+			const timeObj = new Date(times[i]);
+
+			if (timeObj.getHours() === sunriseObj.getHours()) {
+				sunriseIndex = i + 1;
+			} else if (timeObj.getHours() === sunsetObj.getHours()) {
+				sunsetIndex = i + 2;
+			}
+		}
+
+		formattedTimes.splice(sunriseIndex, 0, formatTimeHourMinutes(sunriseTime));
+		formattedTimes.splice(sunsetIndex, 0, formatTimeHourMinutes(sunsetTime));
+		console.log(formattedTimes);
+
+		// IMPORTANT!!! When rendering formattedTimes, if a time has minutes, display sunset/sunrise icon
+
+		//console.log(formattedTimes);
+		//console.log(sunriseIndex);
+		//console.log(sunsetIndex);
+	}
+
 	return (
 		<div className={classes.hourlyWeatherContainer}>
-			<ul className={classes.hourlyForecast}>
-				{times &&
-					times.map((time, index) => {
-						return (
-							<li key={index}>
-								<div>{`${formatTime(time)}`}</div>
-								{getConditionIcon(weatherCodes[index], time)}
-								<div>{`${Math.round(temperatures[index])}°`}</div>
-							</li>
-						);
-					})}
-			</ul>
+			<ul className={classes.hourlyForecast}>{/*displayHourlyWeather()*/}</ul>
 		</div>
 	);
 }
 // pass in date to getConditionIcon, in the function check if date is before/after sunrise/sunset time
 export default HourlyWeather;
+
+/*
+function displayHourlyWeather() {
+	times &&
+		times.map((time, index) => {
+			return (
+				<li key={index}>
+					<div>{`${formatTime(time)}`}</div>
+					{getConditionIcon(weatherCodes[index], time)}
+					<div>{`${Math.round(temperatures[index])}°`}</div>
+				</li>
+			);
+		});
+}*/

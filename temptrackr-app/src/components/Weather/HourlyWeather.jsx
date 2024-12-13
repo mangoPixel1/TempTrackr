@@ -18,6 +18,8 @@ import SleetStatic from "../Icons/Hourly/sleet-static.svg?react";
 import SnowStatic from "../Icons/Hourly/snow-static.svg?react";
 import ThunderstormsDayStatic from "../Icons/Hourly/thunderstorms-day-static.svg?react";
 import ThunderstormsNightStatic from "../Icons/Hourly/thunderstorms-night-static.svg?react";
+import SunriseStatic from "../Icons/Hourly/sunset-static.svg?react";
+import SunsetStatic from "../Icons/Hourly/sunrise-static.svg?react";
 
 // Contexts
 import { useTheme } from "../../context/ThemeContext";
@@ -28,14 +30,19 @@ function HourlyWeather() {
 	const { unit } = useUnit();
 	const { latitude, longitude, cityName, setCoordinates } = useLocation();
 
-	const [dailyData, setDailyData] = useState([]);
-	const [hourlyData, setHourlyData] = useState({});
+	const [dailyData, setDailyData] = useState([]); // Fetched API data: sunrise/sunset times for yesterday, today, today + 2
+	const [hourlyData, setHourlyData] = useState({}); // Fetched API data: hourly temp/weather codes for yesterday, today, today + 2
 
-	const [times, setTimes] = useState([]);
-	const [temperatures, setTemperatures] = useState([]);
-	const [weatherCodes, setWeatherCodes] = useState([]);
-	const [sunriseTime, setSunriseTime] = useState("");
-	const [sunsetTime, setSunsetTime] = useState("");
+	const [times, setTimes] = useState([]); // Hours filtered to be within range of current time to 24 hours later
+	const [temperatures, setTemperatures] = useState([]); // Temps filtered to be within range of current time to 24 hours later
+	const [weatherCodes, setWeatherCodes] = useState([]); // Weather filtered to be within range of current time to 24 hours later
+
+	const [sunriseTime, setSunriseTime] = useState(""); // Next sunrise time
+	const [sunsetTime, setSunsetTime] = useState(""); // Next sunset time
+
+	const [hours, setHours] = useState([]); // Final times to be rendered in UI
+	const [finalTemps, setFinalTemps] = useState([]); // Final temps to be rendered in UI
+	const [finalWeather, setFinalWeather] = useState([]); // Final weather codes to be rendered in UI
 
 	const weatherCodeMap = {
 		0: "Clear",
@@ -66,6 +73,7 @@ function HourlyWeather() {
 		99: "Thunderstorm"
 	};
 
+	// Gets condition icon based on the weather code and time
 	function getConditionIcon(weatherCode, time) {
 		const currentTime = new Date(time);
 		const nextSunriseTime = new Date(sunriseTime);
@@ -120,9 +128,16 @@ function HourlyWeather() {
 			case 99:
 				return isDay ? <ThunderstormsDayStatic className={classes.hourlyIcon} /> : <ThunderstormsNightStatic className={classes.hourlyIcon} />;
 				break;
+			case 100:
+				return <SunriseStatic className={classes.hourlyIcon} />;
+				break;
+			case 101:
+				return <SunsetStatic className={classes.hourlyIcon} />;
+				break;
 		}
 	}
 
+	// Fetches API data
 	useEffect(() => {
 		fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,weather_code&temperature_unit=${unit}&wind_speed_unit=mph&precipitation_unit=inch&past_days=1&timezone=auto&forecast_days=3&daily=sunrise,sunset`)
 			.then(response => {
@@ -132,13 +147,15 @@ function HourlyWeather() {
 				return response.json();
 			})
 			.then(data => {
-				//console.log(data);
-				setHourlyData(data.hourly);
+				console.log(data);
 				setDailyData(data.daily);
+				setHourlyData(data.hourly);
 			})
 			.catch(error => console.error(error));
 	}, [latitude, longitude, cityName, unit]);
 
+	// Finds next sunrise/sunset time
+	// Syncs temp, weather, time arrays
 	useEffect(() => {
 		const currentDate = new Date(); // get the current date and time
 		const currentDay = currentDate.getDay(); // gets current day of the week 0-6
@@ -148,20 +165,17 @@ function HourlyWeather() {
 			for (let i = 0; i < dailyData.sunrise.length; i++) {
 				const dayIter = new Date(dailyData.sunrise[i]);
 				if (dayIter.getDay() === currentDay) {
+					// Set next sunrise/sunset to either today's sunrise/sunset time or tomorrow's
 					const nextSunrise = currentDate < dailyData.sunrise[i] ? dailyData.sunrise[i] : dailyData.sunrise[i + 1];
 					const nextSunset = currentDate < dailyData.sunset[i] ? dailyData.sunset[i] : dailyData.sunset[i + 1];
 
-					console.log(`Next sunrise: ${nextSunrise}`);
-					console.log(`Next sunset: ${nextSunset}`);
+					//console.log(`Next sunrise: ${nextSunrise}`);
+					//console.log(`Next sunset: ${nextSunset}`);
 
 					setSunriseTime(nextSunrise);
 					setSunsetTime(nextSunset);
 				}
 			}
-
-			// Find index to place the sunset and sunrise
-			const currentHour = currentDate.getHours();
-			const currentMinute = currentDate.getMinutes();
 		}
 
 		// Calculate the time 24 hours from now
@@ -180,9 +194,6 @@ function HourlyWeather() {
 					newTimeArr.push(hourlyData.time[i]);
 					newTempArr.push(hourlyData.temperature_2m[i]);
 					newWeatherArr.push(hourlyData.weather_code[i]);
-
-					/*if (sunsetTimes && sunriseTimes) {
-					}*/
 				}
 			}
 
@@ -194,9 +205,10 @@ function HourlyWeather() {
 			setWeatherCodes(newWeatherArr);
 		}
 
-		displayHourlyWeather();
+		formatHours();
 	}, [hourlyData, dailyData]);
 
+	// Formats time (5 PM)
 	function formatTimeHour(timeString) {
 		const time = new Date(timeString); // Create a Date object from the string
 		const meridiem = time.getHours() < 12 ? "AM" : "PM"; // Get AM or PM
@@ -206,67 +218,60 @@ function HourlyWeather() {
 		return `${hour} ${meridiem}`;
 	}
 
+	// Formats time (5:00 PM)
 	function formatTimeHourMinutes(timeString) {
 		const time = new Date(timeString); // Create a Date object from the string
 		const meridiem = time.getHours() < 12 ? "AM" : "PM"; // Get AM or PM
 
 		let hour = time.getHours() % 12 === 0 ? 12 : time.getHours() % 12; // Replace 0 with 12
 
-		return `${hour}:${time.getMinutes()} ${meridiem}`;
+		return `${hour}:${time.getMinutes().toString().padStart(2, "0")} ${meridiem}`;
 	}
 
-	function getSunriseSunsetTimes() {
-		const currentDate = new Date(); // get the current date and time
-		const currentDay = currentDate.getDay(); // gets current day of the week 0-6
-
-		if (dailyData.sunrise && dailyData.sunset) {
-			for (let i = 0; i < dailyData.sunrise.length; i++) {
-				const dayIter = new Date(dailyData.sunrise[i]);
-				console.log(`dayI = ${dayIter.getDay()}`);
-				if (dayIter.getDay() === currentDay) {
-					// set today & tomorrow's sunrise & sunset date strings
-					const newSunriseTimes = [dailyData.sunrise[i], dailyData.sunrise[i + 1]];
-					const newSunsetTimes = [dailyData.sunset[i], dailyData.sunset[i + 1]];
-
-					setSunriseTimes(newSunriseTimes);
-					setSunsetTimes(newSunsetTimes);
-
-					//console.log(`today's sunset: ${dailyData.sunset[i]}`);
-					//console.log(`tomorrow's sunset: ${dailyData.sunset[i + 1]}`);
-				}
-			}
-		}
-	}
-
-	function displayHourlyWeather() {
-		let formattedTimes =
-			times &&
-			times.map(time => {
-				return formatTimeHour(time);
-			});
+	// Format final hourly data to render in UI
+	function formatHours() {
+		// times - length 24
+		// newTimes - length 26 (includes sunrise & sunset)
+		const newTimes = [...times];
+		const newTemps = [...temperatures];
+		const newWeather = [...weatherCodes];
 
 		let sunriseIndex; // Index at hour of sunrise
 		let sunsetIndex; // Index at hour of sunset
 
-		const sunriseObj = new Date(sunriseTime);
-		const sunsetObj = new Date(sunsetTime);
+		const sunriseObj = new Date(sunriseTime); // Temporary Date object for sunrise
+		const sunsetObj = new Date(sunsetTime); // Temporary Date object for sunset
 
-		// Find index to insert sunrise and sunset times into formattedTimes
+		// Find index to insert sunrise and sunset times into newTimes
 		for (let i = 0; i < times.length; i++) {
-			const timeObj = new Date(times[i]);
+			const currentTimeObj = new Date(times[i]);
 
-			if (timeObj.getHours() === sunriseObj.getHours()) {
+			if (currentTimeObj.getHours() === sunriseObj.getHours()) {
 				sunriseIndex = i + 1;
-			} else if (timeObj.getHours() === sunsetObj.getHours()) {
+			} else if (currentTimeObj.getHours() === sunsetObj.getHours()) {
 				sunsetIndex = i + 2;
 			}
 		}
 
-		formattedTimes.splice(sunriseIndex, 0, formatTimeHourMinutes(sunriseTime));
-		formattedTimes.splice(sunsetIndex, 0, formatTimeHourMinutes(sunsetTime));
-		console.log(formattedTimes);
+		newTimes.splice(sunriseIndex, 0, sunriseTime); // Insert sunrise time into array
+		newTimes.splice(sunsetIndex, 0, sunsetTime); // Insert sunset time into array
 
-		// IMPORTANT!!! When rendering formattedTimes, if a time has minutes, display sunset/sunrise icon
+		newTemps.splice(sunriseIndex, 0, 200);
+		newTemps.splice(sunsetIndex, 0, 200);
+
+		newWeather.splice(sunriseIndex, 0, 100);
+		newWeather.splice(sunsetIndex, 0, 101);
+
+		//console.log(newTimes);
+		//console.log(newTemps);
+		//console.log(newWeather);
+
+		setHours(newTimes);
+		setFinalTemps(newTemps);
+		setFinalWeather(newWeather);
+
+		// IMPORTANT!!! When rendering formattedTimes, if current hour is the same as the previous hour, display sunset/sunrise icon
+		// FORMAT the time using the formatTime functions inside the JSX
 
 		//console.log(formattedTimes);
 		//console.log(sunriseIndex);
@@ -275,7 +280,33 @@ function HourlyWeather() {
 
 	return (
 		<div className={classes.hourlyWeatherContainer}>
-			<ul className={classes.hourlyForecast}>{/*displayHourlyWeather()*/}</ul>
+			<ul className={classes.hourlyForecast}>
+				{hours &&
+					hours.map((hour, index, hours) => {
+						const currentHour = new Date(hour);
+						const pastHour = new Date(hours[index - 1]);
+
+						if (currentHour.getHours() === pastHour.getHours()) {
+							// Render sunrise/sunset
+							return (
+								<li key={index}>
+									<div>{`${formatTimeHourMinutes(hour)}`}</div>
+									{getConditionIcon(finalWeather[index], hour)}
+									<div className={classes.hideText}>{`${Math.round(finalTemps[index])}°`}</div>
+								</li>
+							);
+						} else {
+							// Render hourly weather
+							return (
+								<li key={index}>
+									<div>{`${formatTimeHour(hour)}`}</div>
+									{getConditionIcon(finalWeather[index], hour)}
+									<div>{`${Math.round(finalTemps[index])}°`}</div>
+								</li>
+							);
+						}
+					})}
+			</ul>
 		</div>
 	);
 }

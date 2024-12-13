@@ -44,35 +44,6 @@ function HourlyWeather() {
 	const [finalTemps, setFinalTemps] = useState([]); // Final temps to be rendered in UI
 	const [finalWeather, setFinalWeather] = useState([]); // Final weather codes to be rendered in UI
 
-	const weatherCodeMap = {
-		0: "Clear",
-		1: "Mainly Clear",
-		2: "Partly Cloudy",
-		3: "Overcast",
-		45: "Fog",
-		48: "Fog",
-		51: "Light Drizzle",
-		53: "Drizzle",
-		55: "Heavy Drizzle",
-		61: "Light Rain",
-		63: "Rain",
-		65: "Heavy Rain",
-		66: "Freezing Rain: Light",
-		67: "Freezing Rain: Heavy",
-		71: "Snow Fall: Light",
-		73: "Snow Fall: Moderate",
-		75: "Snow Fall: Heavy",
-		77: "Snow Grains",
-		80: "Showers: Light",
-		81: "Showers: Moderate",
-		82: "Showers: Violent",
-		85: "Snow Showers: Light",
-		86: "Snow Showers: Heavy",
-		95: "Thunderstorm",
-		96: "Thunderstorm",
-		99: "Thunderstorm"
-	};
-
 	// Gets condition icon based on the weather code and time
 	function getConditionIcon(weatherCode, time) {
 		const currentTime = new Date(time);
@@ -169,9 +140,6 @@ function HourlyWeather() {
 					const nextSunrise = currentDate < dailyData.sunrise[i] ? dailyData.sunrise[i] : dailyData.sunrise[i + 1];
 					const nextSunset = currentDate < dailyData.sunset[i] ? dailyData.sunset[i] : dailyData.sunset[i + 1];
 
-					//console.log(`Next sunrise: ${nextSunrise}`);
-					//console.log(`Next sunset: ${nextSunset}`);
-
 					setSunriseTime(nextSunrise);
 					setSunsetTime(nextSunset);
 				}
@@ -196,8 +164,6 @@ function HourlyWeather() {
 					newWeatherArr.push(hourlyData.weather_code[i]);
 				}
 			}
-
-			//console.log(newTimeArr);
 
 			// Update the state data with the new arrays
 			setTimes(newTimeArr);
@@ -262,20 +228,9 @@ function HourlyWeather() {
 		newWeather.splice(sunriseIndex, 0, 100);
 		newWeather.splice(sunsetIndex, 0, 101);
 
-		//console.log(newTimes);
-		//console.log(newTemps);
-		//console.log(newWeather);
-
 		setHours(newTimes);
 		setFinalTemps(newTemps);
 		setFinalWeather(newWeather);
-
-		// IMPORTANT!!! When rendering formattedTimes, if current hour is the same as the previous hour, display sunset/sunrise icon
-		// FORMAT the time using the formatTime functions inside the JSX
-
-		//console.log(formattedTimes);
-		//console.log(sunriseIndex);
-		//console.log(sunsetIndex);
 	}
 
 	return (
@@ -310,19 +265,5 @@ function HourlyWeather() {
 		</div>
 	);
 }
-// pass in date to getConditionIcon, in the function check if date is before/after sunrise/sunset time
-export default HourlyWeather;
 
-/*
-function displayHourlyWeather() {
-	times &&
-		times.map((time, index) => {
-			return (
-				<li key={index}>
-					<div>{`${formatTime(time)}`}</div>
-					{getConditionIcon(weatherCodes[index], time)}
-					<div>{`${Math.round(temperatures[index])}°`}</div>
-				</li>
-			);
-		});
-}*/
+export default HourlyWeather;

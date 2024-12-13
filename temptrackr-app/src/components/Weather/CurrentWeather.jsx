@@ -48,7 +48,7 @@ function CurrentWeather() {
 				return response.json();
 			})
 			.then(data => {
-				//console.log(data);
+				console.log(data);
 				setIsDay(data.current.is_day);
 				setCurrentTemp(Math.floor(data.current.temperature_2m));
 				setCurrentMin(Math.floor(data.daily.temperature_2m_min[0]));

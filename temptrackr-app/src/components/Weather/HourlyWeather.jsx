@@ -44,13 +44,51 @@ function HourlyWeather() {
 	const [finalTemps, setFinalTemps] = useState([]); // Final temps to be rendered in UI
 	const [finalWeather, setFinalWeather] = useState([]); // Final weather codes to be rendered in UI
 
+	const weatherCodeMap = {
+		0: "Clear",
+		1: "Mainly Clear",
+		2: "Partly Cloudy",
+		3: "Overcast",
+		45: "Fog",
+		48: "Fog",
+		51: "Light Drizzle",
+		53: "Drizzle",
+		55: "Heavy Drizzle",
+		61: "Light Rain",
+		63: "Rain",
+		65: "Heavy Rain",
+		66: "Freezing Rain: Light",
+		67: "Freezing Rain: Heavy",
+		71: "Snow Fall: Light",
+		73: "Snow Fall: Moderate",
+		75: "Snow Fall: Heavy",
+		77: "Snow Grains",
+		80: "Showers: Light",
+		81: "Showers: Moderate",
+		82: "Showers: Violent",
+		85: "Snow Showers: Light",
+		86: "Snow Showers: Heavy",
+		95: "Thunderstorm",
+		96: "Thunderstorm",
+		99: "Thunderstorm"
+	};
+
 	// Gets condition icon based on the weather code and time
 	function getConditionIcon(weatherCode, time) {
 		const currentTime = new Date(time);
+
 		const nextSunriseTime = new Date(sunriseTime);
 		const nextSunsetTime = new Date(sunsetTime);
 
-		const isDay = currentTime > nextSunriseTime && currentTime < nextSunsetTime;
+		const isDay = currentTime < nextSunsetTime || currentTime > nextSunriseTime;
+
+		/*if (isDay) {
+			console.log(`${currentTime} > ${nextSunsetTime}`);
+		} else {
+			console.log(`${currentTime} < ${nextSunsetTime}`);
+		}*/
+
+		//const isDay = currentTime > nextSunriseTime && currentTime < nextSunsetTime;
 		switch (weatherCode) {
 			case 0:
 			case 1:
@@ -137,8 +175,17 @@ function HourlyWeather() {
 				const dayIter = new Date(dailyData.sunrise[i]);
 				if (dayIter.getDay() === currentDay) {
 					// Set next sunrise/sunset to either today's sunrise/sunset time or tomorrow's
-					const nextSunrise = currentDate < dailyData.sunrise[i] ? dailyData.sunrise[i] : dailyData.sunrise[i + 1];
-					const nextSunset = currentDate < dailyData.sunset[i] ? dailyData.sunset[i] : dailyData.sunset[i + 1];
+					/*const nextSunrise = currentDate < dailyData.sunrise[i] ? dailyData.sunrise[i] : dailyData.sunrise[i + 1];
+					const nextSunset = currentDate < dailyData.sunset[i] ? dailyData.sunset[i] : dailyData.sunset[i + 1];*/
+
+					const currentSunrise = new Date(dailyData.sunrise[i]);
+					const currentSunset = new Date(dailyData.sunset[i]);
+
+					const nextSunrise = currentDate < currentSunrise ? dailyData.sunrise[i] : dailyData.sunrise[i + 1];
+					const nextSunset = currentDate < currentSunset ? dailyData.sunset[i] : dailyData.sunset[i + 1];
+
+					console.log(`Next sunrise: ${nextSunrise}`);
+					console.log(`Next sunset: ${nextSunset}`);
 
 					setSunriseTime(nextSunrise);
 					setSunsetTime(nextSunset);
@@ -164,6 +211,8 @@ function HourlyWeather() {
 					newWeatherArr.push(hourlyData.weather_code[i]);
 				}
 			}
+
+			//console.log(newTimeArr);
 
 			// Update the state data with the new arrays
 			setTimes(newTimeArr);
@@ -215,7 +264,7 @@ function HourlyWeather() {
 			if (currentTimeObj.getHours() === sunriseObj.getHours()) {
 				sunriseIndex = i + 1;
 			} else if (currentTimeObj.getHours() === sunsetObj.getHours()) {
-				sunsetIndex = i + 2;
+				sunsetIndex = i + 1;
 			}
 		}
 
@@ -228,9 +277,20 @@ function HourlyWeather() {
 		newWeather.splice(sunriseIndex, 0, 100);
 		newWeather.splice(sunsetIndex, 0, 101);
 
+		console.log(newTimes);
+		console.log(newTemps);
+		console.log(newWeather);
+
 		setHours(newTimes);
 		setFinalTemps(newTemps);
 		setFinalWeather(newWeather);
+
+		// IMPORTANT!!! When rendering formattedTimes, if current hour is the same as the previous hour, display sunset/sunrise icon
+		// FORMAT the time using the formatTime functions inside the JSX
+
+		//console.log(formattedTimes);
+		//console.log(sunriseIndex);
+		//console.log(sunsetIndex);
 	}
 
 	return (
@@ -247,7 +307,7 @@ function HourlyWeather() {
 								<li key={index}>
 									<div>{`${formatTimeHourMinutes(hour)}`}</div>
 									{getConditionIcon(finalWeather[index], hour)}
-									<div className={classes.hideText}>{`${Math.round(finalTemps[index])}°`}</div>
+									<div className={classes.hideText}>{`null`}</div>
 								</li>
 							);
 						} else {
@@ -265,5 +325,5 @@ function HourlyWeather() {
 		</div>
 	);
 }
-
+// pass in date to getConditionIcon, in the function check if date is before/after sunrise/sunset time
 export default HourlyWeather;

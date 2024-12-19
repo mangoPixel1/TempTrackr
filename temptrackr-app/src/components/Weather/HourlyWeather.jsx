@@ -250,20 +250,26 @@ function HourlyWeather() {
 		const newTemps = [...temperatures];
 		const newWeather = [...weatherCodes];
 
+		/*console.log(times);
+		console.log(temperatures);
+		console.log(weatherCodes);*/
+
 		let sunriseIndex; // Index at hour of sunrise
 		let sunsetIndex; // Index at hour of sunset
 
-		const sunriseObj = new Date(sunriseTime); // Temporary Date object for sunrise
-		const sunsetObj = new Date(sunsetTime); // Temporary Date object for sunset
+		const nextSunriseTime = new Date(sunriseTime); // Temporary Date object for sunrise
+		const nextSunsetTime = new Date(sunsetTime); // Temporary Date object for sunset
 
 		// Find index to insert sunrise and sunset times into newTimes
 		for (let i = 0; i < times.length; i++) {
-			const currentTimeObj = new Date(times[i]);
+			const currentTime = new Date(times[i]);
 
-			if (currentTimeObj.getHours() === sunriseObj.getHours()) {
+			if (currentTime.getHours() === nextSunriseTime.getHours()) {
 				sunriseIndex = i + 1;
-			} else if (currentTimeObj.getHours() === sunsetObj.getHours()) {
-				sunsetIndex = i + 1;
+			}
+
+			if (currentTime.getHours() === nextSunsetTime.getHours()) {
+				sunsetIndex = i + 2;
 			}
 		}
 
@@ -283,13 +289,6 @@ function HourlyWeather() {
 		setHours(newTimes);
 		setFinalTemps(newTemps);
 		setFinalWeather(newWeather);
-
-		// IMPORTANT!!! When rendering formattedTimes, if current hour is the same as the previous hour, display sunset/sunrise icon
-		// FORMAT the time using the formatTime functions inside the JSX
-
-		//console.log(formattedTimes);
-		//console.log(sunriseIndex);
-		//console.log(sunsetIndex);
 	}
 
 	return (

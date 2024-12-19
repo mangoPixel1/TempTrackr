@@ -80,19 +80,18 @@ function HourlyWeather() {
 		const nextSunriseTime = new Date(sunriseTime);
 		const nextSunsetTime = new Date(sunsetTime);
 
-		const isDay = currentTime < nextSunsetTime || currentTime > nextSunriseTime;
+		let isDay;
 
-		/*if (isDay) {
-			console.log(`${currentTime} > ${nextSunsetTime}`);
+		// Check if both sunrise/sunset are on the same calendar day
+		if (nextSunriseTime.getDay() === nextSunsetTime.getDay()) {
+			isDay = currentTime >= nextSunriseTime && currentTime <= nextSunsetTime;
 		} else {
-			console.log(`${currentTime} < ${nextSunsetTime}`);
-		}*/
+			isDay = currentTime <= nextSunsetTime || currentTime >= nextSunriseTime;
+		}
 
-		//const isDay = currentTime > nextSunriseTime && currentTime < nextSunsetTime;
 		switch (weatherCode) {
 			case 0:
 			case 1:
-				// write condition for checking for day or night
 				return isDay ? <ClearDayStatic className={classes.hourlyIcon} /> : <ClearNightStatic className={classes.hourlyIcon} />;
 				break;
 			case 2:
@@ -274,8 +273,8 @@ function HourlyWeather() {
 		newTemps.splice(sunriseIndex, 0, 200);
 		newTemps.splice(sunsetIndex, 0, 200);
 
-		newWeather.splice(sunriseIndex, 0, 100);
-		newWeather.splice(sunsetIndex, 0, 101);
+		newWeather.splice(sunriseIndex, 0, 101);
+		newWeather.splice(sunsetIndex, 0, 100);
 
 		console.log(newTimes);
 		console.log(newTemps);
@@ -327,3 +326,37 @@ function HourlyWeather() {
 }
 // pass in date to getConditionIcon, in the function check if date is before/after sunrise/sunset time
 export default HourlyWeather;
+
+/* 
+return (
+		<div className={classes.hourlyWeatherContainer}>
+			<ul className={classes.hourlyForecast}>
+				{hours &&
+					hours.map((hour, index, hours) => {
+						const currentHour = new Date(hour);
+						const pastHour = new Date(hours[index - 1]);
+
+						if (currentHour.getHours() === pastHour.getHours()) {
+							// Render sunrise/sunset
+							return (
+								<li key={index}>
+									<div>{`${formatTimeHourMinutes(hour)}`}</div>
+									{getConditionIcon(finalWeather[index], hour)}
+									<div className={classes.hideText}>{`null`}</div>
+								</li>
+							);
+						} else {
+							// Render hourly weather
+							return (
+								<li key={index}>
+									<div>{`${formatTimeHour(hour)}`}</div>
+									{getConditionIcon(finalWeather[index], hour)}
+									<div>{`${Math.round(finalTemps[index])}°`}</div>
+								</li>
+							);
+						}
+					})}
+			</ul>
+		</div>
+	);
+*/

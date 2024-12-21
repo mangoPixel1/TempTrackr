@@ -246,13 +246,13 @@ function HourlyWeather() {
 	function formatHours() {
 		// times - length 24
 		// newTimes - length 26 (includes sunrise & sunset)
-		const newTimes = [...times];
-		const newTemps = [...temperatures];
-		const newWeather = [...weatherCodes];
+		let newTimes = [...times];
+		let newTemps = [...temperatures];
+		let newWeather = [...weatherCodes];
 
-		/*console.log(times);
-		console.log(temperatures);
-		console.log(weatherCodes);*/
+		console.log(times);
+		//console.log(temperatures);
+		//console.log(weatherCodes);
 
 		let sunriseIndex; // Index at hour of sunrise
 		let sunsetIndex; // Index at hour of sunset
@@ -265,26 +265,26 @@ function HourlyWeather() {
 			const currentTime = new Date(times[i]);
 
 			if (currentTime.getHours() === nextSunriseTime.getHours()) {
-				sunriseIndex = i + 1;
-			}
-
-			if (currentTime.getHours() === nextSunsetTime.getHours()) {
-				sunsetIndex = i + 2;
+				sunriseIndex = i;
+				console.log(`sunrise i: ${i}`);
+			} else if (currentTime.getHours() === nextSunsetTime.getHours()) {
+				sunsetIndex = i;
+				console.log(`sunset i: ${i}`);
 			}
 		}
 
-		newTimes.splice(sunriseIndex, 0, sunriseTime); // Insert sunrise time into array
-		newTimes.splice(sunsetIndex, 0, sunsetTime); // Insert sunset time into array
+		newTimes.splice(sunriseIndex + 1, 0, sunriseTime); // Insert sunrise time into newTimes array
+		newTimes.splice(sunsetIndex + 2, 0, sunsetTime); // Insert sunset time. Added 2 because newTimes array grew after adding sunrise time
 
-		newTemps.splice(sunriseIndex, 0, 200);
-		newTemps.splice(sunsetIndex, 0, 200);
+		newTemps.splice(sunriseIndex + 1, 0, 200);
+		newTemps.splice(sunsetIndex + 2, 0, 200);
 
-		newWeather.splice(sunriseIndex, 0, 101);
-		newWeather.splice(sunsetIndex, 0, 100);
+		newWeather.splice(sunriseIndex + 1, 0, 101);
+		newWeather.splice(sunsetIndex + 2, 0, 100);
 
 		console.log(newTimes);
-		console.log(newTemps);
-		console.log(newWeather);
+		//console.log(newTemps);
+		//console.log(newWeather);
 
 		setHours(newTimes);
 		setFinalTemps(newTemps);

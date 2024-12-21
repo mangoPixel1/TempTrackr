@@ -174,9 +174,6 @@ function HourlyWeather() {
 				const dayIter = new Date(dailyData.sunrise[i]);
 				if (dayIter.getDay() === currentDay) {
 					// Set next sunrise/sunset to either today's sunrise/sunset time or tomorrow's
-					/*const nextSunrise = currentDate < dailyData.sunrise[i] ? dailyData.sunrise[i] : dailyData.sunrise[i + 1];
-					const nextSunset = currentDate < dailyData.sunset[i] ? dailyData.sunset[i] : dailyData.sunset[i + 1];*/
-
 					const currentSunrise = new Date(dailyData.sunrise[i]);
 					const currentSunset = new Date(dailyData.sunset[i]);
 
@@ -273,18 +270,28 @@ function HourlyWeather() {
 			}
 		}
 
-		newTimes.splice(sunriseIndex + 1, 0, sunriseTime); // Insert sunrise time into newTimes array
-		newTimes.splice(sunsetIndex + 2, 0, sunsetTime); // Insert sunset time. Added 2 because newTimes array grew after adding sunrise time
+		if (sunsetIndex > sunriseIndex) {
+			// Sunrise comes first
+			newTimes.splice(sunriseIndex + 1, 0, sunriseTime); // Insert sunrise time into arrays
+			newTemps.splice(sunriseIndex + 1, 0, 200);
+			newWeather.splice(sunriseIndex + 1, 0, 100);
 
-		newTemps.splice(sunriseIndex + 1, 0, 200);
-		newTemps.splice(sunsetIndex + 2, 0, 200);
+			newTimes.splice(sunsetIndex + 2, 0, sunsetTime); // Insert sunset time into arrays
+			newTemps.splice(sunsetIndex + 2, 0, 200);
+			newWeather.splice(sunsetIndex + 2, 0, 101);
+		} else {
+			// Sunset comes first
+			newTimes.splice(sunsetIndex + 1, 0, sunsetTime); // Insert sunset time into arrays
+			newTemps.splice(sunsetIndex + 1, 0, 200);
+			newWeather.splice(sunsetIndex + 1, 0, 101);
 
-		newWeather.splice(sunriseIndex + 1, 0, 101);
-		newWeather.splice(sunsetIndex + 2, 0, 100);
+			newTimes.splice(sunriseIndex + 2, 0, sunriseTime); // Insert sunrise time into arrays
+			newTemps.splice(sunriseIndex + 2, 0, 200);
+			newWeather.splice(sunriseIndex + 2, 0, 100);
+		}
 
 		console.log(newTimes);
-		//console.log(newTemps);
-		//console.log(newWeather);
+		console.log(newWeather);
 
 		setHours(newTimes);
 		setFinalTemps(newTemps);

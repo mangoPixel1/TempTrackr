@@ -33,45 +33,12 @@ function HourlyWeather() {
 	const [dailyData, setDailyData] = useState([]); // Fetched API data: sunrise/sunset times for yesterday, today, today + 2
 	const [hourlyData, setHourlyData] = useState({}); // Fetched API data: hourly temp/weather codes for yesterday, today, today + 2
 
-	const [times, setTimes] = useState([]); // Hours filtered to be within range of current time to 24 hours later
-	const [temperatures, setTemperatures] = useState([]); // Temps filtered to be within range of current time to 24 hours later
-	const [weatherCodes, setWeatherCodes] = useState([]); // Weather filtered to be within range of current time to 24 hours later
-
 	const [sunriseTime, setSunriseTime] = useState(""); // Next sunrise time
 	const [sunsetTime, setSunsetTime] = useState(""); // Next sunset time
 
 	const [hours, setHours] = useState([]); // Final times to be rendered in UI
 	const [finalTemps, setFinalTemps] = useState([]); // Final temps to be rendered in UI
-	const [finalWeather, setFinalWeather] = useState([]); // Final weather codes to be rendered in UI
-
-	const weatherCodeMap = {
-		0: "Clear",
-		1: "Mainly Clear",
-		2: "Partly Cloudy",
-		3: "Overcast",
-		45: "Fog",
-		48: "Fog",
-		51: "Light Drizzle",
-		53: "Drizzle",
-		55: "Heavy Drizzle",
-		61: "Light Rain",
-		63: "Rain",
-		65: "Heavy Rain",
-		66: "Freezing Rain: Light",
-		67: "Freezing Rain: Heavy",
-		71: "Snow Fall: Light",
-		73: "Snow Fall: Moderate",
-		75: "Snow Fall: Heavy",
-		77: "Snow Grains",
-		80: "Showers: Light",
-		81: "Showers: Moderate",
-		82: "Showers: Violent",
-		85: "Snow Showers: Light",
-		86: "Snow Showers: Heavy",
-		95: "Thunderstorm",
-		96: "Thunderstorm",
-		99: "Thunderstorm"
-	};
+	const [finalWeather, setFinalWeather] = useState([]); // Final weather conditions to be rendered in UI
 
 	// Gets condition icon based on the weather code and time
 	function getConditionIcon(weatherCode, time) {
@@ -147,6 +114,7 @@ function HourlyWeather() {
 
 	// Fetches API data
 	useEffect(() => {
+		console.log("Unit changed");
 		fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,weather_code&temperature_unit=${unit}&wind_speed_unit=mph&precipitation_unit=inch&past_days=1&timezone=auto&forecast_days=3&daily=sunrise,sunset`)
 			.then(response => {
 				if (!response.ok) {
@@ -155,15 +123,13 @@ function HourlyWeather() {
 				return response.json();
 			})
 			.then(data => {
-				console.log(data);
+				//console.log(data);
 				setDailyData(data.daily);
 				setHourlyData(data.hourly);
 			})
 			.catch(error => console.error(error));
 	}, [latitude, longitude, cityName, unit]);
 
-	// Finds next sunrise/sunset time
-	// Syncs temp, weather, time arrays
 	useEffect(() => {
 		const currentDate = new Date(); // get the current date and time
 		const currentDay = currentDate.getDay(); // gets current day of the week 0-6
@@ -180,8 +146,8 @@ function HourlyWeather() {
 					const nextSunrise = currentDate < currentSunrise ? dailyData.sunrise[i] : dailyData.sunrise[i + 1];
 					const nextSunset = currentDate < currentSunset ? dailyData.sunset[i] : dailyData.sunset[i + 1];
 
-					console.log(`Next sunrise: ${nextSunrise}`);
-					console.log(`Next sunset: ${nextSunset}`);
+					//console.log(`Next sunrise: ${nextSunrise}`);
+					//console.log(`Next sunset: ${nextSunset}`);
 
 					setSunriseTime(nextSunrise);
 					setSunsetTime(nextSunset);
@@ -208,16 +174,10 @@ function HourlyWeather() {
 				}
 			}
 
-			//console.log(newTimeArr);
-
-			// Update the state data with the new arrays
-			setTimes(newTimeArr);
-			setTemperatures(newTempArr);
-			setWeatherCodes(newWeatherArr);
+			// Call formatHours with the new arrays
+			formatHours(newTimeArr, newTempArr, newWeatherArr);
 		}
-
-		formatHours();
-	}, [hourlyData, dailyData]);
+	}, [hourlyData, dailyData, unit]);
 
 	// Formats time (5 PM)
 	function formatTimeHour(timeString) {
@@ -240,16 +200,16 @@ function HourlyWeather() {
 	}
 
 	// Format final hourly data to render in UI
-	function formatHours() {
-		// times - length 24
-		// newTimes - length 26 (includes sunrise & sunset)
-		let newTimes = [...times];
-		let newTemps = [...temperatures];
-		let newWeather = [...weatherCodes];
+	function formatHours(newTimes, newTemps, newWeather) {
+		// newTimes - length 24
+		// formattedTimes - length 26 (includes sunrise & sunset)
+		let formattedTimes = [...newTimes];
+		let formattedTemps = [...newTemps];
+		let formattedWeather = [...newWeather];
 
-		console.log(times);
-		//console.log(temperatures);
-		//console.log(weatherCodes);
+		//console.log(newTimes);
+		//console.log(newTemps);
+		//console.log(newWeather);
 
 		let sunriseIndex; // Index at hour of sunrise
 		let sunsetIndex; // Index at hour of sunset
@@ -258,44 +218,45 @@ function HourlyWeather() {
 		const nextSunsetTime = new Date(sunsetTime); // Temporary Date object for sunset
 
 		// Find index to insert sunrise and sunset times into newTimes
-		for (let i = 0; i < times.length; i++) {
-			const currentTime = new Date(times[i]);
+		for (let i = 0; i < newTimes.length; i++) {
+			const currentTime = new Date(newTimes[i]);
 
 			if (currentTime.getHours() === nextSunriseTime.getHours()) {
 				sunriseIndex = i;
-				console.log(`sunrise i: ${i}`);
+				//console.log(`sunrise i: ${i}`);
 			} else if (currentTime.getHours() === nextSunsetTime.getHours()) {
 				sunsetIndex = i;
-				console.log(`sunset i: ${i}`);
+				//console.log(`sunset i: ${i}`);
 			}
 		}
 
 		if (sunsetIndex > sunriseIndex) {
 			// Sunrise comes first
-			newTimes.splice(sunriseIndex + 1, 0, sunriseTime); // Insert sunrise time into arrays
-			newTemps.splice(sunriseIndex + 1, 0, 200);
-			newWeather.splice(sunriseIndex + 1, 0, 100);
+			formattedTimes.splice(sunriseIndex + 1, 0, sunriseTime); // Insert sunrise time into arrays
+			formattedTemps.splice(sunriseIndex + 1, 0, 200);
+			formattedWeather.splice(sunriseIndex + 1, 0, 100);
 
-			newTimes.splice(sunsetIndex + 2, 0, sunsetTime); // Insert sunset time into arrays
-			newTemps.splice(sunsetIndex + 2, 0, 200);
-			newWeather.splice(sunsetIndex + 2, 0, 101);
+			formattedTimes.splice(sunsetIndex + 2, 0, sunsetTime); // Insert sunset time into arrays
+			formattedTemps.splice(sunsetIndex + 2, 0, 200);
+			formattedWeather.splice(sunsetIndex + 2, 0, 101);
 		} else {
 			// Sunset comes first
-			newTimes.splice(sunsetIndex + 1, 0, sunsetTime); // Insert sunset time into arrays
-			newTemps.splice(sunsetIndex + 1, 0, 200);
-			newWeather.splice(sunsetIndex + 1, 0, 101);
+			formattedTimes.splice(sunsetIndex + 1, 0, sunsetTime); // Insert sunset time into arrays
+			formattedTemps.splice(sunsetIndex + 1, 0, 200);
+			formattedWeather.splice(sunsetIndex + 1, 0, 101);
 
-			newTimes.splice(sunriseIndex + 2, 0, sunriseTime); // Insert sunrise time into arrays
-			newTemps.splice(sunriseIndex + 2, 0, 200);
-			newWeather.splice(sunriseIndex + 2, 0, 100);
+			formattedTimes.splice(sunriseIndex + 2, 0, sunriseTime); // Insert sunrise time into arrays
+			formattedTemps.splice(sunriseIndex + 2, 0, 200);
+			formattedWeather.splice(sunriseIndex + 2, 0, 100);
 		}
 
-		console.log(newTimes);
-		console.log(newWeather);
+		//console.log(formattedTimes);
+		//console.log(formattedWeather);
+		console.log(formattedTemps);
 
-		setHours(newTimes);
-		setFinalTemps(newTemps);
-		setFinalWeather(newWeather);
+		setHours(formattedTimes);
+		setFinalTemps(formattedTemps);
+		setFinalWeather(formattedWeather);
 	}
 
 	return (
@@ -330,39 +291,5 @@ function HourlyWeather() {
 		</div>
 	);
 }
-// pass in date to getConditionIcon, in the function check if date is before/after sunrise/sunset time
+
 export default HourlyWeather;
-
-/* 
-return (
-		<div className={classes.hourlyWeatherContainer}>
-			<ul className={classes.hourlyForecast}>
-				{hours &&
-					hours.map((hour, index, hours) => {
-						const currentHour = new Date(hour);
-						const pastHour = new Date(hours[index - 1]);
-
-						if (currentHour.getHours() === pastHour.getHours()) {
-							// Render sunrise/sunset
-							return (
-								<li key={index}>
-									<div>{`${formatTimeHourMinutes(hour)}`}</div>
-									{getConditionIcon(finalWeather[index], hour)}
-									<div className={classes.hideText}>{`null`}</div>
-								</li>
-							);
-						} else {
-							// Render hourly weather
-							return (
-								<li key={index}>
-									<div>{`${formatTimeHour(hour)}`}</div>
-									{getConditionIcon(finalWeather[index], hour)}
-									<div>{`${Math.round(finalTemps[index])}°`}</div>
-								</li>
-							);
-						}
-					})}
-			</ul>
-		</div>
-	);
-*/

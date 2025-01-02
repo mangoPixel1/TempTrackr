@@ -9,6 +9,7 @@ import { useLocation } from "../../context/LocationContext";
 // Components
 import CurrentWeather from "./CurrentWeather";
 import HourlyWeather from "./HourlyWeather";
+import DailyWeather from "./DailyWeather";
 
 function Weather() {
 	const { unit } = useUnit();
@@ -20,6 +21,7 @@ function Weather() {
 				<h2 className="cityName">{cityName}</h2>
 				<CurrentWeather />
 				<HourlyWeather />
+				<DailyWeather />
 				<div>{/*<DailyWeather>*/}</div>
 			</div>
 		</>

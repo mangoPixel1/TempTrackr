@@ -22,7 +22,6 @@ function Weather() {
 				<CurrentWeather />
 				<HourlyWeather />
 				<DailyWeather />
-				<div>{/*<DailyWeather>*/}</div>
 			</div>
 		</>
 	);

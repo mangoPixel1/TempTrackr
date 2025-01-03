@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
 import classes from "./Weather.module.css";
 
-// Contexts
-import { useTheme } from "../../context/ThemeContext";
-import { useUnit } from "../../context/UnitContext";
-import { useLocation } from "../../context/LocationContext";
-
 // Icons
 import ClearDay from "../Icons/Current/clear-day.svg?react";
 import ClearNight from "../Icons/Current/clear-night.svg?react";
@@ -23,6 +18,11 @@ import Sleet from "../Icons/Current/sleet.svg?react";
 import Snow from "../Icons/Current/snow.svg?react";
 import ThunderstormsDay from "../Icons/Current/thunderstorms-day.svg?react";
 import ThunderstormsNight from "../Icons/Current/thunderstorms-night.svg?react";
+
+// Contexts
+import { useTheme } from "../../context/ThemeContext";
+import { useUnit } from "../../context/UnitContext";
+import { useLocation } from "../../context/LocationContext";
 
 function CurrentWeather() {
 	const { theme } = useTheme();

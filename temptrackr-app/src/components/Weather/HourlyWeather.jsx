@@ -146,9 +146,6 @@ function HourlyWeather() {
 					const nextSunrise = currentDate < currentSunrise ? dailyData.sunrise[i] : dailyData.sunrise[i + 1];
 					const nextSunset = currentDate < currentSunset ? dailyData.sunset[i] : dailyData.sunset[i + 1];
 
-					//console.log(`Next sunrise: ${nextSunrise}`);
-					//console.log(`Next sunset: ${nextSunset}`);
-
 					setSunriseTime(nextSunrise);
 					setSunsetTime(nextSunset);
 				}
@@ -207,10 +204,6 @@ function HourlyWeather() {
 		let formattedTemps = [...newTemps];
 		let formattedWeather = [...newWeather];
 
-		//console.log(newTimes);
-		//console.log(newTemps);
-		//console.log(newWeather);
-
 		let sunriseIndex; // Index at hour of sunrise
 		let sunsetIndex; // Index at hour of sunset
 
@@ -223,10 +216,8 @@ function HourlyWeather() {
 
 			if (currentTime.getHours() === nextSunriseTime.getHours()) {
 				sunriseIndex = i;
-				//console.log(`sunrise i: ${i}`);
 			} else if (currentTime.getHours() === nextSunsetTime.getHours()) {
 				sunsetIndex = i;
-				//console.log(`sunset i: ${i}`);
 			}
 		}
 
@@ -249,10 +240,6 @@ function HourlyWeather() {
 			formattedTemps.splice(sunriseIndex + 2, 0, 200);
 			formattedWeather.splice(sunriseIndex + 2, 0, 100);
 		}
-
-		//console.log(formattedTimes);
-		//console.log(formattedWeather);
-		console.log(formattedTemps);
 
 		setHours(formattedTimes);
 		setFinalTemps(formattedTemps);

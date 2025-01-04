@@ -128,10 +128,10 @@ function DailyWeather() {
 			<ul className={classes.dailyForecast}>
 				{times.map((time, index) => (
 					<li key={index}>
-						<div>{formatDate(time, index)}</div>
-						<div>{getConditionIcon(weatherCodes[index])}</div>
-						<div>{`${Math.round(maxTemps[index])}° / ${Math.round(minTemps[index])}°`}</div>
-						<div>{`${precip[index]}%`}</div>
+						<div className={classes.dailyDate}>{formatDate(time, index)}</div>
+						<div className={classes.dailyCondition}>{getConditionIcon(weatherCodes[index])}</div>
+						<div className={classes.dailyTemps}>{`${Math.round(maxTemps[index])}° / ${Math.round(minTemps[index])}°`}</div>
+						<div className={classes.dailyPrecip}>{`${precip[index]}%`}</div>
 					</li>
 				))}
 			</ul>

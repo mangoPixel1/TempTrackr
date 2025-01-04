@@ -125,7 +125,6 @@
 }
 
 .dailyForecast {
-	padding: 0 15px;
 	width: 60%;
 	max-width: 550px;
 	font-size: 18px;
@@ -136,4 +135,20 @@
 	justify-content: space-between;
 	align-items: center;
 	list-style-type: none;
+}
+
+.dailyDate {
+	width: 35%;
+}
+
+.dailyCondition {
+	width: 15%;
+}
+
+.dailyTemps {
+	width: 30%;
+}
+
+.dailyPrecip {
+	width: 10%;
 }

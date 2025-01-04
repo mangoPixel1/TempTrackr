@@ -35,6 +35,7 @@ function DailyWeather() {
 	const [weatherCodes, setWeatherCodes] = useState([]);
 	const [maxTemps, setMaxTemps] = useState([]);
 	const [minTemps, setMinTemps] = useState([]);
+	const [precip, setPrecip] = useState([]);
 
 	const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 	const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -55,6 +56,7 @@ function DailyWeather() {
 				setWeatherCodes(data.daily.weather_code);
 				setMaxTemps(data.daily.temperature_2m_max);
 				setMinTemps(data.daily.temperature_2m_min);
+				setPrecip(data.daily.precipitation_probability_max);
 			})
 			.catch(error => console.error(error));
 	}, [latitude, longitude, cityName, unit]);
@@ -129,6 +131,7 @@ function DailyWeather() {
 						<div>{formatDate(time, index)}</div>
 						<div>{getConditionIcon(weatherCodes[index])}</div>
 						<div>{`${Math.round(maxTemps[index])}° / ${Math.round(minTemps[index])}°`}</div>
+						<div>{`${precip[index]}%`}</div>
 					</li>
 				))}
 			</ul>

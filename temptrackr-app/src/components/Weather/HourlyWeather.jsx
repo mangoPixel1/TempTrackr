@@ -114,7 +114,6 @@ function HourlyWeather() {
 
 	// Fetches API data
 	useEffect(() => {
-		console.log("Unit changed");
 		fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,weather_code&temperature_unit=${unit}&wind_speed_unit=mph&precipitation_unit=inch&past_days=1&timezone=auto&forecast_days=3&daily=sunrise,sunset`)
 			.then(response => {
 				if (!response.ok) {

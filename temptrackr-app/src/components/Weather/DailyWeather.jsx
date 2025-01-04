@@ -36,9 +36,12 @@ function DailyWeather() {
 	const [maxTemps, setMaxTemps] = useState([]);
 	const [minTemps, setMinTemps] = useState([]);
 
+	const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+	const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
 	// Fetches API data
 	useEffect(() => {
-		fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min&temperature_unit=${unit}&wind_speed_unit=mph&precipitation_unit=inch&past_days=1`)
+		fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&temperature_unit=${unit}&wind_speed_unit=mph&precipitation_unit=inch&past_days=1`)
 			.then(response => {
 				if (!response.ok) {
 					throw new Error("Error fetching daily data");
@@ -113,15 +116,22 @@ function DailyWeather() {
 		}
 	}
 
+	function formatDate(date, index) {
+		const dateObj = new Date(date);
+		return index === 0 ? `Today` : `${daysOfWeek[dateObj.getDay()]}, ${monthNames[dateObj.getMonth()]} ${dateObj.getDate()}`;
+	}
+
 	return (
 		<div className={classes.dailyWeatherContainer}>
-			{times.map((time, index) => (
-				<div className={classes.dailyDay} key={index}>
-					<div>{`${time}`}</div>
-					<div>{`${weatherCodes[index]}`}</div>
-					<div>{`${maxTemps[index]} / ${minTemps[index]}`}</div>
-				</div>
-			))}
+			<ul className={classes.dailyForecast}>
+				{times.map((time, index) => (
+					<li key={index}>
+						<div>{formatDate(time, index)}</div>
+						<div>{getConditionIcon(weatherCodes[index])}</div>
+						<div>{`${Math.round(maxTemps[index])}° / ${Math.round(minTemps[index])}°`}</div>
+					</li>
+				))}
+			</ul>
 		</div>
 	);
 }

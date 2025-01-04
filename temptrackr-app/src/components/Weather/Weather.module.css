@@ -62,6 +62,7 @@
 }
 
 .hourlyWeatherContainer {
+	margin: 25px auto;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -70,9 +71,25 @@
 
 .hourlyForecast {
 	width: 60%;
+	max-width: 550px;
 	font-size: 14px;
 	overflow: auto;
 	white-space: nowrap;
+	scrollbar-width: thin;
+	scrollbar-color: rgba(155, 155, 155, 0.7) transparent;
+}
+
+.hourlyForecast::-webkit-scrollbar {
+	height: 6px;
+}
+
+.hourlyForecast::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.hourlyForecast::-webkit-scrollbar-thumb {
+	background-color: rgba(155, 155, 155, 0.7);
+	border-radius: 20px;
 }
 
 .hourlyForecast li {
@@ -90,6 +107,33 @@
 	height: 50px;
 }
 
+.dailyIcon {
+	width: 75px;
+	height: 75px;
+}
+
 .hideText {
 	visibility: hidden;
+}
+
+.dailyWeatherContainer {
+	margin: 25px auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.dailyForecast {
+	padding: 0 15px;
+	width: 60%;
+	max-width: 550px;
+	font-size: 18px;
+}
+
+.dailyForecast li {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	list-style-type: none;
 }

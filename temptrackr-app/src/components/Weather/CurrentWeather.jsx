@@ -18,6 +18,9 @@ import Sleet from "../Icons/Current/sleet.svg?react";
 import Snow from "../Icons/Current/snow.svg?react";
 import ThunderstormsDay from "../Icons/Current/thunderstorms-day.svg?react";
 import ThunderstormsNight from "../Icons/Current/thunderstorms-night.svg?react";
+import PrecipChance from "../Icons/PrecipChance.svg?react";
+import Humidity from "../Icons/Humidity.svg?react";
+import Wind from "../Icons/Wind.svg?react";
 
 // Contexts
 import { useTheme } from "../../context/ThemeContext";
@@ -162,16 +165,16 @@ function CurrentWeather() {
 
 			<div className={classes.weatherMetrics}>
 				<div className="precipChance">
-					{/*<PrecipiationIcon fillColor={theme === "light" ? "black" : "white"} />*/}
-					<p>Precipitation: {precipChance}%</p>
+					<PrecipChance className={`${classes.currentConditionIcon} ${classes.precipChanceIcon}`} />
+					<p>{precipChance}%</p>
 				</div>
 				<div className="humidity">
-					{/*<DropletIcon fillColor={theme === "light" ? "black" : "white"} />*/}
-					<p>Humidity: {humidity}%</p>
+					<Humidity className={classes.currentConditionIcon} />
+					<p>{humidity}%</p>
 				</div>
 				<div className="windSpeed">
-					{/*<WindIcon fillColor={theme === "light" ? "black" : "white"} />*/}
-					<p>Wind: {wind} mph</p>
+					<Wind className={classes.currentConditionIcon} />
+					<p>{wind} mph</p>
 				</div>
 			</div>
 		</div>

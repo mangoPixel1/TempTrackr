@@ -20,6 +20,7 @@ import ThunderstormsDayStatic from "../Icons/Hourly/thunderstorms-day-static.svg
 import ThunderstormsNightStatic from "../Icons/Hourly/thunderstorms-night-static.svg?react";
 import SunriseStatic from "../Icons/Hourly/sunset-static.svg?react";
 import SunsetStatic from "../Icons/Hourly/sunrise-static.svg?react";
+import PrecipChance from "../Icons/PrecipChance.svg?react";
 
 // Contexts
 import { useTheme } from "../../context/ThemeContext";
@@ -131,7 +132,10 @@ function DailyWeather() {
 						<div className={classes.dailyDate}>{formatDate(time, index)}</div>
 						<div className={classes.dailyCondition}>{getConditionIcon(weatherCodes[index])}</div>
 						<div className={classes.dailyTemps}>{`${Math.round(maxTemps[index])}° / ${Math.round(minTemps[index])}°`}</div>
-						<div className={classes.dailyPrecip}>{`${precip[index]}%`}</div>
+						<div className={classes.dailyPrecip}>
+							{`${precip[index]}%`}
+							<PrecipChance className={`${classes.precipChance} ${classes.precipChanceIcon}`} />
+						</div>
 					</li>
 				))}
 			</ul>

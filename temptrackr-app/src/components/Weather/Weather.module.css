@@ -126,7 +126,7 @@
 
 .dailyForecast {
 	width: 60%;
-	max-width: 550px;
+	max-width: 750px;
 	font-size: 18px;
 }
 
@@ -138,17 +138,39 @@
 }
 
 .dailyDate {
-	width: 35%;
-}
-
-.dailyCondition {
-	width: 15%;
-}
-
-.dailyTemps {
+	text-align: left;
 	width: 30%;
 }
 
+.dailyCondition {
+	width: 20%;
+}
+
+.dailyTemps {
+	width: 25%;
+}
+
 .dailyPrecip {
-	width: 10%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 15%;
+	font-size: 14px;
+}
+
+.precipChance {
+	width: 25px;
+	height: 25px;
+	text-align: right;
+	margin-left: 10px;
+}
+
+.precipChanceIcon {
+	position: relative;
+	bottom: 2px;
+}
+
+.currentConditionIcon {
+	width: 25px;
+	height: 25px;
 }

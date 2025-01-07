@@ -1,6 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import classes from "./Header.module.css";
 
+// Icons
+import SettingsIcon from "../Icons/Settings.svg?react";
+
 // Contexts
 import { useTheme } from "../../context/ThemeContext";
 import { useUnit } from "../../context/UnitContext";
@@ -55,7 +58,7 @@ function Header() {
 	return (
 		<header className={`${classes.headerStyle} ${theme === "dark" ? classes.dark : ""}`}>
 			<div className={classes.searchWrapper}>
-				<input type="text" placeholder="Search City Name" id="location-search-input" value={searchValue} onChange={handleSearchInputChange} />
+				<input className={classes.searchInput} type="text" placeholder="Search City Name" id="location-search-input" value={searchValue} onChange={handleSearchInputChange} />
 				<button className={classes.searchButton} onClick={handleLocationSearch}>
 					Search
 				</button>
@@ -78,6 +81,12 @@ function Header() {
 
 			<div className={classes.displayModeToggle}>
 				<button onClick={toggleTheme}>{theme === "light" ? "☀️" : "🌙"}</button>
+			</div>
+
+			<div className={classes.settingsButton}>
+				<button>
+					<SettingsIcon className={classes.settingsIcon} />
+				</button>
 			</div>
 		</header>
 	);

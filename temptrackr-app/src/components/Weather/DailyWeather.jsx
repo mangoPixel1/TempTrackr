@@ -121,7 +121,7 @@ function DailyWeather() {
 
 	function formatDate(date, index) {
 		const dateObj = new Date(date);
-		return index === 0 ? `Today` : `${daysOfWeek[dateObj.getDay()]}, ${monthNames[dateObj.getMonth()]} ${dateObj.getDate()}`;
+		return index === 0 ? `Today` : `${daysOfWeek[dateObj.getDay() + 1]}, ${monthNames[dateObj.getMonth()]} ${dateObj.getDate() + 1}`;
 	}
 
 	return (

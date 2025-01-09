@@ -4,6 +4,9 @@ import classes from "./Header.module.css";
 // Icons
 import SettingsIcon from "../Icons/Settings.svg?react";
 
+// Components
+import SettingsModal from "../Settings/SettingsModal";
+
 // Contexts
 import { useTheme } from "../../context/ThemeContext";
 import { useUnit } from "../../context/UnitContext";
@@ -45,6 +48,8 @@ function Header() {
 				.catch(error => console.error(error));
 		}
 	}
+
+	const handleSettingsClick = () => {};
 
 	function handleResultSelection(suggestion) {
 		setSelectedSearchResult(suggestion); // set to object from search result

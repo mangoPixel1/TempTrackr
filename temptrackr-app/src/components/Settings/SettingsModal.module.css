@@ -1,0 +1,19 @@
+.settingsContainer {
+	text-align: left;
+}
+
+.settingsContainer h3 {
+	font-weight: bold;
+}
+
+.settingsContainer label {
+	font-size: 24px;
+}
+
+.settingsOptions {
+	font-size: 18px;
+}
+
+.settingsOptions input {
+	display: block;
+}

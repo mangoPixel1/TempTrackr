@@ -5,6 +5,7 @@ import "./App.css";
 import Header from "./components/Header/Header";
 import LocationSelector from "./components/LocationSelector/LocationSelector";
 import Weather from "./components/Weather/Weather";
+import SettingsModal from "./components/Settings/SettingsModal";
 
 // Contexts
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
@@ -43,6 +44,7 @@ function MainComponent() {
 				{latitude && longitude && cityName ? (
 					<>
 						<Weather />
+						<SettingsModal />
 						<button className="resetLocationButton" onClick={handleLocationReset}>
 							Reset Location
 						</button>

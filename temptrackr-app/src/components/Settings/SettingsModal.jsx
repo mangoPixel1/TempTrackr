@@ -23,16 +23,20 @@ function SettingsModal() {
 				<h5>Unit</h5>
 				<div className={classes.settingsOptions}>
 					<div>
-						<input type="radio" name="theme" id="imperial" />
+						<input type="radio" name="theme" id="imperial" value="fahrenheit" checked={unit === "fahrenheit"} onChange={e => changeUnit(e.target.value)} />
 						<label htmlFor="imperial">Imperial</label>
 					</div>
 					<div>
-						<input type="radio" name="theme" id="metric" />
+						<input type="radio" name="theme" id="metric" value="celsius" checked={unit === "celsius"} onChange={e => changeUnit(e.target.value)} />
 						<label htmlFor="metric">Metric</label>
 					</div>
 				</div>
 				<h5>Theme</h5>
 				<div className={classes.settingsOptions}>
+					{/*<div>
+						<input type="radio" name="theme" id="system" />
+						<label htmlFor="system">System</label>
+					</div>*/}
 					<div>
 						<input type="radio" name="theme" id="light" />
 						<label htmlFor="light">Light</label>
@@ -40,10 +44,6 @@ function SettingsModal() {
 					<div>
 						<input type="radio" name="theme" id="dark" />
 						<label htmlFor="dark">Dark</label>
-					</div>
-					<div>
-						<input type="radio" name="theme" id="system" />
-						<label htmlFor="system">System</label>
 					</div>
 				</div>
 			</div>

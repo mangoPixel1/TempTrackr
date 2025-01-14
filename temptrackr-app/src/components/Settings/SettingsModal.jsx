@@ -1,20 +1,51 @@
 import React, { useState } from "react";
 import classes from "./SettingsModal.module.css";
 
+// Icons
+import CloseButtonLight from "../Icons/CloseButtonLight.svg?react";
+import CloseButtonDark from "../Icons/CloseButtonDark.svg?react";
+
+// Contexts
+import { useUnit } from "../../context/UnitContext";
+import { useTheme } from "../../context/ThemeContext";
+
 function SettingsModal() {
+	const { unit, changeUnit } = useUnit();
+	const { theme, toggleTheme } = useTheme();
+
 	return (
 		<div className={classes.settingsContainer}>
-			<h3>Settings</h3>
-			<label htmlFor="unit">Unit </label>
-			<div className={classes.settingsOptions}>
-				<input type="radio" value="Imperial" name="unit" /> Male
-				<input type="radio" value="Metric" name="unit" /> Female
-			</div>
-			<label htmlFor="theme">Theme </label>
-			<div className={classes.settingsOptions}>
-				<input type="radio" value="Light" name="theme" /> Light
-				<input type="radio" value="Dark" name="theme" /> Dark
-				<input type="radio" value="Auto" name="theme" /> System
+			<div className={classes.settingsWrapper}>
+				<div className={classes.settingsHeader}>
+					<h3>Settings</h3>
+					<button className={`${theme === "dark" ? classes.dark : ""}`}>{theme === "light" ? <CloseButtonLight className={classes.closeModalBtn} /> : <CloseButtonDark className={classes.closeModalBtn} />}</button>
+				</div>
+				<h5>Unit</h5>
+				<div className={classes.settingsOptions}>
+					<div>
+						<input type="radio" name="theme" id="imperial" />
+						<label htmlFor="imperial">Imperial</label>
+					</div>
+					<div>
+						<input type="radio" name="theme" id="metric" />
+						<label htmlFor="metric">Metric</label>
+					</div>
+				</div>
+				<h5>Theme</h5>
+				<div className={classes.settingsOptions}>
+					<div>
+						<input type="radio" name="theme" id="light" />
+						<label htmlFor="light">Light</label>
+					</div>
+					<div>
+						<input type="radio" name="theme" id="dark" />
+						<label htmlFor="dark">Dark</label>
+					</div>
+					<div>
+						<input type="radio" name="theme" id="system" />
+						<label htmlFor="system">System</label>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

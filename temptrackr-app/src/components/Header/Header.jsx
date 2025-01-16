@@ -23,6 +23,16 @@ function Header() {
 	const [searchSuggestions, setSearchSuggestions] = useState([]); // API location search results
 	const [selectedSearchResult, setSelectedSearchResult] = useState(null); // selected search result
 
+	const [modalOpen, setModalOpen] = useState(false); // True: modal open | False: modal closed
+
+	function handleOpen() {
+		setModalOpen(true);
+	}
+
+	function handleClose() {
+		setModalOpen(false);
+	}
+
 	function handleUnitChange(e) {
 		changeUnit(e.target.value);
 	}
@@ -61,39 +71,42 @@ function Header() {
 	}
 
 	return (
-		<header className={`${classes.headerStyle} ${theme === "dark" ? classes.dark : ""}`}>
-			<div className={classes.searchWrapper}>
-				<input className={classes.searchInput} type="text" placeholder="Search City Name" id="location-search-input" value={searchValue} onChange={handleSearchInputChange} />
-				<button className={classes.searchButton} onClick={handleLocationSearch}>
-					Search
-				</button>
-				{searchSuggestions && (
-					<ul className={classes.searchSuggestionsList}>
-						{searchSuggestions.map(suggestion => {
-							return <li key={suggestion.id} onClick={() => handleResultSelection(suggestion)}>{`${suggestion.name}, ${suggestion.admin2}, ${suggestion.admin1}, ${suggestion.country}`}</li>;
-						})}
-					</ul>
-				)}
-			</div>
+		<>
+			<header className={`${classes.headerStyle} ${theme === "dark" ? classes.dark : ""}`}>
+				<div className={classes.searchWrapper}>
+					<input className={classes.searchInput} type="text" placeholder="Search City Name" id="location-search-input" value={searchValue} onChange={handleSearchInputChange} />
+					<button className={classes.searchButton} onClick={handleLocationSearch}>
+						Search
+					</button>
+					{searchSuggestions && (
+						<ul className={classes.searchSuggestionsList}>
+							{searchSuggestions.map(suggestion => {
+								return <li key={suggestion.id} onClick={() => handleResultSelection(suggestion)}>{`${suggestion.name}, ${suggestion.admin2}, ${suggestion.admin1}, ${suggestion.country}`}</li>;
+							})}
+						</ul>
+					)}
+				</div>
 
-			<div className={classes.unitSelectWrapper}>
-				<label htmlFor="units">Unit </label>
-				<select id="units" value={unit} onChange={handleUnitChange}>
-					<option value="fahrenheit">F</option>
-					<option value="celsius">C</option>
-				</select>
-			</div>
+				<div className={classes.unitSelectWrapper}>
+					<label htmlFor="units">Unit </label>
+					<select id="units" value={unit} onChange={handleUnitChange}>
+						<option value="fahrenheit">F</option>
+						<option value="celsius">C</option>
+					</select>
+				</div>
 
-			<div className={classes.displayModeToggle}>
-				<button onClick={toggleTheme}>{theme === "light" ? "☀️" : "🌙"}</button>
-			</div>
+				<div className={classes.displayModeToggle}>
+					<button onClick={toggleTheme}>{theme === "light" ? "☀️" : "🌙"}</button>
+				</div>
 
-			<div className={classes.settingsButton}>
-				<button>
-					<SettingsIcon className={classes.settingsIcon} />
-				</button>
-			</div>
-		</header>
+				<div className={classes.settingsButton}>
+					<button onClick={handleOpen}>
+						<SettingsIcon className={classes.settingsIcon} />
+					</button>
+				</div>
+			</header>
+			<SettingsModal isOpen={modalOpen} onClose={handleClose} />
+		</>
 	);
 }
 

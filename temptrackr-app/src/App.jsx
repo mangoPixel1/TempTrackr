@@ -44,7 +44,6 @@ function MainComponent() {
 				{latitude && longitude && cityName ? (
 					<>
 						<Weather />
-						<SettingsModal />
 						<button className="resetLocationButton" onClick={handleLocationReset}>
 							Reset Location
 						</button>

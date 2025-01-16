@@ -10,6 +10,13 @@ function ThemeProvider({ children }) {
 		document.body.classList.toggle("darkBody");
 	}
 
+	function changeTheme(theme) {
+		if (theme === "light" || "dark") {
+			setTheme(theme);
+		}
+		//console.error(`Invalid theme value: ${theme}`);
+	}
+
 	useEffect(() => {
 		// whenever theme changes, update local storage
 		localStorage.setItem("theme", theme);
@@ -17,7 +24,7 @@ function ThemeProvider({ children }) {
 		theme === "dark" ? document.body.classList.add("darkBody") : document.body.classList.remove("darkBody");
 	}, [theme]);
 
-	return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>;
+	return <ThemeContext.Provider value={{ theme, toggleTheme, changeTheme }}>{children}</ThemeContext.Provider>;
 }
 
 function useTheme() {

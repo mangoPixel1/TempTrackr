@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./SettingsModal.module.css";
 
 // Icons
@@ -11,7 +11,7 @@ import { useTheme } from "../../context/ThemeContext";
 
 function SettingsModal() {
 	const { unit, changeUnit } = useUnit();
-	const { theme, toggleTheme } = useTheme();
+	const { theme, changeTheme } = useTheme();
 
 	return (
 		<div className={classes.settingsContainer}>
@@ -22,29 +22,13 @@ function SettingsModal() {
 				</div>
 				<h5>Unit</h5>
 				<div className={classes.settingsOptions}>
-					<div>
-						<input type="radio" name="theme" id="imperial" value="fahrenheit" checked={unit === "fahrenheit"} onChange={e => changeUnit(e.target.value)} />
-						<label htmlFor="imperial">Imperial</label>
-					</div>
-					<div>
-						<input type="radio" name="theme" id="metric" value="celsius" checked={unit === "celsius"} onChange={e => changeUnit(e.target.value)} />
-						<label htmlFor="metric">Metric</label>
-					</div>
+					<input type="radio" name="unit" id="fahrenheit" value="fahrenheit" checked={unit === "fahrenheit"} onChange={e => changeUnit(e.target.value)} /> <label htmlFor="fahrenheit">Fahrenheit</label>
+					<input type="radio" name="unit" id="celsius" value="celsius" checked={unit === "celsius"} onChange={e => changeUnit(e.target.value)} /> <label htmlFor="celsius">Celsius</label>
 				</div>
 				<h5>Theme</h5>
 				<div className={classes.settingsOptions}>
-					{/*<div>
-						<input type="radio" name="theme" id="system" />
-						<label htmlFor="system">System</label>
-					</div>*/}
-					<div>
-						<input type="radio" name="theme" id="light" />
-						<label htmlFor="light">Light</label>
-					</div>
-					<div>
-						<input type="radio" name="theme" id="dark" />
-						<label htmlFor="dark">Dark</label>
-					</div>
+					<input type="radio" name="theme" id="light" value="light" checked={theme === "light"} onChange={e => changeTheme(e.target.value)} /> <label htmlFor="light">Light</label>
+					<input type="radio" name="theme" id="dark" value="dark" checked={theme === "dark"} onChange={e => changeTheme(e.target.value)} /> <label htmlFor="dark">Dark</label>
 				</div>
 			</div>
 		</div>

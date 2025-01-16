@@ -27,17 +27,27 @@
 	width: 35px;
 	border-radius: 4px;
 	border: none;
-	background-color: rgb(218, 218, 218);
 	cursor: pointer;
+	background-color: rgb(218, 218, 218);
+	transition: 0.3s;
+}
+
+.settingsHeader button:hover {
+	background-color: rgb(204, 204, 204);
 }
 
 .settingsHeader button.dark {
 	background-color: #444444;
+	transition: 0.3s;
 }
 
-.closeModalBtn {
-	width: 25px;
-	height: 25px;
+.settingsHeader button.dark:hover {
+	background-color: #3e3e3e;
+}
+
+.closeModalIcon {
+	width: 20px;
+	height: 20px;
 }
 
 .settingsOptions {

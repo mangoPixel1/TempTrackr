@@ -21,7 +21,7 @@ function SettingsModal({ isOpen, onClose }) {
 				<div className={classes.settingsHeader}>
 					<h3>Settings</h3>
 					<button onClick={onClose} className={`${theme === "dark" ? classes.dark : ""}`}>
-						{theme === "light" ? <CloseButtonLight className={classes.closeModalBtn} /> : <CloseButtonDark className={classes.closeModalBtn} />}
+						{theme === "light" ? <CloseButtonLight className={classes.closeModalIcon} /> : <CloseButtonDark className={classes.closeModalIcon} />}
 					</button>
 				</div>
 				<h5>🌡 Unit</h5>

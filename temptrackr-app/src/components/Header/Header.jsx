@@ -33,10 +33,6 @@ function Header() {
 		setModalOpen(false);
 	}
 
-	function handleUnitChange(e) {
-		changeUnit(e.target.value);
-	}
-
 	function handleSearchInputChange(e) {
 		setSearchValue(e.target.value);
 		handleLocationSearch();
@@ -58,8 +54,6 @@ function Header() {
 				.catch(error => console.error(error));
 		}
 	}
-
-	const handleSettingsClick = () => {};
 
 	function handleResultSelection(suggestion) {
 		setSelectedSearchResult(suggestion); // set to object from search result
@@ -85,18 +79,6 @@ function Header() {
 							})}
 						</ul>
 					)}
-				</div>
-
-				<div className={classes.unitSelectWrapper}>
-					<label htmlFor="units">Unit </label>
-					<select id="units" value={unit} onChange={handleUnitChange}>
-						<option value="fahrenheit">F</option>
-						<option value="celsius">C</option>
-					</select>
-				</div>
-
-				<div className={classes.displayModeToggle}>
-					<button onClick={toggleTheme}>{theme === "light" ? "☀️" : "🌙"}</button>
 				</div>
 
 				<div className={classes.settingsButton}>

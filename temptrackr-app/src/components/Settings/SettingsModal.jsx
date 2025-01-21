@@ -9,20 +9,16 @@ import CloseButtonDark from "../Icons/CloseButtonDark.svg?react";
 import { useUnit } from "../../context/UnitContext";
 import { useTheme } from "../../context/ThemeContext";
 
-function SettingsModal({ isOpen, onClose }) {
+function SettingsModal() {
 	const { unit, changeUnit } = useUnit();
 	const { theme, changeTheme } = useTheme();
-
-	if (!isOpen) return null;
 
 	return (
 		<div className={classes.settingsContainer}>
 			<div className={classes.settingsWrapper}>
 				<div className={classes.settingsHeader}>
 					<h3>Settings</h3>
-					<button onClick={onClose} className={`${theme === "dark" ? classes.dark : ""}`}>
-						{theme === "light" ? <CloseButtonLight className={classes.closeModalIcon} /> : <CloseButtonDark className={classes.closeModalIcon} />}
-					</button>
+					<button className={`${theme === "dark" ? classes.dark : ""}`}>{theme === "light" ? <CloseButtonLight className={classes.closeModalIcon} /> : <CloseButtonDark className={classes.closeModalIcon} />}</button>
 				</div>
 				<h5>🌡 Unit</h5>
 				<div className={classes.settingsOptions}>

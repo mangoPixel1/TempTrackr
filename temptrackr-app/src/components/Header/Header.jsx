@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useRef, useState, useContext, useEffect } from "react";
 import classes from "./Header.module.css";
 
 // Icons
@@ -23,14 +23,14 @@ function Header() {
 	const [searchSuggestions, setSearchSuggestions] = useState([]); // API location search results
 	const [selectedSearchResult, setSelectedSearchResult] = useState(null); // selected search result
 
-	const [modalOpen, setModalOpen] = useState(false); // True: modal open | False: modal closed
+	const dialogRef = useRef(null);
 
-	function handleOpen() {
-		setModalOpen(true);
-	}
+	function toggleDialog() {
+		if (!dialogRef.current) {
+			return;
+		}
 
-	function handleClose() {
-		setModalOpen(false);
+		dialogRef.current.hasAttribute("open") ? dialogRef.current.close() : dialogRef.current.showModal();
 	}
 
 	function handleSearchInputChange(e) {
@@ -82,14 +82,18 @@ function Header() {
 				</div>
 
 				<div className={classes.settingsButton}>
-					<button onClick={handleOpen}>
+					<button onClick={toggleDialog}>
 						<SettingsIcon className={classes.settingsIcon} />
 					</button>
 				</div>
 			</header>
-			<SettingsModal isOpen={modalOpen} onClose={handleClose} />
+			<dialog ref={dialogRef}>
+				<SettingsModal />
+			</dialog>
 		</>
 	);
 }
 
 export default Header;
+
+// <SettingsModal isOpen={modalOpen} onClose={handleClose} />

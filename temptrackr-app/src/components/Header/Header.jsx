@@ -89,7 +89,14 @@ function Header() {
 					</button>
 				</div>
 			</header>
-			<dialog ref={dialogRef}>
+			<dialog
+				ref={dialogRef}
+				onClick={e => {
+					if (e.currentTarget === e.target) {
+						toggleDialog();
+					}
+				}}
+			>
 				<button onClick={toggleDialog} className={`${theme === "dark" ? classes.dark : ""}`}>
 					{theme === "light" ? <CloseButtonLight className={classes.closeModalIcon} /> : <CloseButtonDark className={classes.closeModalIcon} />}
 				</button>

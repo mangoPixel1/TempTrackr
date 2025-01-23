@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import classes from "./SettingsModal.module.css";
 
-// Icons
-import CloseButtonLight from "../Icons/CloseButtonLight.svg?react";
-import CloseButtonDark from "../Icons/CloseButtonDark.svg?react";
-
 // Contexts
 import { useUnit } from "../../context/UnitContext";
 import { useTheme } from "../../context/ThemeContext";
@@ -18,7 +14,6 @@ function SettingsModal() {
 			<div className={classes.settingsWrapper}>
 				<div className={classes.settingsHeader}>
 					<h3>Settings</h3>
-					<button className={`${theme === "dark" ? classes.dark : ""}`}>{theme === "light" ? <CloseButtonLight className={classes.closeModalIcon} /> : <CloseButtonDark className={classes.closeModalIcon} />}</button>
 				</div>
 				<h5>🌡 Unit</h5>
 				<div className={classes.settingsOptions}>

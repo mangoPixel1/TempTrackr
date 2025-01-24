@@ -156,39 +156,18 @@
 	background-color: #3e3e3e;
 }
 
-dialog {
+.settingsDialog {
 	position: fixed;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	background-color: aqua;
+	background-color: rgb(232, 232, 232);
 	width: 600px;
+	border: 2px solid rgb(147, 147, 147);
+	border-radius: 8px;
 }
 
-dialog button {
-	height: 35px;
-	width: 35px;
-	border-radius: 4px;
-	border: none;
-	cursor: pointer;
-	background-color: rgb(218, 218, 218);
-	transition: 0.3s;
-}
-
-dialog button:hover {
-	background-color: rgb(204, 204, 204);
-}
-
-dialog button.dark {
-	background-color: #444444;
-	transition: 0.3s;
-}
-
-dialog button.dark:hover {
-	background-color: #3e3e3e;
-}
-
-.closeModalIcon {
-	width: 20px;
-	height: 20px;
+.settingsDialog.dark {
+	background-color: #373737;
+	border: 2px solid rgb(88, 88, 88);
 }

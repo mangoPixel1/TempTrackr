@@ -3,8 +3,6 @@ import classes from "./Header.module.css";
 
 // Icons
 import SettingsIcon from "../Icons/Settings.svg?react";
-import CloseButtonLight from "../Icons/CloseButtonLight.svg?react";
-import CloseButtonDark from "../Icons/CloseButtonDark.svg?react";
 
 // Components
 import SettingsModal from "../Settings/SettingsModal";
@@ -96,11 +94,9 @@ function Header() {
 						toggleDialog();
 					}
 				}}
+				className={`${classes.settingsDialog} ${theme == "dark" ? classes.dark : ""}`}
 			>
-				<button onClick={toggleDialog} className={`${theme === "dark" ? classes.dark : ""}`}>
-					{theme === "light" ? <CloseButtonLight className={classes.closeModalIcon} /> : <CloseButtonDark className={classes.closeModalIcon} />}
-				</button>
-				<SettingsModal />
+				<SettingsModal toggle={toggleDialog} />
 			</dialog>
 		</>
 	);

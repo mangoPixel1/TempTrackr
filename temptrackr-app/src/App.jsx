@@ -44,7 +44,7 @@ function MainComponent() {
 				{latitude && longitude && cityName ? (
 					<>
 						<Weather />
-						<button className="resetLocationButton" onClick={handleLocationReset}>
+						<button className={`resetLocationButton ${theme === "dark" ? "dark" : ""}`} onClick={handleLocationReset}>
 							Reset Location
 						</button>
 					</>

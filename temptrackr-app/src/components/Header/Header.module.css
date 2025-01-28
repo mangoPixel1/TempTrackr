@@ -31,12 +31,12 @@
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;
-	background-color: rgb(218, 218, 218);
+	background-color: var(--button-color);
 	transition: 0.3s;
 }
 
 .searchButton:hover {
-	background-color: rgb(204, 204, 204);
+	background-color: var(--button-color-hover);
 }
 
 .searchSuggestionsList {
@@ -74,7 +74,7 @@
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;
-	background-color: rgb(218, 218, 218);
+	background-color: greenyellow;
 }
 
 .settingsButton button {
@@ -82,12 +82,12 @@
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;
-	background-color: rgb(218, 218, 218);
+	background-color: var(--button-color);
 	transition: 0.3s;
 }
 
 .settingsButton button:hover {
-	background-color: rgb(204, 204, 204);
+	background-color: var(--button-color-hover);
 }
 
 .settingsIcon {
@@ -112,12 +112,12 @@
 
 .headerStyle.dark .searchButton {
 	color: #fcfcfc;
-	background-color: #444444;
+	background-color: var(--button-color-dark);
 	transition: 0.3s;
 }
 
 .headerStyle.dark .searchButton:hover {
-	background-color: #3e3e3e;
+	background-color: var(--button-color-dark-hover);
 }
 
 .headerStyle.dark .searchSuggestionsList {
@@ -148,12 +148,12 @@
 
 .headerStyle.dark .settingsButton button {
 	color: #fcfcfc;
-	background-color: #444444;
+	background-color: var(--button-color-dark);
 	transition: 0.3s;
 }
 
 .headerStyle.dark .settingsButton button:hover {
-	background-color: #3e3e3e;
+	background-color: var(--button-color-dark-hover);
 }
 
 .settingsDialog {

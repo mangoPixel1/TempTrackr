@@ -31,7 +31,6 @@ function DailyWeather() {
 	const { unit } = useUnit();
 	const { latitude, longitude, cityName } = useLocation();
 
-	//const [dailyData, setDailyData] = useState();
 	const [times, setTimes] = useState([]);
 	const [weatherCodes, setWeatherCodes] = useState([]);
 	const [maxTemps, setMaxTemps] = useState([]);
@@ -43,7 +42,7 @@ function DailyWeather() {
 
 	// Fetches API data
 	useEffect(() => {
-		fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&temperature_unit=${unit}&wind_speed_unit=mph&precipitation_unit=inch&past_days=1`)
+		fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&temperature_unit=${unit}&wind_speed_unit=mph&precipitation_unit=inch&timezone=auto`)
 			.then(response => {
 				if (!response.ok) {
 					throw new Error("Error fetching daily data");
@@ -121,7 +120,7 @@ function DailyWeather() {
 
 	function formatDate(date, index) {
 		const dateObj = new Date(date);
-		return index === 0 ? `Today` : `${daysOfWeek[(dateObj.getDay() + 1) % 7]}, ${monthNames[dateObj.getMonth()]} ${dateObj.getDate() + 1}`;
+		return index === 0 ? `Today` : `${daysOfWeek[dateObj.getUTCDay()]}, ${monthNames[dateObj.getUTCMonth()]} ${dateObj.getUTCDate()}`;
 	}
 
 	return (

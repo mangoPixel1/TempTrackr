@@ -122,7 +122,7 @@ function HourlyWeather() {
 				return response.json();
 			})
 			.then(data => {
-				//console.log(data);
+				console.log(data);
 				setDailyData(data.daily);
 				setHourlyData(data.hourly);
 			})
@@ -259,7 +259,7 @@ function HourlyWeather() {
 								<li key={index}>
 									<div>{`${formatTimeHourMinutes(hour)}`}</div>
 									{getConditionIcon(finalWeather[index], hour)}
-									<div className={classes.hideText}>{`null`}</div>
+									<div>{finalWeather[index] === 100 ? "Sunrise" : "Sunset"}</div>
 								</li>
 							);
 						} else {

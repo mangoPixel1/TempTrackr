@@ -11,8 +11,18 @@ function ThemeProvider({ children }) {
 	}
 
 	function changeTheme(theme) {
-		if (theme === "light" || "dark") {
-			setTheme(theme);
+		if (theme === "auto" || "light" || "dark") {
+			if (theme == "auto") {
+				const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+				if (isDarkMode) {
+					setTheme("dark");
+				} else {
+					setTheme("light");
+				}
+			} else {
+				setTheme(theme);
+			}
 		}
 		//console.error(`Invalid theme value: ${theme}`);
 	}

@@ -122,7 +122,7 @@ function HourlyWeather() {
 				return response.json();
 			})
 			.then(data => {
-				console.log(data);
+				//console.log(data);
 				setDailyData(data.daily);
 				setHourlyData(data.hourly);
 			})

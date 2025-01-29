@@ -3,38 +3,46 @@ import { useEffect, useState, createContext, useContext } from "react";
 const ThemeContext = createContext();
 
 function ThemeProvider({ children }) {
-	const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light");
+	const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light"); // actual theme to display: light or dark
+	const [themeOption, setThemeOption] = useState(() => localStorage.getItem("themeOption") || "light"); // selected option: auto, light, or dark
 
-	function toggleTheme() {
+	/*function toggleTheme() {
 		setTheme(prevTheme => (prevTheme === "light" ? "dark" : "light"));
 		document.body.classList.toggle("darkBody");
-	}
+	}*/
 
-	function changeTheme(theme) {
-		if (theme === "auto" || "light" || "dark") {
-			if (theme == "auto") {
-				const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-				if (isDarkMode) {
-					setTheme("dark");
-				} else {
-					setTheme("light");
-				}
-			} else {
-				setTheme(theme);
-			}
+	/*function changeTheme(theme) {
+		if (theme === "light" || "dark") {
+			setTheme(theme);
 		}
-		//console.error(`Invalid theme value: ${theme}`);
+	}*/
+
+	function changeThemeOption(theme) {
+		if (theme == "auto") {
+			const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+			if (isDarkMode) {
+				setTheme("dark");
+				setThemeOption("auto");
+			} else {
+				setTheme("light");
+				setThemeOption("auto");
+			}
+		} else {
+			setTheme(theme);
+			setThemeOption(theme);
+		}
 	}
 
 	useEffect(() => {
 		// whenever theme changes, update local storage
 		localStorage.setItem("theme", theme);
+		localStorage.setItem("themeOption", themeOption);
 
 		theme === "dark" ? document.body.classList.add("darkBody") : document.body.classList.remove("darkBody");
-	}, [theme]);
+	}, [theme, themeOption]);
 
-	return <ThemeContext.Provider value={{ theme, toggleTheme, changeTheme }}>{children}</ThemeContext.Provider>;
+	return <ThemeContext.Provider value={{ theme, themeOption, changeThemeOption }}>{children}</ThemeContext.Provider>;
 }
 
 function useTheme() {

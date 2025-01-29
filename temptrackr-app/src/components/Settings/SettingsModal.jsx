@@ -11,7 +11,7 @@ import { useTheme } from "../../context/ThemeContext";
 
 function SettingsModal({ toggle }) {
 	const { unit, changeUnit } = useUnit();
-	const { theme, changeTheme } = useTheme();
+	const { theme, themeOption, changeTheme, changeThemeOption } = useTheme();
 
 	return (
 		<>
@@ -32,9 +32,9 @@ function SettingsModal({ toggle }) {
 					</div>
 					<h5>💡 Theme</h5>
 					<div className={classes.settingsOptions}>
-						<input type="radio" name="theme" id="auto" value="auto" checked={theme === "auto"} onChange={e => changeTheme(e.target.value)} /> <label htmlFor="auto">System</label>
-						<input type="radio" name="theme" id="light" value="light" checked={theme === "light"} onChange={e => changeTheme(e.target.value)} /> <label htmlFor="light">Light</label>
-						<input type="radio" name="theme" id="dark" value="dark" checked={theme === "dark"} onChange={e => changeTheme(e.target.value)} /> <label htmlFor="dark">Dark</label>
+						<input type="radio" name="theme" id="auto" value="auto" checked={themeOption === "auto"} onChange={e => changeThemeOption(e.target.value)} /> <label htmlFor="auto">System</label>
+						<input type="radio" name="theme" id="light" value="light" checked={themeOption === "light"} onChange={e => changeThemeOption(e.target.value)} /> <label htmlFor="light">Light</label>
+						<input type="radio" name="theme" id="dark" value="dark" checked={themeOption === "dark"} onChange={e => changeThemeOption(e.target.value)} /> <label htmlFor="dark">Dark</label>
 					</div>
 				</div>
 			</div>

@@ -22,6 +22,7 @@ function Header() {
 	const [searchValue, setSearchValue] = useState(""); // current input text value in search bar
 	const [searchSuggestions, setSearchSuggestions] = useState([]); // API location search results
 	const [selectedSearchResult, setSelectedSearchResult] = useState(null); // selected search result
+	const [locationErrorMsg, setLocationErrorMsg] = useState(""); // No error present when string is empty
 
 	const dialogRef = useRef(null);
 
@@ -48,7 +49,7 @@ function Header() {
 					return response.json();
 				})
 				.then(data => {
-					console.log(data.results);
+					//console.log(data.results);
 					setSearchSuggestions(data.results);
 				})
 				.catch(error => console.error(error));
@@ -64,9 +65,23 @@ function Header() {
 		setCoordinates(suggestion.latitude, suggestion.longitude);
 	}
 
+	function handleGetLocationClick() {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(position => {
+				setCoordinates(position.coords.latitude, position.coords.longitude); // set latitude & latitude values in location context
+			});
+			setLocationErrorMsg(""); // set to empty string to indicate no error present
+		} else {
+			setLocationErrorMsg("Geolocation not supported by this browser");
+		}
+	}
+
 	return (
 		<>
 			<header className={`${classes.headerStyle} ${theme === "dark" ? classes.dark : ""}`}>
+				<button className={`${classes.getLocButton} ${theme === "dark" ? classes.dark : ""}`} onClick={handleGetLocationClick}>
+					Get current location
+				</button>
 				<div className={classes.searchWrapper}>
 					<input className={classes.searchInput} type="text" placeholder="Search City Name" id="location-search-input" value={searchValue} onChange={handleSearchInputChange} />
 					<button className={classes.searchButton} onClick={handleLocationSearch}>

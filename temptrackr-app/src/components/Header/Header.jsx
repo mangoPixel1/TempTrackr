@@ -3,6 +3,7 @@ import classes from "./Header.module.css";
 
 // Icons
 import SettingsIcon from "../Icons/Settings.svg?react";
+import GetLocationIcon from "../Icons/GetLocation.svg?react";
 
 // Components
 import SettingsModal from "../Settings/SettingsModal";
@@ -80,7 +81,7 @@ function Header() {
 		<>
 			<header className={`${classes.headerStyle} ${theme === "dark" ? classes.dark : ""}`}>
 				<button className={`${classes.getLocButton} ${theme === "dark" ? classes.dark : ""}`} onClick={handleGetLocationClick}>
-					Get current location
+					<GetLocationIcon className={classes.getLocIcon} />
 				</button>
 				<div className={classes.searchWrapper}>
 					<input className={classes.searchInput} type="text" placeholder="Search City Name" id="location-search-input" value={searchValue} onChange={handleSearchInputChange} />

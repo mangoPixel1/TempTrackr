@@ -6,6 +6,27 @@
 	color: #2d2d2d;
 }
 
+.getLocButton {
+	padding: 2px 4px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	background-color: var(--button-color);
+	transition: 0.3s;
+}
+
+.getLocButton:hover {
+	background-color: var(--button-color-hover);
+}
+
+.getLocButton.dark {
+	background-color: var(--button-color-dark);
+}
+
+.getLocButton.dark:hover {
+	background-color: var(--button-color-dark-hover);
+}
+
 .searchWrapper {
 	position: relative;
 }
@@ -90,7 +111,8 @@
 	background-color: var(--button-color-hover);
 }
 
-.settingsIcon {
+.settingsIcon,
+.getLocIcon {
 	width: 25px;
 	height: 25px;
 }

@@ -33,11 +33,12 @@ function LocationProvider({ children }) {
 					return response.json();
 				})
 				.then(data => {
-					//console.log(data);
+					console.log(data);
 					const county = data.address.county ? data.address.county : null;
 					const city = data.address.city ? data.address.city : null;
 					const town = data.address.town ? data.address.town : null;
 					const village = data.address.village ? data.address.village : null;
+					const hamlet = data.address.hamlet ? data.address.hamlet : null;
 
 					if (city) {
 						setCityName(data.address.city);
@@ -45,6 +46,8 @@ function LocationProvider({ children }) {
 						setCityName(data.address.town);
 					} else if (village) {
 						setCityName(data.address.village);
+					} else if (hamlet) {
+						setCityName(data.address.hamlet);
 					} else {
 						setCityName(county);
 					}

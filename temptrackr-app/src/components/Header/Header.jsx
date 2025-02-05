@@ -75,7 +75,7 @@ function Header() {
 					{searchSuggestions && (
 						<ul className={classes.searchSuggestionsList}>
 							{searchSuggestions.map(suggestion => {
-								return <li key={suggestion.id} onClick={() => handleResultSelection(suggestion)}>{`${suggestion.name}, ${suggestion.admin2}, ${suggestion.admin1}, ${suggestion.country}`}</li>;
+								return <li key={suggestion.id} onClick={() => handleResultSelection(suggestion)}>{`${suggestion.name ? `${suggestion.name},` : ""} ${suggestion.admin2 ? `${suggestion.admin2},` : ""} ${suggestion.admin1 ? `${suggestion.admin1},` : ""} ${suggestion.country ? `${suggestion.country}` : ""}`}</li>;
 							})}
 						</ul>
 					)}

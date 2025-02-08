@@ -37,12 +37,12 @@
 .realTemperature {
 }
 
-.apparentTemperature {
-	font-size: 16px;
-}
-
 .maxMinTemperature {
 	font-size: 20px;
+}
+
+.apparentTemperature {
+	font-size: 16px;
 }
 
 .weatherMetrics {

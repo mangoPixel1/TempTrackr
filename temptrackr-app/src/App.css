@@ -5,6 +5,10 @@
 	--button-color-dark-hover: rgb(75 75 75);
 }
 
+html {
+	overflow-y: scroll;
+}
+
 body {
 	background-color: #f4f4f4;
 	color: #474747;

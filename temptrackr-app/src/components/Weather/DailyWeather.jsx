@@ -50,7 +50,7 @@ function DailyWeather() {
 				return response.json();
 			})
 			.then(data => {
-				console.log(data.daily);
+				//console.log(data.daily);
 				setTimes(data.daily.time);
 				setWeatherCodes(data.daily.weather_code);
 				setMaxTemps(data.daily.temperature_2m_max);

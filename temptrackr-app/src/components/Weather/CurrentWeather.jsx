@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import classes from "./Weather.module.css";
 
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+
 // Icons
 import ClearDay from "../Icons/Current/clear-day.svg?react";
 import ClearNight from "../Icons/Current/clear-night.svg?react";
@@ -42,6 +45,8 @@ function CurrentWeather() {
 	const [apparentTemp, setApparentTemp] = useState(0);
 	const [isDay, setIsDay] = useState(false);
 
+	const [isLoading, setIsLoading] = useState(true);
+
 	useEffect(() => {
 		fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,is_day,precipitation,weather_code,wind_speed_10m,wind_direction_10m&daily=temperature_2m_max,temperature_2m_min&temperature_unit=${unit}&wind_speed_unit=mph&precipitation_unit=inch&timezone=auto&forecast_days=3&daily=sunrise,sunset`)
 			.then(response => {
@@ -61,6 +66,8 @@ function CurrentWeather() {
 				setWind(Math.floor(data.current.wind_speed_10m));
 				setWeatherCode(data.current.weather_code);
 				setApparentTemp(Math.floor(data.current.apparent_temperature));
+
+				setIsLoading(false);
 			})
 			.catch(error => console.error(error));
 	}, [latitude, longitude, cityName, unit]);
@@ -149,20 +156,23 @@ function CurrentWeather() {
 		<div className={classes.currentWeatherContainer}>
 			<div className={classes.currentWeather}>
 				<div className={classes.condition}>
-					{getConditionIcon(weatherCode)}
-					{weatherCodeMap[weatherCode]}
+					{isLoading ? <Skeleton width={80} height={80} /> : getConditionIcon(weatherCode)}
+					{isLoading ? <Skeleton width={80} height={20} /> : weatherCodeMap[weatherCode]}
 				</div>
 				<div className={classes.temperature}>
-					<h2 className={classes.realTemperature}>
-						{currentTemp} °{unit === "fahrenheit" ? "F" : "C"}
-					</h2>
-					<p className={classes.maxMinTemperature}>
-						{currentMax}°/{currentMin}°
-					</p>
-					<p className={classes.apparentTemperature}>Feels like {apparentTemp} °</p>
+					<h2 className={classes.realTemperature}>{isLoading ? <Skeleton width={80} height={40} /> : `${currentTemp} °${unit === "fahrenheit" ? "F" : "C"}`}</h2>
+					{isLoading ? (
+						<Skeleton width={80} height={20} count={2} />
+					) : (
+						<div>
+							<p className={classes.maxMinTemperature}>
+								{currentMax}°/{currentMin}°
+							</p>
+							<p className={classes.apparentTemperature}>Feels like {apparentTemp} °</p>
+						</div>
+					)}
 				</div>
 			</div>
-
 			<div className={classes.weatherMetrics}>
 				<div className="precipChance">
 					<PrecipChance className={`${classes.currentConditionIcon} ${classes.precipChanceIcon}`} />

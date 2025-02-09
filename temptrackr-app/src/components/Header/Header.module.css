@@ -42,8 +42,12 @@
 	-webkit-transition: 0.5s;
 }
 
+.searchInput::placeholder {
+	color: #a5a5a5;
+}
+
 .searchInput:focus {
-	outline: 3px solid rgb(138, 138, 138);
+	outline: 2px solid rgb(150, 150, 150);
 }
 
 .searchButton {

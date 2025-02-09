@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import classes from "./Weather.module.css";
 
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+
 // Icons
 import ClearDayStatic from "../Icons/Hourly/clear-day-static.svg?react";
 import ClearNightStatic from "../Icons/Hourly/clear-night-static.svg?react";
@@ -29,6 +32,8 @@ import { useLocation } from "../../context/LocationContext";
 function HourlyWeather() {
 	const { unit } = useUnit();
 	const { latitude, longitude, cityName, setCoordinates } = useLocation();
+
+	const [isLoading, setIsLoading] = useState(true);
 
 	const [dailyData, setDailyData] = useState([]); // Fetched API data: sunrise/sunset times for yesterday, today, today + 2
 	const [hourlyData, setHourlyData] = useState({}); // Fetched API data: hourly temp/weather codes for yesterday, today, today + 2
@@ -125,6 +130,10 @@ function HourlyWeather() {
 				//console.log(data);
 				setDailyData(data.daily);
 				setHourlyData(data.hourly);
+
+				setTimeout(() => {
+					setIsLoading(false);
+				}, 5000);
 			})
 			.catch(error => console.error(error));
 	}, [latitude, longitude, cityName, unit]);
@@ -185,7 +194,7 @@ function HourlyWeather() {
 		return `${hour} ${meridiem}`;
 	}
 
-	// Formats time (5:00 PM)
+	// Formats time (5:00 PM) used for displaying sunrise/sunset times
 	function formatTimeHourMinutes(timeString) {
 		const time = new Date(timeString); // Create a Date object from the string
 		const meridiem = time.getHours() < 12 ? "AM" : "PM"; // Get AM or PM
@@ -257,18 +266,18 @@ function HourlyWeather() {
 							// Render sunrise/sunset
 							return (
 								<li key={index}>
-									<div>{`${formatTimeHourMinutes(hour)}`}</div>
-									{getConditionIcon(finalWeather[index], hour)}
-									<div>{finalWeather[index] === 100 ? "Sunrise" : "Sunset"}</div>
+									{isLoading ? <Skeleton width={60} height={20} /> : <div>{`${formatTimeHourMinutes(hour)}`}</div>}
+									{isLoading ? <Skeleton width={60} height={50} /> : getConditionIcon(finalWeather[index], hour)}
+									{isLoading ? <Skeleton width={60} height={20} /> : <div>{finalWeather[index] === 100 ? "Sunrise" : "Sunset"}</div>}
 								</li>
 							);
 						} else {
 							// Render hourly weather
 							return (
 								<li key={index}>
-									<div>{`${formatTimeHour(hour)}`}</div>
-									{getConditionIcon(finalWeather[index], hour)}
-									<div>{`${Math.round(finalTemps[index])}°`}</div>
+									{isLoading ? <Skeleton width={60} height={20} /> : <div>{`${formatTimeHour(hour)}`}</div>}
+									{isLoading ? <Skeleton width={60} height={50} /> : getConditionIcon(finalWeather[index], hour)}
+									{isLoading ? <Skeleton width={60} height={20} /> : <div>{`${Math.round(finalTemps[index])}°`}</div>}
 								</li>
 							);
 						}

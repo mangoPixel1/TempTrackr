@@ -67,7 +67,10 @@ function CurrentWeather() {
 				setWeatherCode(data.current.weather_code);
 				setApparentTemp(Math.floor(data.current.apparent_temperature));
 
-				setIsLoading(false);
+				setTimeout(() => {
+					console.log("Loading...");
+					setIsLoading(false);
+				}, 5000);
 			})
 			.catch(error => console.error(error));
 	}, [latitude, longitude, cityName, unit]);
@@ -174,18 +177,32 @@ function CurrentWeather() {
 				</div>
 			</div>
 			<div className={classes.weatherMetrics}>
-				<div className="precipChance">
-					<PrecipChance className={`${classes.currentConditionIcon} ${classes.precipChanceIcon}`} />
-					<p>{precipChance}%</p>
-				</div>
-				<div className="humidity">
-					<Humidity className={classes.currentConditionIcon} />
-					<p>{humidity}%</p>
-				</div>
-				<div className="windSpeed">
-					<Wind className={classes.currentConditionIcon} />
-					<p>{wind} mph</p>
-				</div>
+				{isLoading ? (
+					<Skeleton width={60} height={20} />
+				) : (
+					<div className="precipChance">
+						<PrecipChance className={`${classes.currentConditionIcon} ${classes.precipChanceIcon}`} />
+						<p>{precipChance}%</p>
+					</div>
+				)}
+
+				{isLoading ? (
+					<Skeleton width={60} height={20} />
+				) : (
+					<div className="humidity">
+						<Humidity className={classes.currentConditionIcon} />
+						<p>{humidity}%</p>
+					</div>
+				)}
+
+				{isLoading ? (
+					<Skeleton width={60} height={20} />
+				) : (
+					<div className="windSpeed">
+						<Wind className={classes.currentConditionIcon} />
+						<p>{wind} mph</p>
+					</div>
+				)}
 			</div>
 		</div>
 	);

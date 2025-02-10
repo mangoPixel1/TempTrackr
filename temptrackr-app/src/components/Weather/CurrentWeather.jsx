@@ -67,10 +67,10 @@ function CurrentWeather() {
 				setWeatherCode(data.current.weather_code);
 				setApparentTemp(Math.floor(data.current.apparent_temperature));
 
-				setTimeout(() => {
-					console.log("Loading...");
+				/*setTimeout(() => {
 					setIsLoading(false);
-				}, 5000);
+				}, 5000);*/
+				setIsLoading(false);
 			})
 			.catch(error => console.error(error));
 	}, [latitude, longitude, cityName, unit]);
@@ -156,55 +156,57 @@ function CurrentWeather() {
 	}
 
 	return (
-		<div className={classes.currentWeatherContainer}>
-			<div className={classes.currentWeather}>
-				<div className={classes.condition}>
-					{isLoading ? <Skeleton width={80} height={80} /> : getConditionIcon(weatherCode)}
-					{isLoading ? <Skeleton width={80} height={20} /> : weatherCodeMap[weatherCode]}
+		<SkeletonTheme baseColor={theme === "light" ? "#e8e8e8" : "#4a4a4a"} highlightColor={theme === "light" ? "#f4f4f4" : "#7d7c7c"}>
+			<div className={classes.currentWeatherContainer}>
+				<div className={classes.currentWeather}>
+					<div className={classes.condition}>
+						{isLoading ? <Skeleton width={80} height={80} /> : getConditionIcon(weatherCode)}
+						{isLoading ? <Skeleton width={80} height={20} /> : weatherCodeMap[weatherCode]}
+					</div>
+					<div className={classes.temperature}>
+						<h2 className={classes.realTemperature}>{isLoading ? <Skeleton width={80} height={40} /> : `${currentTemp} °${unit === "fahrenheit" ? "F" : "C"}`}</h2>
+						{isLoading ? (
+							<Skeleton width={80} height={20} count={2} />
+						) : (
+							<div>
+								<p className={classes.maxMinTemperature}>
+									{currentMax}°/{currentMin}°
+								</p>
+								<p className={classes.apparentTemperature}>Feels like {apparentTemp} °</p>
+							</div>
+						)}
+					</div>
 				</div>
-				<div className={classes.temperature}>
-					<h2 className={classes.realTemperature}>{isLoading ? <Skeleton width={80} height={40} /> : `${currentTemp} °${unit === "fahrenheit" ? "F" : "C"}`}</h2>
+				<div className={classes.weatherMetrics}>
 					{isLoading ? (
-						<Skeleton width={80} height={20} count={2} />
+						<Skeleton width={60} height={20} />
 					) : (
-						<div>
-							<p className={classes.maxMinTemperature}>
-								{currentMax}°/{currentMin}°
-							</p>
-							<p className={classes.apparentTemperature}>Feels like {apparentTemp} °</p>
+						<div className="precipChance">
+							<PrecipChance className={`${classes.currentConditionIcon} ${classes.precipChanceIcon}`} />
+							<p>{precipChance}%</p>
+						</div>
+					)}
+
+					{isLoading ? (
+						<Skeleton width={60} height={20} />
+					) : (
+						<div className="humidity">
+							<Humidity className={classes.currentConditionIcon} />
+							<p>{humidity}%</p>
+						</div>
+					)}
+
+					{isLoading ? (
+						<Skeleton width={60} height={20} />
+					) : (
+						<div className="windSpeed">
+							<Wind className={classes.currentConditionIcon} />
+							<p>{wind} mph</p>
 						</div>
 					)}
 				</div>
 			</div>
-			<div className={classes.weatherMetrics}>
-				{isLoading ? (
-					<Skeleton width={60} height={20} />
-				) : (
-					<div className="precipChance">
-						<PrecipChance className={`${classes.currentConditionIcon} ${classes.precipChanceIcon}`} />
-						<p>{precipChance}%</p>
-					</div>
-				)}
-
-				{isLoading ? (
-					<Skeleton width={60} height={20} />
-				) : (
-					<div className="humidity">
-						<Humidity className={classes.currentConditionIcon} />
-						<p>{humidity}%</p>
-					</div>
-				)}
-
-				{isLoading ? (
-					<Skeleton width={60} height={20} />
-				) : (
-					<div className="windSpeed">
-						<Wind className={classes.currentConditionIcon} />
-						<p>{wind} mph</p>
-					</div>
-				)}
-			</div>
-		</div>
+		</SkeletonTheme>
 	);
 }
 

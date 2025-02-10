@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import classes from "./Weather.module.css";
 
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+
 // Icons
 import ClearDayStatic from "../Icons/Hourly/clear-day-static.svg?react";
 import ClearNightStatic from "../Icons/Hourly/clear-night-static.svg?react";
@@ -28,8 +31,11 @@ import { useUnit } from "../../context/UnitContext";
 import { useLocation } from "../../context/LocationContext";
 
 function DailyWeather() {
+	const { theme } = useTheme();
 	const { unit } = useUnit();
 	const { latitude, longitude, cityName } = useLocation();
+
+	const [isLoading, setIsLoading] = useState(true);
 
 	const [times, setTimes] = useState([]);
 	const [weatherCodes, setWeatherCodes] = useState([]);
@@ -56,6 +62,11 @@ function DailyWeather() {
 				setMaxTemps(data.daily.temperature_2m_max);
 				setMinTemps(data.daily.temperature_2m_min);
 				setPrecip(data.daily.precipitation_probability_max);
+
+				/*setTimeout(() => {
+					setIsLoading(false);
+				}, 5000);*/
+				setIsLoading(false);
 			})
 			.catch(error => console.error(error));
 	}, [latitude, longitude, cityName, unit]);
@@ -123,21 +134,30 @@ function DailyWeather() {
 	}
 
 	return (
-		<div className={classes.dailyWeatherContainer}>
-			<ul className={classes.dailyForecast}>
-				{times.map((time, index) => (
-					<li key={index}>
-						<div className={classes.dailyDate}>{formatDate(time, index)}</div>
-						<div className={classes.dailyCondition}>{getConditionIcon(weatherCodes[index])}</div>
-						<div className={classes.dailyTemps}>{`${Math.round(maxTemps[index])}° / ${Math.round(minTemps[index])}°`}</div>
-						<div className={classes.dailyPrecip}>
-							{`${precip[index]}%`}
-							<PrecipChance className={`${classes.precipChance} ${classes.precipChanceIcon}`} />
-						</div>
-					</li>
-				))}
-			</ul>
-		</div>
+		<SkeletonTheme baseColor={theme === "light" ? "#e8e8e8" : "#4a4a4a"} highlightColor={theme === "light" ? "#f4f4f4" : "#7d7c7c"}>
+			<div className={classes.dailyWeatherContainer}>
+				<ul className={classes.dailyForecast}>
+					{isLoading ? (
+						<Skeleton height={50} count={7} />
+					) : (
+						times.map((time, index) => (
+							<>
+								<li key={index}>
+									<div className={classes.dailyDate}>{formatDate(time, index)}</div>
+									<div className={classes.dailyCondition}>{getConditionIcon(weatherCodes[index])}</div>
+									<div className={classes.dailyTemps}>{`${Math.round(maxTemps[index])}° / ${Math.round(minTemps[index])}°`}</div>
+									<div className={classes.dailyPrecip}>
+										{`${precip[index]}%`}
+										<PrecipChance className={`${classes.precipChance} ${classes.precipChanceIcon}`} />
+									</div>
+								</li>
+								{index !== times.length - 1 ? <hr className={`${classes.dailyDivider} ${theme === "dark" ? classes.dark : ""}`} /> : null}
+							</>
+						))
+					)}
+				</ul>
+			</div>
+		</SkeletonTheme>
 	);
 }
 

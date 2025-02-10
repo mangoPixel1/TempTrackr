@@ -30,6 +30,7 @@ import { useUnit } from "../../context/UnitContext";
 import { useLocation } from "../../context/LocationContext";
 
 function HourlyWeather() {
+	const { theme } = useTheme();
 	const { unit } = useUnit();
 	const { latitude, longitude, cityName, setCoordinates } = useLocation();
 
@@ -131,9 +132,10 @@ function HourlyWeather() {
 				setDailyData(data.daily);
 				setHourlyData(data.hourly);
 
-				setTimeout(() => {
+				/*setTimeout(() => {
 					setIsLoading(false);
-				}, 5000);
+				}, 5000);*/
+				setIsLoading(false);
 			})
 			.catch(error => console.error(error));
 	}, [latitude, longitude, cityName, unit]);
@@ -255,35 +257,41 @@ function HourlyWeather() {
 	}
 
 	return (
-		<div className={classes.hourlyWeatherContainer}>
-			<ul className={classes.hourlyForecast}>
-				{hours &&
-					hours.map((hour, index, hours) => {
-						const currentHour = new Date(hour);
-						const pastHour = new Date(hours[index - 1]);
+		<SkeletonTheme baseColor={theme === "light" ? "#e8e8e8" : "#4a4a4a"} highlightColor={theme === "light" ? "#f4f4f4" : "#7d7c7c"}>
+			<div className={classes.hourlyWeatherContainer}>
+				{isLoading ? (
+					<Skeleton width={400} height={80} />
+				) : (
+					<ul className={classes.hourlyForecast}>
+						{hours &&
+							hours.map((hour, index, hours) => {
+								const currentHour = new Date(hour);
+								const pastHour = new Date(hours[index - 1]);
 
-						if (currentHour.getHours() === pastHour.getHours()) {
-							// Render sunrise/sunset
-							return (
-								<li key={index}>
-									{isLoading ? <Skeleton width={60} height={20} /> : <div>{`${formatTimeHourMinutes(hour)}`}</div>}
-									{isLoading ? <Skeleton width={60} height={50} /> : getConditionIcon(finalWeather[index], hour)}
-									{isLoading ? <Skeleton width={60} height={20} /> : <div>{finalWeather[index] === 100 ? "Sunrise" : "Sunset"}</div>}
-								</li>
-							);
-						} else {
-							// Render hourly weather
-							return (
-								<li key={index}>
-									{isLoading ? <Skeleton width={60} height={20} /> : <div>{`${formatTimeHour(hour)}`}</div>}
-									{isLoading ? <Skeleton width={60} height={50} /> : getConditionIcon(finalWeather[index], hour)}
-									{isLoading ? <Skeleton width={60} height={20} /> : <div>{`${Math.round(finalTemps[index])}°`}</div>}
-								</li>
-							);
-						}
-					})}
-			</ul>
-		</div>
+								if (currentHour.getHours() === pastHour.getHours()) {
+									// Render sunrise/sunset
+									return (
+										<li key={index}>
+											<div>{`${formatTimeHourMinutes(hour)}`}</div>
+											{getConditionIcon(finalWeather[index], hour)}
+											<div>{finalWeather[index] === 100 ? "Sunrise" : "Sunset"}</div>
+										</li>
+									);
+								} else {
+									// Render hourly weather
+									return (
+										<li key={index}>
+											<div>{`${formatTimeHour(hour)}`}</div>
+											{getConditionIcon(finalWeather[index], hour)}
+											<div>{`${Math.round(finalTemps[index])}°`}</div>
+										</li>
+									);
+								}
+							})}
+					</ul>
+				)}
+			</div>
+		</SkeletonTheme>
 	);
 }
 

@@ -64,11 +64,14 @@ function Header() {
 
 		// Set location to new coordinates from selected result
 		setCoordinates(suggestion.latitude, suggestion.longitude);
+
+		console.log(suggestion.latitude, suggestion.longitude);
 	}
 
 	function handleGetLocationClick() {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(position => {
+				//console.log(position.coords.latitude, position.coords.longitude);
 				setCoordinates(position.coords.latitude, position.coords.longitude); // set latitude & latitude values in location context
 			});
 			setLocationErrorMsg(""); // set to empty string to indicate no error present

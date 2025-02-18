@@ -33,7 +33,7 @@ import { useLocation } from "../../context/LocationContext";
 function CurrentWeather() {
 	const { theme } = useTheme();
 	const { unit } = useUnit();
-	const { latitude, longitude, cityName, setCoordinates } = useLocation();
+	const { latitude, longitude, cityName } = useLocation();
 
 	const [currentTemp, setCurrentTemp] = useState(0);
 	const [currentMin, setCurrentMin] = useState(0);
@@ -48,6 +48,7 @@ function CurrentWeather() {
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
+		setIsLoading(true);
 		fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,is_day,precipitation,weather_code,wind_speed_10m,wind_direction_10m&daily=temperature_2m_max,temperature_2m_min&temperature_unit=${unit}&wind_speed_unit=mph&precipitation_unit=inch&timezone=auto&forecast_days=3&daily=sunrise,sunset`)
 			.then(response => {
 				if (!response.ok) {
@@ -57,6 +58,7 @@ function CurrentWeather() {
 			})
 			.then(data => {
 				//console.log(data);
+
 				setIsDay(data.current.is_day);
 				setCurrentTemp(Math.floor(data.current.temperature_2m));
 				setCurrentMin(Math.floor(data.daily.temperature_2m_min[0]));
@@ -67,12 +69,12 @@ function CurrentWeather() {
 				setWeatherCode(data.current.weather_code);
 				setApparentTemp(Math.floor(data.current.apparent_temperature));
 
-				/*setTimeout(() => {
-					setIsLoading(false);
-				}, 5000);*/
 				setIsLoading(false);
 			})
-			.catch(error => console.error(error));
+			.catch(error => {
+				console.error(error);
+				setIsLoading(false);
+			});
 	}, [latitude, longitude, cityName, unit]);
 
 	const weatherCodeMap = {

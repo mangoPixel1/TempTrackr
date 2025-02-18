@@ -48,6 +48,7 @@ function DailyWeather() {
 
 	// Fetches API data
 	useEffect(() => {
+		setIsLoading(true);
 		fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&temperature_unit=${unit}&wind_speed_unit=mph&precipitation_unit=inch&timezone=auto`)
 			.then(response => {
 				if (!response.ok) {
@@ -63,9 +64,6 @@ function DailyWeather() {
 				setMinTemps(data.daily.temperature_2m_min);
 				setPrecip(data.daily.precipitation_probability_max);
 
-				/*setTimeout(() => {
-					setIsLoading(false);
-				}, 5000);*/
 				setIsLoading(false);
 			})
 			.catch(error => console.error(error));

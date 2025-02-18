@@ -50,7 +50,7 @@ function MainComponent() {
 					</>
 				) : (
 					<>
-						<h1>TempTrackr</h1>
+						<h1>TempTrackr App</h1>
 						<h3>Just another weather app</h3>
 						<LocationSelector />
 					</>

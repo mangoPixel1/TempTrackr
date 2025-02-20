@@ -83,9 +83,15 @@ function Header() {
 	return (
 		<>
 			<header className={`${classes.headerStyle} ${theme === "dark" ? classes.dark : ""}`}>
-				<button className={`${classes.getLocButton} ${theme === "dark" ? classes.dark : ""}`} onClick={handleGetLocationClick}>
-					<GetLocationIcon className={classes.getLocIcon} />
-				</button>
+				<div className={classes.headerButtons}>
+					<button className={classes.placeholderButton}>
+						<GetLocationIcon className={classes.getLocIcon} />
+					</button>
+					<button className={classes.placeholderButton}>
+						<SettingsIcon className={classes.settingsIcon} />
+					</button>
+				</div>
+
 				<div className={classes.searchWrapper}>
 					<input className={classes.searchInput} type="text" placeholder="Search City Name" id="location-search-input" value={searchValue} onChange={handleSearchInputChange} />
 					<button className={classes.searchButton} onClick={handleLocationSearch}>
@@ -100,8 +106,11 @@ function Header() {
 					)}
 				</div>
 
-				<div className={classes.settingsButton}>
-					<button onClick={toggleDialog}>
+				<div className={classes.headerButtons}>
+					<button className={`${classes.getLocButton} ${theme === "dark" ? classes.dark : ""}`} onClick={handleGetLocationClick}>
+						<GetLocationIcon className={classes.getLocIcon} />
+					</button>
+					<button className={`${classes.settingsButton} ${theme === "dark" ? classes.dark : ""}`} onClick={toggleDialog}>
 						<SettingsIcon className={classes.settingsIcon} />
 					</button>
 				</div>

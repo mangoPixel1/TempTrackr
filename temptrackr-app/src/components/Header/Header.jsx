@@ -83,14 +83,8 @@ function Header() {
 	return (
 		<>
 			<header className={`${classes.headerStyle} ${theme === "dark" ? classes.dark : ""}`}>
-				<div className={classes.headerButtons}>
-					<button className={classes.placeholderButton}>
-						<GetLocationIcon className={classes.getLocIcon} />
-					</button>
-					<button className={classes.placeholderButton}>
-						<SettingsIcon className={classes.settingsIcon} />
-					</button>
-				</div>
+				{/* This div will naturally take up the first column */}
+				<div className={classes.headerButtons}></div>
 
 				<div className={classes.searchWrapper}>
 					<input className={classes.searchInput} type="text" placeholder="Search City Name" id="location-search-input" value={searchValue} onChange={handleSearchInputChange} />
@@ -99,9 +93,11 @@ function Header() {
 					</button>
 					{searchSuggestions && (
 						<ul className={classes.searchSuggestionsList}>
-							{searchSuggestions.map(suggestion => {
-								return <li key={suggestion.id} onClick={() => handleResultSelection(suggestion)}>{`${suggestion.name ? `${suggestion.name},` : ""} ${suggestion.admin2 ? `${suggestion.admin2},` : ""} ${suggestion.admin1 ? `${suggestion.admin1},` : ""} ${suggestion.country ? `${suggestion.country}` : ""}`}</li>;
-							})}
+							{searchSuggestions.map(suggestion => (
+								<li key={suggestion.id} onClick={() => handleResultSelection(suggestion)}>
+									{`${suggestion.name ? `${suggestion.name}, ` : ""} ${suggestion.admin2 ? `${suggestion.admin2}, ` : ""} ${suggestion.admin1 ? `${suggestion.admin1}, ` : ""} ${suggestion.country ? suggestion.country : ""}`}
+								</li>
+							))}
 						</ul>
 					)}
 				</div>

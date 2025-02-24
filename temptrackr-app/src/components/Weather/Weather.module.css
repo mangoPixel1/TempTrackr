@@ -62,6 +62,7 @@
 }
 
 .hourlyWeatherContainer {
+	width: 100%;
 	margin: 40px auto 50px auto;
 	display: flex;
 	flex-direction: column;
@@ -70,7 +71,7 @@
 }
 
 .hourlyForecast {
-	width: 60%;
+	width: 70%;
 	max-width: 550px;
 	font-size: 14px;
 	overflow: auto;
@@ -125,7 +126,7 @@
 }
 
 .dailyForecast {
-	width: 60%;
+	width: 80%;
 	max-width: 750px;
 	font-size: 18px;
 }
@@ -183,4 +184,54 @@
 .currentConditionIcon {
 	width: 25px;
 	height: 25px;
+}
+
+@media only screen and (max-width: 600px) {
+	.maxMinTemperature {
+		font-size: 18px;
+	}
+
+	.apparentTemperature {
+		font-size: 14px;
+	}
+
+	.weatherMetrics {
+		display: flex;
+		justify-content: center;
+		gap: 20px;
+		font-size: 16px;
+	}
+
+	.currentIcon {
+		width: 85px;
+		height: 85px;
+	}
+
+	.condition p {
+		font-size: 16px;
+	}
+
+	.currentConditionIcon {
+		width: 20px;
+		height: 20px;
+	}
+
+	.hourlyForecast {
+		width: 80%;
+		font-size: 12px;
+	}
+
+	.hourlyIcon {
+		width: 40px;
+		height: 40px;
+	}
+
+	.dailyForecast {
+		font-size: 14px;
+	}
+
+	.dailyIcon {
+		width: 50px;
+		height: 50px;
+	}
 }

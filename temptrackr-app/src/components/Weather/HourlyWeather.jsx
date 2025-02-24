@@ -258,7 +258,7 @@ function HourlyWeather() {
 		<SkeletonTheme baseColor={theme === "light" ? "#e8e8e8" : "#4a4a4a"} highlightColor={theme === "light" ? "#f4f4f4" : "#7d7c7c"}>
 			<div className={classes.hourlyWeatherContainer}>
 				{isLoading ? (
-					<Skeleton width={400} height={80} />
+					<Skeleton width={400} height={90} />
 				) : (
 					<ul className={classes.hourlyForecast}>
 						{hours &&

@@ -1,6 +1,6 @@
 {
 	"name": "temptrackr-app",
-	"homepage": "https://mangoPixel1.github.io/temptrackr-app",
+	"homepage": ".",
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
